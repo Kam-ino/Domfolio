@@ -3,7 +3,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Adventures from "./pages/Experience";
 import Me from "./pages/Me"
-    
+import Character from "./components/Character";
+
 export default function App() {
   let page
   // eslint-disable-next-line default-case
@@ -19,6 +20,7 @@ export default function App() {
     <div>
       <Navbar/>
       {page}
+      <Character/>
     </div>
   );
 }

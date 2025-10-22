@@ -1,0 +1,132 @@
+.character-sheet {
+    display: grid;
+    grid-template-columns: 140px, 1fr, 1fr, 1fr, 1fr;
+    grid-template-rows: 240px, 270px, 270px, 270px, 270px;
+    gap: 40px;
+    padding: 40px;
+}
+
+.character {
+    box-sizing: border-box;
+
+    position: relative;
+    height: 240px;
+    width: calc(100vw - 80px);
+
+    background: rgba(255, 248, 220, 0.9);
+    border: 4px solid #7A5A33;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 20px;
+    grid-column: span 4 / span 4;
+
+}
+
+.cgrid {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: inherit;
+    column-width: calc(100vw - 60px);
+}
+
+.cname {
+    margin: 0;
+    color: #333;
+    font-family: "IM Fell English SC", serif;
+    font-size: 64px;
+}
+
+.ctext {
+    margin: 0;
+    color: #333;
+    font-family: "IM Fell English SC", serif;
+    font-size: 32px;
+}
+
+.stats-column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 1000px;
+    width: 140px;
+    position: relative;
+    grid-row: span 5 / span 5;
+    grid-row-start: 2;
+}
+
+.stat-bubble {
+    display: 'flex';
+    flex-direction: 'column';
+    align-items: 'center';
+}
+
+.stat-img {
+    width: 140px;
+    height: 'auto';
+}
+
+.stat-label {
+    margin-top: 5px;
+    font-size: 24px;
+    font-family: "IM Fell English SC", serif;
+    color: #333;
+    text-align: center;
+    width: inherit;
+}
+
+.summary-box {
+    grid-column: span 3 / span 3;
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 2;
+
+    background: rgba(255, 248, 220, 0.9);
+    border: 4px solid #7A5A33;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.summary-text {
+    margin: 0;
+    color: #333;
+    font-family: "IM Fell English SC", serif;
+    font-size: 32px;
+}
+
+.div3 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 7;
+}
+
+.div6 {
+    grid-row: span 4 / span 4;
+    grid-column-start: 2;
+    grid-row-start: 3;
+}
+
+.div7 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    grid-row-start: 3;
+}
+
+.div8 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 3;
+    grid-row-start: 5;
+}
+
+.div9 {
+    grid-row: span 4 / span 4;
+    grid-column-start: 4;
+    grid-row-start: 3;
+}
+
+.div10 {
+    grid-column-start: 4;
+    grid-row-start: 7;
+}
+        
