@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Adventures from "./pages/Experience";
 import Me from "./pages/Me"
-import Character from "./components/Character";
+import Character from "./pages/Character";
 
 export default function App() {
   let page
