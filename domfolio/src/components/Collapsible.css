@@ -1,0 +1,89 @@
+/* --- General box style (scroll container) --- */
+.collapsible-horizontal {
+  display: flex;
+  max-height: 280px;
+  margin: 20px auto;
+  border: 4px solid #7A5A33;
+  border-radius: 15px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(255, 248, 220, 0.95) 60%, rgba(245, 230, 180, 0.9) 100%);
+  box-shadow:
+    inset 0 0 15px rgba(0, 0, 0, 0.25),
+    0 4px 4px rgba(0, 0, 0, 0.25);
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.collapsible-horizontal:hover {
+  transform: scale(1.03);
+}
+
+/* --- Header / Button --- */
+.collapsible-header {
+  background: linear-gradient(
+    90deg,
+    rgba(245, 230, 190, 0.95) 0%,
+    rgba(255, 248, 220, 0.95) 50%,
+    rgba(245, 230, 190, 0.95) 100%
+    );    
+  box-shadow:
+    inset 0 0 15px rgba(0, 0, 0, 0.25),
+    0 4px 4px rgba(0, 0, 0, 0.25);
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: 40px;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  min-width: 160px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease, color 0.2s ease;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  z-index: 3;
+}
+
+.collapsible-header:hover {
+  background: rgba(245, 230, 190, 0.95) 100%;
+  color: #000;
+}
+
+/* --- Arrow icon --- */
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(90deg);
+}
+
+/* --- Scroll panel --- */
+.collapsible-panel {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.6s ease;
+  background: linear-gradient(
+    90deg,
+    rgba(245, 230, 190, 0.95) 0%,
+    rgba(255, 248, 220, 0.95) 50%,
+    rgba(245, 230, 190, 0.95) 100%
+  );
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.collapsible-panel.open {
+  width: 700px;
+  opacity: 1;
+  padding: 14px 18px;
+}
+
+/* --- Inner text --- */
+.content-inner {
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: 32px;
+  line-height: 1.4;
+}

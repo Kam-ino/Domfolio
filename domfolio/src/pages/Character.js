@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import "./Character.css"
+import Collapsible from "../components/Collapsible";
 
 function CharacterDesktop() {
     const stats = [
@@ -10,9 +11,6 @@ function CharacterDesktop() {
         { file: 'Stat 5.png', label: 'WIS' },
         { file: 'Stat 6.png', label: 'CHA' },
     ];
-    
-    const [isExpanded, setIsExpanded] = useState(false);
-    const toggleExpand = () => setIsExpanded(!isExpanded);
     
     return (
         <div className="character-sheet">
@@ -39,37 +37,11 @@ function CharacterDesktop() {
                     <p className="stat-label">{stat.label}</p>
                     </div>
                 ))}
-                
-                <div className="stat-guide" onClick={toggleExpand}>
-                    {!isExpanded ? (
-                            <>
-                                <span className="scroll-icon">📜</span>
-                                <span className="stat-guide-title">Stat Guide</span>
-                            </>
-                        ) : (
-                            <div className="expanded-content">
-                                <button 
-                                 className="close-btn"
-                                 onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleExpand();
-                                    }}
-                                >
-                                ⚔️
-                                </button>
-                                <h2>Character Stats Explained</h2>
-                                <p>STR (Strength): Technical Endurance & Debugging Power</p>
-                                <p>DEX (Dexterity): Frontend Finesse & Code Precision</p>
-                                <p>CON (Constitution): Resilience & Focus</p>
-                                <p>INT (Intelligence): Problem-Solving & Technical Knowledge</p>
-                                <p>WIS (Wisdom): Judgment & Design Intuition</p>
-                                <p>CHA (Charisma): Collaboration & Communication</p>
-                            </div>
-                        )
-                    }
-                    
-                </div>
-
+                            
+                <Collapsible title="Stat Guide">
+                    <h2>Character Stats Explained</h2>
+                    <p>STR (Strength): Technical Endurance & Debugging Power<br/>DEX (Dexterity): Frontend Finesse & Code Precision<br/>CON (Constitution): Resilience & Focus<br/>INT (Intelligence): Problem-Solving & Technical Knowledge<br/>WIS (Wisdom): Judgment & Design Intuition<br/>CHA (Charisma): Collaboration & Communication<br/></p>
+                </Collapsible>
                 {/**/}
             </div> 
 
@@ -77,8 +49,8 @@ function CharacterDesktop() {
                 <div className="summary-format">
                     <h1>Summary:</h1>
                     <p>“I am a Computer Engineering undergraduate with hands-on experience in full stack and frontend development using React, JavaScript, and Node.js. From my university and organization projects, I gained strong foundations in programming, system design, and problem solving, which I am eager to apply in real-world projects. I am looking for an opportunity to work in a collaborative environment where I can continue to grow and sharpen my technical skills while contributing to meaningful applications. My goal is to grow into a well-rounded developer who delivers efficient, user-focused solutions while learning from experienced professionals."</p>
-                    <p>Alignment: Neutral Good – always striving to improve code and collaborate fairly.</p>
-                    <p>Special Trait: “Design Adaptation” – gains +2 bonus to Implementing Designs into Code.</p>
+                    <p style={{marginTop:"15px"}}>Alignment: Neutral Good – always striving to improve code and collaborate fairly.</p>
+                    <p style={{marginTop:"15px"}}>Special Trait: “Design Adaptation” – gains +2 bonus to Implementing Designs into Code.</p>
                 </div>
             </div>
 
