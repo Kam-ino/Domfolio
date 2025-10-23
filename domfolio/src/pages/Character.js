@@ -58,32 +58,36 @@ function CharacterDesktop() {
                 <h1>Skills & Proficiencies:</h1>
                 <h2>🧭 Core Abilities</h2>
                 <ul className="snp-text">
-                    <li>🎯 Responsive Web Design</li>
-                    <li>🧱 Component Architecture (React Hooks, Context API)</li>
-                    <li>🧮 Data Handling & RESTful API Integration</li>
-                    <li>🧵 State Management (Redux, Context API)</li>
-                    <li>🧠 Debugging, Troubleshooting & Optimization</li>
-                    <li>🪶 UI/UX Collaboration with Designers (Figma)</li>
-                    <li>🗂️ Project Management (ClickUp / Trello)</li>
-                    <li>🧰 Toolchain Familiarity (Vite, Webpack, npm)</li>
+                    <li data-icon="🎯"> Responsive Web Design</li>
+                    <li data-icon="🧱"> Component Architecture (React Hooks, Context API)</li>
+                    <li data-icon="🧮"> Data Handling & RESTful API Integration</li>
+                    <li data-icon="🧵"> State Management (Redux, Context API)</li>
+                    <li data-icon="🧠"> Debugging, Troubleshooting & Optimization</li>
+                    <li data-icon="🪶"> UI/UX Collaboration with Designers (Figma)</li>
+                    <li data-icon="🗂️"> Project Management (ClickUp / Trello)</li>
+                    <li data-icon="🧰"> Toolchain Familiarity (Vite, Webpack, npm)</li>
                 </ul>
                 <h2 className="snp-text">☁️ Tool & Technical Proficiencies</h2>
                 <ul className="snp-text">
-                    <li>☁️ AWS Cloud Foundations</li>
-                    <li>🤖 AWS Machine Learning Foundations</li>
-                    <li>🗃️ SQL / NoSQL Databases</li>
-                    <li>🧾 JSON / API Handling</li>
-                    <li>🔧 Postman, Replit, Glitch, VS Code</li>
+                    <li data-icon="☁️"> AWS Cloud Foundations</li>
+                    <li data-icon="🤖"> AWS Machine Learning Foundations</li>
+                    <li data-icon="🗃️"> SQL / NoSQL Databases</li>
+                    <li data-icon="🧾"> JSON / API Handling</li>
+                    <li data-icon="🔧"> Postman, Replit, Glitch, VS Code</li>
                 </ul>
                 <h2 className="snp-text">⚔️ Weapon Proficiencies</h2>
                 <ul className="snp-text">
-                    <li>⚙️ React.js / Next.js — Quick, elegant front-end builds</li>
-                    <li>💻 JavaScript (ES6+) — Fluent in modern scripting magic</li>
-                    <li>🧩 Node.js / Express — Backend and API wizardry</li>
-                    <li>🎨 HTML5 / CSS3 / SCSS — Visual alchemy and layout spells</li>
-                    <li>🧠 Python / C++ / C# — Logical and algorithmic dueling</li>
-                    <li>🧰 Git / GitHub / CLI — Battle-ready with version control</li>
+                    <li data-icon="⚙️"> React.js / Next.js — Quick, elegant front-end builds</li>
+                    <li data-icon="💻"> JavaScript (ES6+) — Fluent in modern scripting magic</li>
+                    <li data-icon="🧩"> Node.js / Express — Backend and API wizardry</li>
+                    <li data-icon="🎨"> HTML5 / CSS3 / SCSS — Visual alchemy and layout spells</li>
+                    <li data-icon="🧠"> Python / C++ / C# — Logical and algorithmic dueling</li>
+                    <li data-icon="🧰"> Git / GitHub / CLI — Battle-ready with version control</li>
                 </ul>
+            </div>
+
+            <div className="portrait">
+                <img src="/images/Dominic Guevarra Poster.png" alt="Me  "/>
             </div>
         </div>
     );

@@ -40,7 +40,7 @@ li {
     margin: 0;
     color: #333;
     font-family: "IM Fell English SC", serif;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .character {
@@ -120,8 +120,6 @@ li {
     width: inherit;
 }
 
-
-
 .summary-box {
     grid-column: span 3 / span 3;
     grid-column-start: 2;
@@ -168,6 +166,8 @@ li {
     grid-row: span 3 / span 3;
     grid-column-start: 2;
     grid-row-start: 3;
+    width: 520px;
+    height: fit-content;
 }
 
 .snp-text {
@@ -175,12 +175,20 @@ li {
     color: #333;
     font-family: "IM Fell English SC", serif;
     font-size: 32px;
+    list-style: none;
 }
 
-.div7 {
-    grid-row: span 2 / span 2;
+.snp-text li::before {
+    content: attr(data-icon)
+}
+
+.portrait {
     grid-column-start: 3;
     grid-row-start: 3;
+}
+
+.portrait img {
+    width: 550px;
 }
 
 .div8 {
