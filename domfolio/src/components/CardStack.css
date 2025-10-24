@@ -1,0 +1,25 @@
+.stack-container {
+  position: relative;
+  perspective: 600px;
+}
+
+.card {
+    width: fit-content;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-rotate {
+  position: absolute;
+  cursor: grab;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-content {
+  pointer-events: none;
+  width: fit-content;
+  height: fit-content;
+  object-fit: cover;
+}

@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Adventures from "./pages/Experience";
-import Me from "./pages/Me"
 import Character from "./pages/Character";
 
 export default function App() {
@@ -10,7 +9,7 @@ export default function App() {
   // eslint-disable-next-line default-case
   switch (window.location.pathname){
     case "/about":
-      page = <Me/>
+      page = <Character/>
       break
         case "/experience":
           page = <Adventures/>
@@ -20,7 +19,6 @@ export default function App() {
     <div>
       <Navbar/>
       {page}
-      <Character/>
     </div>
   );
 }

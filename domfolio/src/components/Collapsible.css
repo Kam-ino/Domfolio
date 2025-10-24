@@ -3,9 +3,9 @@
   display: flex;
   max-height: 280px;
   margin: 20px auto;
+  overflow: hidden;
   border: 4px solid #7A5A33;
   border-radius: 15px;
-  overflow: hidden;
   background: radial-gradient(circle at center, rgba(255, 248, 220, 0.95) 60%, rgba(245, 230, 180, 0.9) 100%);
   box-shadow:
     inset 0 0 15px rgba(0, 0, 0, 0.25),
@@ -50,16 +50,14 @@
   color: #000;
 }
 
-/* --- Arrow icon --- */
 .arrow {
   transition: transform 0.3s ease;
 }
 
 .arrow.open {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 
-/* --- Scroll panel --- */
 .collapsible-panel {
   width: 0;
   overflow: hidden;
@@ -80,7 +78,6 @@
   padding: 14px 18px;
 }
 
-/* --- Inner text --- */
 .content-inner {
   color: #333;
   font-family: "IM Fell English SC", serif;

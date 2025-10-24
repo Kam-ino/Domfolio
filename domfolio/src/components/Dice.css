@@ -1,0 +1,92 @@
+.dice-roller-container {
+  text-align: center;
+  font-family: "IM Fell English SC", serif;
+  color: #d7b82b;
+  background: radial-gradient(circle, #2e0000 0%, #760c10 100%);
+  padding: 40px;
+  border-radius: 15px;
+}
+
+.dice-title {
+  color: #d7b82b;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.dice-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.dice-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 600px;
+}
+
+.dice {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  transform-style: preserve-3d;
+  transform: rotateX(0) rotateY(0);
+  transition: transform 1.5s ease-in-out;
+}
+
+.dice .face {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 3px solid var(--accent);
+  border-radius: 10px;
+  background: var(--main);
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cube face positioning (works for D6 and reused illusion for others) */
+.dice .face:nth-child(1) { transform: rotateY(0deg) translateZ(40px); }
+.dice .face:nth-child(2) { transform: rotateY(90deg) translateZ(40px); }
+.dice .face:nth-child(3) { transform: rotateY(180deg) translateZ(40px); }
+.dice .face:nth-child(4) { transform: rotateY(-90deg) translateZ(40px); }
+.dice .face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
+.dice .face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+
+.dice-label {
+  margin-top: 10px;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.dice-controls {
+  margin-top: 25px;
+}
+
+.dice-controls button {
+  background: #d7b82b;
+  color: #760c10;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 4px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.dice-controls button:hover {
+  transform: scale(1.1);
+}
+
+.dice-result {
+  margin-top: 20px;
+  color: #d7b82b;
+  font-size: 1.5rem;
+}
