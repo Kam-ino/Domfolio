@@ -2,7 +2,6 @@ import React from "react";
 import "./Character.css"
 import Collapsible from "../components/Collapsible";
 import Stack from "../components/CardStack";
-import DiceRoller from "../components/DiceRoller";
 
 function CharacterDesktop() {
     const stats = [
@@ -58,64 +57,10 @@ function CharacterDesktop() {
     ]
     const cardsData = [
         {
-        id: 1,
+        id: 4,
         content: (
             <div className="snp">
-            <h1>Skills & Proficiencies:</h1>
-            <h2>🧭 Core Abilities</h2>
-            <ul className="snp-text">
-                <li data-icon="🎯">Responsive Web Design</li>
-                <li data-icon="🧱">Component Architecture (React Hooks, Context API)</li>
-                <li data-icon="🧮">Data Handling & RESTful API Integration</li>
-                <li data-icon="🧵">State Management (Redux, Context API)</li>
-                <li data-icon="🧠">Debugging, Troubleshooting & Optimization</li>
-                <li data-icon="🪶">UI/UX Collaboration with Designers (Figma)</li>
-                <li data-icon="🗂️">Project Management (ClickUp / Trello)</li>
-                <li data-icon="🧰">Toolchain Familiarity (Vite, Webpack, npm)</li>
-            </ul>
-
-            <h2 className="snp-text">☁️ Tool & Technical Proficiencies</h2>
-            <ul className="snp-text">
-                <li data-icon="☁️">AWS Cloud Foundations</li>
-                <li data-icon="🤖">AWS Machine Learning Foundations</li>
-                <li data-icon="🗃️">SQL / NoSQL Databases</li>
-                <li data-icon="🧾">JSON / API Handling</li>
-                <li data-icon="🔧">Postman, Replit, Glitch, VS Code</li>
-            </ul>
-            </div>
-        ),
-        },
-        {
-        id: 2,
-        content: (
-            <div className="snp">
-            <h1>Other Proficiencies & Languages:</h1>
-            <h2>🛡️ Soft Skills & Traits</h2>
-            <ul className="snp-text">
-                <li data-icon="⚡🧠">Quick Learner — Gains +2 bonus when learning new frameworks</li>
-                <li data-icon="🤝💻">Team Collaborator — Advantage on pair-programming checks</li>
-                <li data-icon="💪🔥">Persistence — Immune to “Compilation Errors: Panic Attack”</li>
-                <li data-icon="🎯🐞">Critical Debugger — 20% chance to fix bugs by intuition alone</li>
-            </ul>
-
-            <h2 className="snp-text">🧙‍♂️ Languages Known</h2>
-            <ul className="snp-text">
-                <li data-icon="🌏">Common (English, Tagalog, Japanese)</li>
-                <li data-icon="🧝‍♂️">Elvish (JavaScript)</li>
-                <li data-icon="⚒️">Dwarvish (Python)</li>
-                <li data-icon="☁️">Celestial (React)</li>
-                <li data-icon="🔥">Infernal (Node.js)</li>
-                <li data-icon="📜">Ancient Script (C / C++ / C#)</li>
-            </ul>
-            <h2 className="snp-text">Tools of the Trade</h2>
-            <ul className="snp-text">
-                <li data-icon="🧰">GitHub</li>
-                <li data-icon="🗂️">ClickUp (Project Management)</li>
-                <li data-icon="💻">VS Code / Postman</li>
-                <li data-icon="🎨">Figma / Canva</li>
-                <li data-icon="🤖">ChatGPT / Claude (Coding Assistant)</li>
-                <li data-icon="📘">StackOverflow (Debugging)</li>
-            </ul>
+                <img src="/images/snp (4).png" alt="snp4"/>
             </div>
         ),
         },
@@ -123,51 +68,23 @@ function CharacterDesktop() {
         id: 3,
         content: (
             <div className="snp">
-            <h1>Equipment:</h1>
-            <h2>💻 Weapon (Laptop)</h2>
-            <ul className="snp-text">
-                <li data-icon="⚙️">AMD Ryzen 7</li>
-                <li data-icon="⚙️">64GB RAM</li>
-                <li data-icon="⚙️">NVIDIA GeForce RTX 4050 GPU</li>
-                <li data-icon="⚙️">512GB Storage</li>
-            </ul>
-
-            <h2 className="snp-text">Scrolls (Certifications)</h2>
-            <ul className="snp-text">
-                <li data-icon="📜">AWS Educate Introduction to Cloud 101</li>
-                <li data-icon="📜">AWS Educate Machine Learning Foundations</li>
-                <li data-icon="📜">AWS Educate Introduction to Generative AI</li>
-                <li data-icon="📜">AWS Academy Cloud Foundations</li>
-                <li data-icon="📜">Introduction to Generative AI and Prompt Engineering</li>
-                <li data-icon="📜">Applied Machine Learning in Python</li>
-                <li data-icon="📜">Applied Plotting, Charting and Data Representation in Python</li>
-                <li data-icon="📜">Cisco Introduction to Cybersecurity</li>
-                <li data-icon="📜">CCNA: Switching, Routing, and Wireless Essentials</li>
-                <li data-icon="📜">CCNA: Introduction to Networks</li>
-                <li data-icon="📜">CCNA: Enterprise Networking, Security, and Automation</li>
-            </ul>
+                <img src="/images/snp (3).png" alt="snp3"/>
             </div>
         ),
         },
         {
-        id: 4,
+        id: 2,
         content: (
             <div className="snp">
-            <h1>Mastery:</h1>
-            <h2 className="snp-text">⚔️ Weapon Proficiencies</h2>
-            <ul className="snp-text">
-                <li data-icon="⚙️">Lvl 5: React.js / Next.js (Quick, elegant front-end builds)</li>
-                <li data-icon="💻">Lvl 5: JavaScript (ES6+) (Fluent in modern scripting magic)</li>
-                <li data-icon="🧩">Lvl 2: Node.js (Backend and API wizardry)</li>
-                <li data-icon="🎨">Lvl 5: HTML5 / CSS3 (Visual alchemy and layout spells)</li>
-                <li data-icon="🧠">Lvl 5: Python / C++ / C# (Logical and algorithmic dueling)</li>
-                <li data-icon="🧰">Lvl 4: Git / GitHub / CLI (Battle-ready with version control)</li>
-                <li data-icon="🗄️">Lvl 3: MySQL / MongoDB (Keeper of relational and document archives)</li>
-                <li data-icon="🧮">Lvl 3: Data Structures / Algorithms (Mastery of computational tactics)</li>
-                <li data-icon="📐">Lvl 5: Component-based Design (Crafts interfaces with user empathy)</li>
-                <li data-icon="🔍">Lvl 5: Debugging & Optimization (Hunts bugs with precision)</li>
-                <li data-icon="🧭">Lvl 2: Agile Development (Navigates projects through iterative quests)</li>
-            </ul>
+                <img src="/images/snp (2).png" alt="snp2"/>
+            </div>
+        ),
+        },
+        {
+        id: 1,
+        content: (
+            <div className="snp">
+                <img src="/images/snp (1).png" alt="snp1"/>
             </div>
         ),
         },
@@ -249,10 +166,6 @@ function CharacterDesktop() {
                     <li data-icon="🧹">Refactoring: Turns spaghetti code into readable work</li>
                     <li data-icon="📜">Documentation: Actually writes it </li>
                 </ul>
-            </div>
-
-            <div className="dice-roll">
-                <DiceRoller/>
             </div>
         </div>
     );
