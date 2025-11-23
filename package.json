@@ -16,6 +16,7 @@
     "nice-color-palettes": "^4.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-draggable": "^4.5.0",
     "react-scripts": "5.0.1",
     "three": "^0.180.0",
     "web-vitals": "^2.1.4"

@@ -1,0 +1,276 @@
+/* src/QuestBoard.css */
+/* Fonts */
+@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Spectral:wght@300;400;600;700&display=swap");
+
+.qb-root {
+  font-family: "Spectral", serif;
+  color: #2e1d12;
+  padding: 32px;
+  max-width: 100vw;
+  margin: 20px;
+  
+}
+
+/* SCATTER BOARD */
+.scatter-board {
+  position: relative;
+  width: 100%;
+  height: 900px;
+  background: url("/public/wood-texture.png");
+  background-size: cover;
+  border: 12px solid #5a3b22;
+  border-radius: 16px;
+  margin-top: 30px;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.45);
+}
+
+.scatter-item {
+  position: absolute;
+  width: 260px; /* fixed card width */
+  cursor: pointer;
+  transition: transform 0.15s ease, z-index 0.1s ease;
+}
+
+.scatter-item:hover {
+  transform: scale(1.3) rotate(0deg) !important;
+  z-index: 50;
+}
+
+.qb-header {
+  text-align: center;
+}
+
+.qb-header h1 {
+  font-family: "IM Fell English SC", serif;
+  font-size: 36px;
+  color: #4b2c16;
+  margin-bottom: 6px;
+}
+.qb-sub {
+  color: #6b4b2a;
+  margin-bottom: 18px;
+}
+
+/* Tabs */
+.quest-tabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.tab {
+  background: #f6ead0;
+  border: 2px solid #b89b6b;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #4b2c16;
+}
+.tab.active {
+  background: linear-gradient(180deg,#fff7df,#f6e6bf);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transform: translateY(-2px);
+}
+
+/* Grid layout */
+.qb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* Quest Card (parchment poster) */
+.quest-card {
+  background: linear-gradient(180deg, #fff8df, #f6e8c9);
+  border: 3px solid #b89b6b;
+  border-radius: 12px;
+  padding: 18px;
+  cursor: pointer;
+  position: relative;
+  height: auto;
+  width: 400px;
+  /* Soft stacked shadow effect */
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.25),
+    0 8px 14px rgba(0, 0, 0, 0.18),
+    0 0 6px rgba(0,0,0,0.15) inset;
+
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+/* Extra shadow on hover */
+.quest-card:hover {
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.35),
+    0 0 10px rgba(255,248,200,0.6) inset;
+}
+
+.quest-ribbon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 700;
+  font-family: "IM Fell English SC", serif;
+  transform: rotate(10deg);
+}
+.ribbon-text { font-size: 14px; }
+
+/* Card text */
+.quest-title { font-size: 18px; margin: 6px 0; color: #3b2413;}
+.quest-sub { font-size: 13px; color: #6b4b2a; margin-bottom: 10px;}
+.quest-preview { padding-left: 18px; color: #3a2418; }
+.quest-footer { display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:13px; color:#5b3a28; }
+.reward { font-weight:700; color:#4b2c16; }
+
+/* Modal overlay & parchment popup */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Modal */
+.modal-window {
+  position: relative;
+  background: #fff8dc;
+  border: 4px solid #7A5A33;
+  border-radius: 16px;
+  box-shadow: 0px 10px 35px rgba(0,0,0,0.5);
+  padding: 30px;
+  width: 70%;
+  max-width: 800px;
+}
+
+/* ---- Wax Seal Button ---- */
+.wax-close-btn {
+  position: absolute;
+  top: -25px;         /* overlaps the modal */
+  right: -25px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.25s ease, filter 0.25s ease;
+  padding: 0;
+}
+
+.wax-seal-img {
+  width: 80px;       /* adjust as needed */
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+/* Hover animation: seal grows + shines */
+.wax-close-btn:hover {
+  transform: scale(1.12);
+  filter: brightness(1.1);
+}
+
+/* Press animation */
+.wax-close-btn:active {
+  transform: scale(0.95);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index: 2000;
+}
+.modal-parchment {
+  width: 760px;
+  max-width: calc(100% - 40px);
+  background: linear-gradient(180deg,#fff8e6,#f6ead0);
+  border: 4px solid #7a5a33;
+  border-radius: 12px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  animation: dropIn .28s ease;
+}
+@keyframes dropIn {
+  from { transform: translateY(-24px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.modal-close { position:absolute; top:12px; right:12px; border:none; background:#7a5a33; color:#fff8dc; padding:6px 10px; border-radius:6px; cursor:pointer; }
+.modal-wax { position:absolute; left:18px; top:18px; opacity:0.95; }
+.modal-wax img { width:64px; height:64px; }
+
+/* Modal content */
+.modal-title { font-family: "IM Fell English SC", serif; color:#4b2c16; font-size:28px; margin:0 0 6px; }
+.modal-sub { color:#6b4b2a; margin:0 0 10px; }
+.modal-time { color:#6b4b2a; font-size:13px; margin-bottom:12px; }
+.modal-details ul { padding-left:18px; color:#3b2413; }
+.modal-reward { margin-top:12px; font-weight:700; color:#3b2413; }
+.modal-actions { margin-top:18px; display:flex; gap:12px; }
+.btn { padding:10px 14px; background:#4b2c16; color:#fff8dc; border-radius:8px; text-decoration:none; }
+.btn.ghost { background: transparent; border:2px solid #4b2c16; color:#4b2c16; }
+
+.modal-wax-button {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 100;
+  transition: transform 0.25s ease;
+}
+
+.modal-wax-button:hover {
+  transform: scale(0.90) rotate(1deg);
+}
+
+.wax-img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  pointer-events: none; /* So clicking always hits the button */
+}
+
+.modal-images {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: start;
+}
+
+.quest-image {
+  width: auto;
+  height: 200px;
+  border: 3px solid #7a5a33;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  background: #fdf3d1;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  object-fit: cover;
+}
+
+.quest-image:hover {
+  transform: scale(4);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  z-index: 200;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .modal-parchment { width: 92%; padding: 18px; }
+  .quest-card { min-height: 180px; }
+}
