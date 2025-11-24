@@ -37,8 +37,8 @@ export default function QuestBoard() {
       let x, y, tries = 0;
 
       do {
-        x = Math.random() * (BOARD_WIDTH - CARD_WIDTH - 5) + 3;
-        y = Math.random() * (BOARD_HEIGHT - CARD_HEIGHT - 5) + 3;
+        x = Math.random() * (BOARD_WIDTH - CARD_WIDTH - 5) + 4;
+        y = Math.random() * (BOARD_HEIGHT - CARD_HEIGHT - 5) + 4;
         tries++;
         // If it tries too many times, relax overlap rules slightly
         if (tries > 30) break;
@@ -58,7 +58,7 @@ export default function QuestBoard() {
     <div className="qb-root">
       <header className="qb-header">
         <h1>🛡️ Quest Board — Adventures of Dominic Guevarra</h1>
-        <p className="qb-sub">Pinned notices scattered realistically like a guild hall board.</p>
+        <p className="qb-sub">Pinned notices scattered are my previous work experiences.</p>
       </header>
 
       <QuestTabs active={activeTab} setActive={setActiveTab} />

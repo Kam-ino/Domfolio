@@ -31,7 +31,7 @@
             "Building an Advertisement Translation App for multilingual campaign support.",
             "Developing a Shopify Bundle App to enhance e-commerce performance and user experience."
         ],
-        reward: "Intelligence +4, Dexterity +3, Automation Mastery +2, AI Video Crafting +1, Shopify Engineering +1",
+        reward: "Intelligence +4, Dexterity +3, Automation Mastery +2, API Integration +1, Shopify Engineering +1",
         images: [ "Wautomation.png","Wmodel.png","Winvoice.png" ]
     },
 
@@ -157,6 +157,41 @@
         ],
         reward: "Circuit Crafting +3, Hardware Knowledge +1",
         images: ["Tronics.jpg","TronicsBuild.jpg","TronicsScreen.jpg" ]
+    },
+
+    {
+        id: "sq6",
+        title: "Voice of the Customer",
+        subtitle: "Aftersales Call Center Agent — Pre-Dev Era",
+        type: "Side",
+        difficulty: "D",
+        timeline: "Sept 2025 - Nov 2025",
+        details: [
+            "Handled high-volume inbound and outbound customer service calls, resolving concerns with professionalism and empathy.",
+            "Utilized negotiation and upselling techniques to meet and exceed service or sales targets.",
+            "Collaborated closely with team members and supervisors to maintain queue performance and call quality standards.",
+            "Demonstrated strong problem-solving and conflict resolution skills in high-pressure call environments.",
+        ],
+        reward: "Charisma +3, Patience +4, Negotiation +2, Teamwork +2, Calm Under Pressure +3",
+        images: [ ]
+    },
+
+    {
+        id: "sq7",
+        title: "The Many-Tongued Banner",
+        subtitle: "Ads Translation Specialist",
+        type: "Side",
+        difficulty: "C",
+        timeline: "Oct 2025 – Nov 2025",
+        details: [
+            "Translated ad graphics from English into five languages: Polish, Czech, Spanish, German, and Finnish.",
+            "Ensured cultural accuracy and language appropriateness for each target region while preserving brand tone and message clarity.",
+            "Coordinated with the design team to recreate visual assets in Canva, maintaining layout integrity, readability, and visual appeal across all versions.",
+            "Adapted phrasing to improve engagement and marketing effectiveness for each language group.",
+            "Delivered consistent, multi-language ad sets within fast turnaround times."
+        ],
+        reward: "Linguistics +3, Cultural Insight +2, Precision +2, Marketing Adaptation +1",
+        images: [ ]
     },
 
     // GUILD CONTRACTS (Certs)
