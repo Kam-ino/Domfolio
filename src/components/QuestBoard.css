@@ -20,7 +20,7 @@
   background-size: cover;
   border: 12px solid #5a3b22;
   border-radius: 16px;
-  margin-top: 30px;
+  margin-top: 0;
   box-shadow: inset 0 0 40px rgba(0,0,0,0.45);
 }
 
@@ -52,24 +52,51 @@
 }
 
 /* Tabs */
-.quest-tabs {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 20px;
+.quest-tabbed {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: -12px;
+  position: relative;
+  font-family: "IM Fell English SC", serif;
 }
-.tab {
-  background: #f6ead0;
-  border: 2px solid #b89b6b;
-  padding: 8px 14px;
-  border-radius: 8px;
+
+/* Tab labels container */
+.quest-tab-labels {
+  display: flex;
+  gap: 6px;
+}
+
+/* Tab Labels */
+.quest-tab-label {
+  display: block;
+  padding: 12px 22px;
   cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  border: 3px solid #7a5a33;
+  border-bottom: none;
+
+  background-color: #4b2c16;
+  background-size: cover;
+
+  color: #fff7df;
+  font-size: 22px;
+
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+/* Hover */
+.quest-tab-label:hover {
+  background: rgba(255, 244, 210, 0.85);
   color: #4b2c16;
 }
-.tab.active {
-  background: linear-gradient(180deg,#fff7df,#f6e6bf);
+
+/* Active tab */
+.quest-tab-label.active {
+  background: linear-gradient(180deg, #fff7df, #f6e6bf);
+  color: #4b2c16;
+  transform: translateY(2px);
+  border-bottom: 3px solid transparent;
   box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-  transform: translateY(-2px);
 }
 
 /* Grid layout */
@@ -193,7 +220,7 @@
   z-index: 2000;
 }
 .modal-parchment {
-  width: 760px;
+  width: fit-content;
   max-width: calc(100% - 40px);
   background: linear-gradient(180deg,#fff8e6,#f6ead0);
   border: 4px solid #7a5a33;
@@ -255,10 +282,10 @@
 .quest-image {
   width: auto;
   height: 200px;
-  border: 3px solid #7a5a33;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
-  background: #fdf3d1;
+  -webkit-filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35))
+                  drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
+  filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35)) 
+          drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
   transition: transform 0.5s ease, box-shadow 0.5s ease;
   object-fit: cover;
 }

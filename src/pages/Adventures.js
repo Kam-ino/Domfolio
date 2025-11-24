@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Adventures.css";
+import QuestBoard from "../components/QuestBoard";
 
 const regions = [
   {
@@ -50,32 +51,8 @@ export default function WorldMap() {
   const [activeRegion, setActiveRegion] = useState(null);
 
   return (
-    <div className="world-map">
-      <h1 className="map-title">🌍 Realm of Logicodea</h1>
-      <p className="map-intro">
-        A world forged from logic, creativity, and caffeine.  
-        Click or hover over a region to reveal its lore.
-      </p>
-
-      <div className="map-scroll">
-        {regions.map((region, index) => (
-          <div
-            key={index}
-            className={`region-card ${
-              activeRegion === index ? "active" : ""
-            }`}
-            onMouseEnter={() => setActiveRegion(index)}
-            onMouseLeave={() => setActiveRegion(null)}
-            onClick={() =>
-              setActiveRegion(activeRegion === index ? null : index)
-            }
-          >
-            <h2>{region.name}</h2>
-            <h3>{region.subtitle}</h3>
-            <p className="region-description">{region.description}</p>
-          </div>
-        ))}
-      </div>
+    <div>
+      <QuestBoard/>
     </div>
   );
 }

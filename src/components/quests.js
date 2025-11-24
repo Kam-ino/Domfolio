@@ -1,6 +1,3 @@
-    // src/quests.js
-    // All quests derived from your CV (work, education, projects, certs).
-    // Difficulty: SS+, SS, S, A, B, C, D, E
     const quests = [
     // MAIN QUESTS
     {
@@ -21,18 +18,23 @@
 
     {
         id: "mq2",
-        title: "Building the Next Era of Campus Tech",
-        subtitle: "Full Stack Developer — ARISE",
+        title: "Full-Stack Developer of Many Tools",
+        subtitle: "Full-Time Developer — WEAVNONO LLC",
         type: "Main",
-        difficulty: "S",
-        timeline: "Jun 2025 – Present",
+        difficulty: "SS+",
+        timeline: "2024 – Present",
         details: [
-        "Developed a full-stack website (React frontend, Node.js backend) for user interactions.",
-        "Designed responsive UI/UX prototypes in Figma.",
-        "Managed code review and deployment workflows using GitHub."
+            "Developed the Invoice Checker App to validate client invoices and streamline internal workflows.",
+            "Engineered an automated Aftersales Service Email System, drastically reducing manual response time.",
+            "Performed prompt engineering to generate realistic AI-powered video advertisements.",
+            "Currently automating the end-to-end process of Ad Video Generation.",
+            "Building an Advertisement Translation App for multilingual campaign support.",
+            "Developing a Shopify Bundle App to enhance e-commerce performance and user experience."
         ],
-        reward: "Full-Stack Skill +4, System Architecture +3, UI/UX Insight +2"
+        reward: "Intelligence +4, Dexterity +3, Automation Mastery +2, AI Video Crafting +1, Shopify Engineering +1",
+        images: [ "Wautomation.png","Wmodel.png","Winvoice.png" ]
     },
+
 
     {
         id: "mq3",
@@ -46,7 +48,8 @@
         "Worked in a startup-like, cloud-focused environment and used ClickUp for PM.",
         "Improved cross-team collaboration between designers and backend."
         ],
-        reward: "React Mastery +3, Cloud Literacy +2, Agile Adaptability +1"
+        reward: "React Mastery +3, Cloud Literacy +2, Agile Adaptability +1",
+        images: [ "AWSCCLP.png","AWSCCTeam.png","AWSCCTeam.jpg" ]
     },
 
     {
@@ -61,7 +64,8 @@
         "Delivered apps, data analysis solutions, and database queries.",
         "Built client communication and time-management skills."
         ],
-        reward: "Multiclass Proficiency +2, Adaptability +1"
+        reward: "Multiclass Proficiency +2, Adaptability +1",
+        images: []
     },
 
     {
@@ -69,14 +73,15 @@
         title: "The Engineering Pilgrimage",
         subtitle: "B.S. Computer Engineering — Mapúa University",
         type: "Main",
-        difficulty: "SS+",
+        difficulty: "SS",
         timeline: "Expected Graduation: Aug 2026",
         details: [
         "Specialized in Low-Code Web App Development.",
         "Thesis: AI-Driven E. coli Detection using YOLOv9 (unpublished).",
         "Research: LIDAR & ATmega328P overhead obstacle detection (unpublished)."
         ],
-        reward: "AI Knowledge +4, Embedded Systems +2, Low-Code Mastery +2"
+        reward: "AI Knowledge +4, Embedded Systems +2, Low-Code Mastery +2",
+        images: []
     },
 
     // SIDE QUESTS (Projects)
@@ -160,12 +165,15 @@
         title: "AWS Cloud Series",
         subtitle: "Certifications & Intro Courses",
         type: "Guild",
-        difficulty: "C",
+        difficulty: "A",
         details: [
-        "AWS Academy Cloud Foundations; AWS Educate Cloud 101",
-        "Machine Learning Foundations; Intro to Generative AI"
+        "AWS Academy Cloud Foundations",
+        "AWS Educate Cloud 101",
+        "Machine Learning Foundations",
+        "Intro to Generative AI"
         ],
-        reward: "Cloud Literacy +2, ML Basics +1"
+        reward: "Cloud Literacy +2, ML Basics +1",
+        images: [ "AWSCF.png","AWSCC101.png","AWSMLF.png","AWSIGAI.png" ]
     },
 
     {
@@ -178,7 +186,8 @@
         "Applied Machine Learning in Python",
         "Applied Plotting, Charting & Data Representation"
         ],
-        reward: "ML Techniques +2"
+        reward: "ML Techniques +2",
+        images: ["COURSEMatrix.png","COURSEML.png","COURSEDataRep.png","COURSEGenAI.png" ]
     },
 
     {
@@ -191,7 +200,8 @@
         "Intro to Networks; Switching/Routing/Wireless essentials",
         "Enterprise Networking, Security & Automation"
         ],
-        reward: "Networking +2, Security Awareness +1"
+        reward: "Networking +2, Security Awareness +1",
+        images: ["CISCOIntro.png","CISCOEnterprise.png","CISCOSwitching.png","CISCOCyberSec.png" ]
     }
     ];
 
