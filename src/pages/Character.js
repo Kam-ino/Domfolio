@@ -2,6 +2,12 @@ import React from "react";
 import "./Character.css"
 import Collapsible from "../components/Collapsible";
 import Stack from "../components/CardStack";
+import D4 from "../components/dice/D4";
+import D6 from "../components/dice/D6";
+import D8 from "../components/dice/D8";
+import D10 from "../components/dice/D10";
+import D12 from "../components/dice/D12";
+import D20 from "../components/dice/D20";
 
 function CharacterDesktop() {
     const stats = [
@@ -120,14 +126,14 @@ function CharacterDesktop() {
                     <p className="stat-label">{stat.label}</p>
                     </div>
                 ))}
-                
+            </div> 
+
+            <div className="guide">
                 <Collapsible title="Stat Guide">
                     <h2>Character Stats Explained</h2>
                     <p>STR (Strength): Technical Endurance & Debugging Power<br/>DEX (Dexterity): Frontend Finesse & Code Precision<br/>CON (Constitution): Resilience & Focus<br/>INT (Intelligence): Problem-Solving & Technical Knowledge<br/>WIS (Wisdom): Judgment & Design Intuition<br/>CHA (Charisma): Collaboration & Communication<br/></p>
                 </Collapsible>
-                {/**/}
-            </div> 
-
+            </div>
             <div className="summary-box">
                 <div className="summary-format">
                     <h1>Summary:</h1>
@@ -142,7 +148,7 @@ function CharacterDesktop() {
                     randomRotation={true}
                     sensitivity={180}
                     sendToBackOnClick={false}
-                    cardDimensions={{ width: 550}}
+                    cardDimensions={{ width: 400}}
                     cardsData={cardsData}
                 />
             </div>
@@ -163,32 +169,25 @@ function CharacterDesktop() {
                     <li data-icon="🧘‍♂️">Concentration: Keeps calm during major debugging crises</li>
                     <li data-icon="⏳">Patience: Survives multi-hour compile times</li>
                     <li data-icon="🌊">Adaptability: Able to learn new tech stacks on the fly</li>
-                    <li data-icon="🧹">Refactoring: Turns spaghetti code into readable work</li>
-                    <li data-icon="📜">Documentation: Actually writes it </li>
+                    <li data-icon="🛡️">Error Recovery: Quickly rebounds from failed builds and crashes</li>
+                    <li data-icon="🧠">Logic Resistance: Maintains clear reasoning under complex system constraints</li>
+                    <li data-icon="⚖️">Trade-off Judgment: Balances speed, quality, and maintainability</li>
+                    <li data-icon="🔍">Bug Awareness: Detects subtle issues before they reach production</li>
+                    <li data-icon="🕯️">Focus Endurance: Maintains productivity during long development sessions</li>         
                 </ul>
+            </div>
+
+            <div className="dice-case">
+                <D4 bounce={false} />
+                <D6 bounce={false} />
+                <D8 bounce={false} />
+                <D10 bounce={false} />
+                <D12 bounce={false} />
+                <D20 bounce={false} />
             </div>
         </div>
     );
 }
-
-// function CharacterMobile() {
-//   return (
-//     <div className="bg-[rgba(255,248,220,0.9)] relative rounded-[15px] size-full" data-name="Character">
-//       <div aria-hidden="true" className="absolute border-4 border-[#7a5a33] border-solid inset-0 pointer-events-none rounded-[15px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]" />
-//       <div className="size-full">
-//         <div className="box-border font-['IM_FELL_English_SC:Regular',_sans-serif] gap-[5px] grid grid-cols-[300px] grid-rows-[32px_minmax(0px,_1fr)_36px_36px_minmax(0px,_1fr)_minmax(0px,_1fr)_minmax(0px,_1fr)] leading-[normal] not-italic px-[15px] py-[25px] relative size-full text-black">
-//           <p className="[grid-area:1_/_1] self-start shrink-0 sticky text-[32px] top-0">Dominic S. Guevarra</p>
-//           <p className="[grid-area:3_/_1] self-start shrink-0 sticky text-[16px] top-0">Background: Computer Engineering at Mapua University</p>
-//           <p className="[grid-area:4_/_1] self-start shrink-0 sticky text-[16px] top-0">Specialization: Web Application Development</p>
-//           <p className="[grid-area:2_/_1] self-start shrink-0 sticky text-[16px] top-0">{`Class & Level: Frontend Developer, Lvl 3`}</p>
-//           <p className="[grid-area:7_/_1] shrink-0 sticky text-[16px] text-nowrap top-0 whitespace-pre">Land of Origin: Marikina City, Philippines</p>
-//           <p className="[grid-area:5_/_1] h-[20px] shrink-0 sticky text-[16px] top-0 w-[271px]">Expected Graduation: August 2026</p>
-//           <p className="[grid-area:6_/_1] self-start shrink-0 sticky text-[16px] top-0 w-[271px]">Date of Birth: 25 December, 2003</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 function Character() {
   return <CharacterDesktop />;

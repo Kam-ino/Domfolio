@@ -1,22 +1,16 @@
-import React, { useRef, useState, useMemo, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-/**
- * D8 component
- * - Starts with side 8 facing the camera
- * - Prevents user camera drag
- * - Rolls randomly, bounces once, then settles with the rolled face flush to camera
- * - Geometry uses per-face UVs and material groups (non-indexed)
- */
-
+// Constants
 const ROLL_DURATION_MS = 1800;
 const GRAVITY = -9.8;
 const BOUNCE_DAMPING = 0.5;
+const FLOOR_Y = -1.4;
 
 // ===== helper: create numbered textures for faces =====
-function makeNumberTexture(number, size = 256, bgcolor = "#00796b", fg = "#fff") {
+function makeNumberTexture(number, size = 256, bgcolor = "#7800ff", fg = "#fff") {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -26,7 +20,7 @@ function makeNumberTexture(number, size = 256, bgcolor = "#00796b", fg = "#fff")
   ctx.fillRect(0, 0, size, size);
 
   ctx.fillStyle = fg;
-  ctx.font = `${Math.floor(size * 0.45)}px sans-serif`;
+  ctx.font = `${Math.floor(size * 0.5)}px sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.lineWidth = Math.floor(size * 0.03);
@@ -39,8 +33,17 @@ function makeNumberTexture(number, size = 256, bgcolor = "#00796b", fg = "#fff")
   return tex;
 }
 
-// ===== D8 mesh =====
-function D8Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStartTime, resetSignal, initialQuaternion }) {
+// ===== D4 Mesh (with rolling and settling logic) =====
+function D4Mesh({
+  rolling,
+  targetQuaternion,
+  materials,
+  rollDirection,
+  rollStartTime,
+  resetSignal,
+  initialQuaternion,
+  bounce = true, // ✅ new
+}) {
   const meshRef = useRef();
   const velocity = useRef(new THREE.Vector3());
   const pos = useRef(new THREE.Vector3(0, 0, 0));
@@ -48,14 +51,13 @@ function D8Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
 
   // --- Geometry setup (non-indexed, grouped per triangle, with UVs)
   const geometry = useMemo(() => {
-    const g = new THREE.OctahedronGeometry(1); // D8 shape
+    const g = new THREE.TetrahedronGeometry(1);
     const nonIndexed = g.toNonIndexed();
 
     const posAttr = nonIndexed.attributes.position;
     const triCount = posAttr.count / 3;
     const uvs = [];
 
-    // UV map each face fully
     for (let i = 0; i < triCount; i++) {
       uvs.push(0.5, 1.0); // top
       uvs.push(0.0, 0.0); // bottom-left
@@ -63,10 +65,10 @@ function D8Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
     }
 
     nonIndexed.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
-
     nonIndexed.clearGroups();
+
     for (let i = 0; i < triCount; i++) {
-      nonIndexed.addGroup(i * 3, 3, i); // each triangle -> one face material
+      nonIndexed.addGroup(i * 3, 3, i);
     }
 
     nonIndexed.computeVertexNormals();
@@ -78,12 +80,14 @@ function D8Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
     pos.current.set(0, 0, 0);
     velocity.current.set(rollDirection[0] * 3, rollDirection[1] * 4, rollDirection[2] * 3);
     hasBounced.current = false;
+
     if (meshRef.current) {
       meshRef.current.position.set(0, 0, 0);
-      meshRef.current.quaternion.copy(initialQuaternion); // start with side 8 facing camera
+      meshRef.current.quaternion.copy(initialQuaternion);
     }
   }, [resetSignal, rollDirection, initialQuaternion]);
 
+  // Apply rolling physics and apply quaternion
   useFrame((state, delta) => {
     const mesh = meshRef.current;
     if (!mesh) return;
@@ -93,10 +97,20 @@ function D8Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
       pos.current.addScaledVector(velocity.current, delta);
       mesh.position.copy(pos.current);
 
-      if (pos.current.y < -1.4 && !hasBounced.current) {
-        pos.current.y = -1.4;
-        velocity.current.y *= -BOUNCE_DAMPING;
-        hasBounced.current = true;
+      // ✅ Floor collision with optional bounce
+      if (pos.current.y < FLOOR_Y) {
+        pos.current.y = FLOOR_Y;
+
+        if (!hasBounced.current) {
+          if (bounce) {
+            velocity.current.y *= -BOUNCE_DAMPING;
+          } else {
+            velocity.current.y = 0;
+          }
+          hasBounced.current = true;
+        } else if (!bounce) {
+          velocity.current.y = 0;
+        }
       }
 
       mesh.rotation.x += delta * (8 + Math.random() * 3);
@@ -112,21 +126,22 @@ function D8Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
   return <mesh ref={meshRef} geometry={geometry} material={materials} />;
 }
 
-// ===== Main D8 component =====
-export default function D8() {
+// ===== Main D4 Component =====
+export default function D4({ onRollComplete, bounce = true }) {
   const [rolling, setRolling] = useState(false);
-  const [result, setResult] = useState(8);
+  const [result4, setResult] = useState(4);
   const [targetQuat, setTargetQuat] = useState(null);
   const [rollDirection, setRollDirection] = useState([0, 0, 0]);
   const [rollStartTime, setRollStartTime] = useState(0);
   const [resetSignal, setResetSignal] = useState(0);
   const [initialQuat, setInitialQuat] = useState(new THREE.Quaternion());
+  const diceRef = useRef();
 
-  // create materials (8 numbered faces)
+  // 4 materials for the faces of the dice
   const materials = useMemo(() => {
-    return [1, 2, 3, 4, 5, 6, 7, 8].map((n) => {
+    return [1, 2, 3, 4].map((n) => {
       return new THREE.MeshStandardMaterial({
-        map: makeNumberTexture(n, 256, "#00796b", "#ffffff"),
+        map: makeNumberTexture(n, 256, "#7800ff", "#ffffff"),
         roughness: 0.5,
         metalness: 0.0,
         side: THREE.FrontSide,
@@ -134,19 +149,18 @@ export default function D8() {
     });
   }, []);
 
-  // Compute quaternion for side 8 facing camera (+Z)
+  // Compute quaternion so face 4 (index 3) faces the camera
   useEffect(() => {
-    const geo = new THREE.OctahedronGeometry(1).toNonIndexed();
+    const geo = new THREE.TetrahedronGeometry(1).toNonIndexed();
     geo.computeVertexNormals();
     const normals = geo.attributes.normal;
-    const faceIndex = 7; // side 8
+    const faceIndex = 3; // face 4
     const i0 = faceIndex * 3;
     const n0 = new THREE.Vector3().fromBufferAttribute(normals, i0);
     const n1 = new THREE.Vector3().fromBufferAttribute(normals, i0 + 1);
     const n2 = new THREE.Vector3().fromBufferAttribute(normals, i0 + 2);
     const faceNormal = new THREE.Vector3().add(n0).add(n1).add(n2).divideScalar(3).normalize();
 
-    // align that face toward camera (Z+)
     const forward = new THREE.Vector3(0, 0, 1);
     const q = new THREE.Quaternion().setFromUnitVectors(faceNormal, forward);
     setInitialQuat(q);
@@ -157,7 +171,7 @@ export default function D8() {
     setRolling(true);
     setRollStartTime(performance.now() / 1000);
 
-    const faceIndex = Math.floor(Math.random() * 8);
+    const faceIndex = Math.floor(Math.random() * 4);
     const faceNumber = faceIndex + 1;
     setResult(faceNumber);
 
@@ -169,40 +183,38 @@ export default function D8() {
     setRollDirection([dir.x, dir.y, dir.z]);
     setResetSignal((s) => s + 1);
 
-    // compute the correct final quaternion for the chosen face
-    const tempGeo = new THREE.OctahedronGeometry(1).toNonIndexed();
+    const tempGeo = new THREE.TetrahedronGeometry(1).toNonIndexed();
     tempGeo.computeVertexNormals();
     const normals = tempGeo.attributes.normal;
-    const positions = tempGeo.attributes.position;
     const i0 = faceIndex * 3;
     const n0 = new THREE.Vector3().fromBufferAttribute(normals, i0);
     const n1 = new THREE.Vector3().fromBufferAttribute(normals, i0 + 1);
     const n2 = new THREE.Vector3().fromBufferAttribute(normals, i0 + 2);
     const faceNormal = new THREE.Vector3().add(n0).add(n1).add(n2).divideScalar(3).normalize();
 
-    const up = new THREE.Vector3(0, 0, 1); // camera forward
+    const up = new THREE.Vector3(0, 0, 1);
     const targetQuaternion = new THREE.Quaternion().setFromUnitVectors(faceNormal, up);
 
     setTimeout(() => {
-      setTargetQuat(targetQuaternion);
       setRolling(false);
+      setTargetQuat(targetQuaternion);
+      if (onRollComplete) onRollComplete(faceNumber);
     }, ROLL_DURATION_MS);
   };
 
   return (
-    <div style={{ width: 340 }}>
-      <div style={{ width: 300, height: 300, margin: "0 auto" }} onClick={rollDice}>
+    <div style={{ width: 250, height: 250 }}>
+      <div style={{ width: "100%", height: "100%", margin: "0 auto" }} onClick={rollDice}>
         <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
 
-          {/* Invisible floor */}
-          <mesh position={[0, -1.4, 0]} visible={false}>
+          <mesh position={[0, FLOOR_Y, 0]} visible={false}>
             <boxGeometry args={[5, 0.1, 5]} />
             <meshBasicMaterial transparent opacity={0} />
           </mesh>
 
-          <D8Mesh
+          <D4Mesh
             rolling={rolling}
             targetQuaternion={targetQuat}
             materials={materials}
@@ -210,31 +222,12 @@ export default function D8() {
             rollStartTime={rollStartTime}
             resetSignal={resetSignal}
             initialQuaternion={initialQuat}
+            bounce={bounce}
+            ref={diceRef}
           />
 
-          {/* Disable all camera interaction */}
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
-      </div>
-
-      <div style={{ textAlign: "center", marginTop: 8 }}>
-        <button
-          onClick={rollDice}
-          disabled={rolling}
-          style={{
-            padding: "6px 12px",
-            cursor: rolling ? "not-allowed" : "pointer",
-            borderRadius: 6,
-          }}
-        >
-          Roll D8
-        </button>
-        <div style={{ marginTop: 8 }}>
-          Result: <strong>{result}</strong>
-        </div>
-        <div style={{ marginTop: 6, fontSize: 12, color: "#666" }}>
-          Side 8 faces the camera by default. Click to roll — it bounces once and settles with the rolled face visible.
-        </div>
       </div>
     </div>
   );

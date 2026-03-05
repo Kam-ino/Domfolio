@@ -3,12 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Adventures from "./pages/Adventures";
 import Character from "./pages/Character";
-import D4 from "./components/D4";
-import D6 from "./components/D6";
-import D8 from "./components/D8";
-import D12 from "./components/D12";
-import D20 from "./components/D20";
-import QuestBoard from "./components/QuestBoard";
+import MiniDnDGame from "./components/Game";
 
 export default function App() {
   let page
@@ -25,7 +20,7 @@ export default function App() {
     <div>
       <Navbar/>
       {page}
-      <QuestBoard/>
+      <MiniDnDGame/>
     </div>
   );
 }

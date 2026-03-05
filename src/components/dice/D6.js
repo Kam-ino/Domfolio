@@ -1,18 +1,21 @@
-import React, { useRef, useState, useMemo, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-const ROLL_DURATION_MS = 1800;
+const ROLL_DURATION_MS = 1000;
 const GRAVITY = -9.8;
-const BOUNCE_DAMPING = 0.5;
+const BOUNCE_DAMPING = 0.05;
+const FLOOR_Y = -1.4;
 
+// ===== helper: create numbered textures for faces =====
 function makeNumberTexture(number, size = 256, bgcolor = "#1565c0", fg = "#fff") {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d");
 
+  ctx.save();
   ctx.fillStyle = bgcolor;
   ctx.fillRect(0, 0, size, size);
   ctx.fillStyle = fg;
@@ -27,38 +30,42 @@ function makeNumberTexture(number, size = 256, bgcolor = "#1565c0", fg = "#fff")
   if (number === 6) {
     const underlineWidth = size * 0.3;
     const underlineHeight = size * 0.02;
-    const underlineY = size / 2 + size * 0.25; // below the number
+    const underlineY = size / 2 + size * 0.25;
     ctx.fillRect(size / 2 - underlineWidth / 2, underlineY, underlineWidth, underlineHeight);
   }
-  
+
   const tex = new THREE.CanvasTexture(canvas);
   tex.needsUpdate = true;
   return tex;
 }
 
 // ===== D6 mesh component =====
-function D6Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStartTime, resetSignal, initialQuaternion }) {
+function D6Mesh({
+  rolling,
+  targetQuaternion,
+  materials,
+  rollDirection,
+  rollStartTime,
+  resetSignal,
+  initialQuaternion,
+  bounce = true, // ✅ new
+}) {
   const meshRef = useRef();
   const velocity = useRef(new THREE.Vector3());
   const pos = useRef(new THREE.Vector3(0, 0, 0));
   const hasBounced = useRef(false);
 
-  // reset when new roll starts
   useEffect(() => {
     pos.current.set(0, 0, 0);
-    velocity.current.set(
-      rollDirection[0] * 3,
-      rollDirection[1] * 4,
-      rollDirection[2] * 3
-    );
+    velocity.current.set(rollDirection[0] * 3, rollDirection[1] * 4, rollDirection[2] * 3);
     hasBounced.current = false;
+
     if (meshRef.current) {
       meshRef.current.position.set(0, 0, 0);
-      meshRef.current.quaternion.copy(initialQuaternion); // face 6 faces the user initially
+      meshRef.current.quaternion.copy(initialQuaternion);
     }
   }, [resetSignal, rollDirection, initialQuaternion]);
 
-  // motion update
   useFrame((state, delta) => {
     const mesh = meshRef.current;
     if (!mesh) return;
@@ -68,14 +75,19 @@ function D6Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
       pos.current.addScaledVector(velocity.current, delta);
       mesh.position.copy(pos.current);
 
-      // bounce once
-      if (pos.current.y < -1.4 && !hasBounced.current) {
-        pos.current.y = -1.4;
-        velocity.current.y *= -BOUNCE_DAMPING;
-        hasBounced.current = true;
+      // ✅ Floor collision with optional bounce
+      if (pos.current.y < FLOOR_Y) {
+        pos.current.y = FLOOR_Y;
+
+        if (!hasBounced.current) {
+          if (bounce) velocity.current.y *= -BOUNCE_DAMPING;
+          else velocity.current.y = 0;
+          hasBounced.current = true;
+        } else if (!bounce) {
+          velocity.current.y = 0;
+        }
       }
 
-      // spin
       mesh.rotation.x += delta * (8 + Math.random() * 3);
       mesh.rotation.y += delta * (10 + Math.random() * 3);
       mesh.rotation.z += delta * (7 + Math.random() * 2);
@@ -86,22 +98,20 @@ function D6Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
     }
   });
 
-  return (
-    <mesh ref={meshRef} geometry={new THREE.BoxGeometry(1, 1, 1)} material={materials} />
-  );
+  return <mesh ref={meshRef} geometry={new THREE.BoxGeometry(1, 1, 1)} material={materials} />;
 }
 
 // ===== Main D6 component =====
-export default function D6() {
+export default function D6({ onRollComplete, bounce = true }) {
   const [rolling, setRolling] = useState(false);
   const [result, setResult] = useState(6);
-  const [targetQuat, setTargetQuat] = useState(null);
+  const [targetQuaternion, setTargetQuaternion] = useState(null);
   const [rollDirection, setRollDirection] = useState([0, 0, 0]);
   const [rollStartTime, setRollStartTime] = useState(0);
   const [resetSignal, setResetSignal] = useState(0);
   const [initialQuat, setInitialQuat] = useState(new THREE.Quaternion());
+  const diceRef = useRef();
 
-  // materials for six faces
   const materials = useMemo(() => {
     return [1, 2, 3, 4, 5, 6].map((n) => {
       return new THREE.MeshStandardMaterial({
@@ -113,22 +123,18 @@ export default function D6() {
     });
   }, []);
 
-  // compute target quaternion for the given rolled face
   const getFaceQuaternion = (faceNumber) => {
     const orientations = {
-      1: new THREE.Euler(0, 0, 0),                // front
-      2: new THREE.Euler(Math.PI, 0, 0),          // back
-      3: new THREE.Euler(-Math.PI / 2, 0, 0),     // top
-      4: new THREE.Euler(Math.PI / 2, 0, 0),      // bottom
-      5: new THREE.Euler(0, Math.PI / 2, 0),      // right
-      6: new THREE.Euler(0, -Math.PI / 2, 0),     // left
+      1: new THREE.Euler(0, -Math.PI / 2, 0),
+      2: new THREE.Euler(0, Math.PI / 2, 0),
+      3: new THREE.Euler(Math.PI / 2, 0, 0),
+      4: new THREE.Euler(-Math.PI / 2, 0, 0),
+      5: new THREE.Euler(0, 0, 0),
+      6: new THREE.Euler(Math.PI, 0, 0),
     };
-    const e = orientations[faceNumber] || orientations[1];
-    const q = new THREE.Quaternion().setFromEuler(e);
-    return q;
+    return new THREE.Quaternion().setFromEuler(orientations[faceNumber] || orientations[1]);
   };
 
-  // make face 6 face the camera initially
   useEffect(() => {
     setInitialQuat(getFaceQuaternion(6));
   }, []);
@@ -138,11 +144,9 @@ export default function D6() {
     setRolling(true);
     setRollStartTime(performance.now() / 1000);
 
-    // pick random face result 1–6
     const faceNumber = Math.floor(Math.random() * 6) + 1;
     setResult(faceNumber);
 
-    // random direction
     const dir = new THREE.Vector3(
       (Math.random() - 0.5) * 2,
       Math.random() * 1.5 + 1.2,
@@ -151,45 +155,42 @@ export default function D6() {
     setRollDirection([dir.x, dir.y, dir.z]);
     setResetSignal((s) => s + 1);
 
-    // compute final quaternion for chosen face
-    const targetQuaternion = getFaceQuaternion(faceNumber);
+    const targetQ = getFaceQuaternion(faceNumber);
 
-    // stop rolling
     setTimeout(() => {
-      setTargetQuat(targetQuaternion);
       setRolling(false);
+      setTargetQuaternion(targetQ);
+      if (onRollComplete) onRollComplete(faceNumber);
     }, ROLL_DURATION_MS);
   };
 
   return (
-    <div style={{ width: 340 }}>
-      <div style={{ width: 300, height: 300, margin: "0 auto" }} onClick={rollDice}>
+    <div style={{ width: 250, height: 250 }}>
+      <div style={{ width: "100%", height: "100%", margin: "0 auto" }} onClick={rollDice}>
         <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
 
-          {/* Invisible floor */}
-          <mesh position={[0, -1.4, 0]} visible={false}>
+          <mesh position={[0, FLOOR_Y, 0]} visible={false}>
             <boxGeometry args={[5, 0.1, 5]} />
             <meshBasicMaterial transparent opacity={0} />
           </mesh>
 
-          {/* Dice */}
           <D6Mesh
             rolling={rolling}
-            targetQuaternion={targetQuat}
+            targetQuaternion={targetQuaternion}
             materials={materials}
             rollDirection={rollDirection}
             rollStartTime={rollStartTime}
             resetSignal={resetSignal}
             initialQuaternion={initialQuat}
+            bounce={bounce}
+            ref={diceRef}
           />
 
-          {/* Disable user camera drag */}
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
       </div>
     </div>
   );
 }
-    

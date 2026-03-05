@@ -1,0 +1,296 @@
+/* GENERAL LAYOUT */
+.game {
+  height: 90vh;
+  width: 90vw;
+  border: 12px solid #5a3b22;
+  border-radius: 16px;
+  margin: 20px 5vw;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.45);
+  align-items: center;
+  justify-content: center;
+}
+
+.game-background {
+  width: 100%;
+  height: 100%;
+  background: url("/public/GameBG.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Game layout with left log and right combat */
+.game-layout {
+  width: 90%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  margin-top: 40px;
+  justify-items: center;
+}
+
+/* LEFT LOG BOX */
+.log-box {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  min-height: 400px;
+  max-height: 300px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  overflow-y: scroll;
+  border: 2px solid #222;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  flex-direction: column;
+}
+
+.log-line {
+  margin-bottom: 12px;
+}
+
+.log-dead {
+  color: red;
+}
+
+.log-alive {
+  color: green;
+}
+
+.log-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.log-box::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.log-box::-webkit-scrollbar-track {
+  background: #222;
+}
+
+.hidden-dice {
+  grid-column: 2;
+  grid-row: 1;
+  height: 400px;
+  width: 800px;
+}
+/* FIGHT AREA (RIGHT) */
+.fight {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  padding: 0 30px;
+}
+
+.player-visual {
+  width: 220px;
+  height: auto;
+  grid-column: 1;
+}
+
+.enemy-visual {
+  width: 220px;
+  height: auto;
+  grid-column: 2;
+}
+
+.player-visual {
+  transform: scaleX(1); /* player faces right */
+}
+
+.enemy-visual {
+  transform: scaleX(1); /* enemy faces left */
+}
+
+.hp-bar {
+  width: 180px;
+  height: 16px;
+  background: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.hp-fill {
+  height: 100%;
+  background: #e63946;
+}
+
+/* ABILITY GRID */
+.ability-grid {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* 2x2 grid layout */
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.ability-btn {
+  padding: 14px;
+  background: #ffd54f;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-family: "IM Fell English SC", serif;
+  cursor: pointer;
+  border: 2px solid #b8860b;
+  transition: all 0.3s ease;
+  font-size: 20px;
+}
+
+.ability-btn:hover {
+  background-color: #fbc02d;
+  transform: scale(1.05);
+}
+
+.ability-btn:active {
+  background-color: #f57c00;
+  transform: scale(0.98);
+}
+
+.ability-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.moveon-btn {
+  padding: 14px;
+  background: #ffd54f;
+  border-radius: 10px;
+  text-align: center;
+  font-family: "IM Fell English SC", serif;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #b8860b;
+  transition: all 0.3s ease;
+  font-size: 30px;
+  grid-column: span 2 / span 2;
+}
+/* CLASS SELECT SCREEN */
+.class-select-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  background: #111;
+  color: white;
+}
+
+.class-select-screen h2 {
+  color: #b8860b;
+}
+
+.class-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.class-buttons button {
+  background: #333;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  border: 2px solid #555;
+}
+
+.class-icon {
+  width: 200px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.enemy-visual {
+  opacity: 1;
+  transition: opacity 1.5s ease-in-out; /* Apply smooth transition for both fade-in and fade-out */
+}
+
+.enemy-visual.fade-out {
+  opacity: 0; /* Fade out */
+}
+
+.enemy-visual.fade-in {
+  opacity: 1; /* Fade in */
+}
+
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1100px) {
+  .game-layout {
+    grid-template-columns: 1fr; /* Stacks the layout on smaller screens */
+  }
+
+  .fight {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .log-box {
+    width: 100%;
+    height: 300px;
+  }
+
+  .ability-grid {
+    width: 90%;
+    margin-top: 20px;
+  }
+
+  .player-visual,
+  .enemy-visual {
+    width: 150px;
+  }
+}
+
+/* Attack lunge */
+.player-visual.sprite-attack {
+  animation: playerAttackLunge 260ms ease-out;
+}
+
+.enemy-visual.sprite-attack {
+  animation: enemyAttackLunge 260ms ease-out;
+}
+
+@keyframes playerAttackLunge {
+  0% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(14px) scale(1.03); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes enemyAttackLunge {
+  0% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(-14px) scale(1.03); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+/* Hit flash (red) */
+.sprite-hit {
+  animation: hitFlash 160ms ease-out;
+}
+
+@keyframes hitFlash {
+  0% {
+    filter: brightness(1.2) saturate(1.6) drop-shadow(0 0 14px rgba(255, 0, 0, 0.85));
+  }
+  100% {
+    filter: none;
+  }
+}

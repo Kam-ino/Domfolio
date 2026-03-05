@@ -281,7 +281,8 @@
 
 .quest-image {
   width: auto;
-  height: 200px;
+  height: auto;
+  max-height: 300px;
   -webkit-filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35))
                   drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
   filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35)) 
@@ -290,9 +291,13 @@
   object-fit: cover;
 }
 
-.quest-image:hover {
-  transform: scale(4);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+.quest-image:hover {     
+  transform: scale(3);
+  -webkit-filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35))
+                  drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
+  filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35)) 
+          drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
+  
   z-index: 200;
 }
 

@@ -3,20 +3,12 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 
-/**
- * D4 component
- * - Starts with face 4 facing the camera
- * - Prevents camera drag
- * - Rolls randomly, bounces once, then settles with the rolled face flush to the camera
- * - Uses non-indexed geometry with UVs and per-face materials
- */
-
 const ROLL_DURATION_MS = 1800;
 const GRAVITY = -9.8;
 const BOUNCE_DAMPING = 0.5;
+const FLOOR_Y = -1.4;
 
-// ===== helper: create numbered textures for faces =====
-function makeNumberTexture(number, size = 256, bgcolor = "#b71c1c", fg = "#fff") {
+function makeNumberTexture(number, size = 256, bgcolor = "#ad1457", fg = "#fff") {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -26,7 +18,7 @@ function makeNumberTexture(number, size = 256, bgcolor = "#b71c1c", fg = "#fff")
   ctx.fillRect(0, 0, size, size);
 
   ctx.fillStyle = fg;
-  ctx.font = `${Math.floor(size * 0.5)}px sans-serif`;
+  ctx.font = `${Math.floor(size * 0.4)}px sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.lineWidth = Math.floor(size * 0.03);
@@ -39,16 +31,23 @@ function makeNumberTexture(number, size = 256, bgcolor = "#b71c1c", fg = "#fff")
   return tex;
 }
 
-// ===== D4 mesh =====
-function D4Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStartTime, resetSignal, initialQuaternion }) {
+function D20Mesh({
+  rolling,
+  targetQuaternion,
+  materials,
+  rollDirection,
+  rollStartTime,
+  resetSignal,
+  initialQuaternion,
+  bounce = true, // ✅ new
+}) {
   const meshRef = useRef();
   const velocity = useRef(new THREE.Vector3());
   const pos = useRef(new THREE.Vector3(0, 0, 0));
   const hasBounced = useRef(false);
 
-  // --- Geometry setup (non-indexed, grouped per triangle, with UVs)
   const geometry = useMemo(() => {
-    const g = new THREE.TetrahedronGeometry(1);
+    const g = new THREE.IcosahedronGeometry(1);
     const nonIndexed = g.toNonIndexed();
 
     const posAttr = nonIndexed.attributes.position;
@@ -56,14 +55,14 @@ function D4Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
     const uvs = [];
 
     for (let i = 0; i < triCount; i++) {
-      uvs.push(0.5, 1.0); // top
-      uvs.push(0.0, 0.0); // bottom-left
-      uvs.push(1.0, 0.0); // bottom-right
+      uvs.push(0.5, 1.0);
+      uvs.push(0.0, 0.0);
+      uvs.push(1.0, 0.0);
     }
 
     nonIndexed.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
-    nonIndexed.clearGroups();
 
+    nonIndexed.clearGroups();
     for (let i = 0; i < triCount; i++) {
       nonIndexed.addGroup(i * 3, 3, i);
     }
@@ -72,14 +71,13 @@ function D4Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
     return nonIndexed;
   }, []);
 
-  // reset to start each roll
   useEffect(() => {
     pos.current.set(0, 0, 0);
     velocity.current.set(rollDirection[0] * 3, rollDirection[1] * 4, rollDirection[2] * 3);
     hasBounced.current = false;
     if (meshRef.current) {
       meshRef.current.position.set(0, 0, 0);
-      meshRef.current.quaternion.copy(initialQuaternion); // face 4 toward camera
+      meshRef.current.quaternion.copy(initialQuaternion);
     }
   }, [resetSignal, rollDirection, initialQuaternion]);
 
@@ -92,10 +90,17 @@ function D4Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
       pos.current.addScaledVector(velocity.current, delta);
       mesh.position.copy(pos.current);
 
-      if (pos.current.y < -1.4 && !hasBounced.current) {
-        pos.current.y = -1.4;
-        velocity.current.y *= -BOUNCE_DAMPING;
-        hasBounced.current = true;
+      // ✅ Floor collision with optional bounce
+      if (pos.current.y < FLOOR_Y) {
+        pos.current.y = FLOOR_Y;
+
+        if (!hasBounced.current) {
+          if (bounce) velocity.current.y *= -BOUNCE_DAMPING;
+          else velocity.current.y = 0;
+          hasBounced.current = true;
+        } else if (!bounce) {
+          velocity.current.y = 0;
+        }
       }
 
       mesh.rotation.x += delta * (8 + Math.random() * 3);
@@ -111,21 +116,21 @@ function D4Mesh({ rolling, targetQuaternion, materials, rollDirection, rollStart
   return <mesh ref={meshRef} geometry={geometry} material={materials} />;
 }
 
-// ===== Main D4 component =====
-export default function D4() {
+export default function D20({ onRollComplete, bounce = true }) {
   const [rolling, setRolling] = useState(false);
-  const [result, setResult] = useState(4);
+  const [result, setResult] = useState(20);
   const [targetQuat, setTargetQuat] = useState(null);
   const [rollDirection, setRollDirection] = useState([0, 0, 0]);
   const [rollStartTime, setRollStartTime] = useState(0);
   const [resetSignal, setResetSignal] = useState(0);
   const [initialQuat, setInitialQuat] = useState(new THREE.Quaternion());
+  const diceRef = useRef();
 
-  // 4 materials, one per face
   const materials = useMemo(() => {
-    return [1, 2, 3, 4].map((n) => {
+    return Array.from({ length: 20 }, (_, i) => {
+      const n = i + 1;
       return new THREE.MeshStandardMaterial({
-        map: makeNumberTexture(n, 256, "#b71c1c", "#ffffff"),
+        map: makeNumberTexture(n, 256, "#ad1457", "#ffffff"),
         roughness: 0.5,
         metalness: 0.0,
         side: THREE.FrontSide,
@@ -133,12 +138,11 @@ export default function D4() {
     });
   }, []);
 
-  // compute quaternion so face 4 (index 3) faces the camera
   useEffect(() => {
-    const geo = new THREE.TetrahedronGeometry(1).toNonIndexed();
+    const geo = new THREE.IcosahedronGeometry(1).toNonIndexed();
     geo.computeVertexNormals();
     const normals = geo.attributes.normal;
-    const faceIndex = 3; // face 4
+    const faceIndex = 19;
     const i0 = faceIndex * 3;
     const n0 = new THREE.Vector3().fromBufferAttribute(normals, i0);
     const n1 = new THREE.Vector3().fromBufferAttribute(normals, i0 + 1);
@@ -155,7 +159,7 @@ export default function D4() {
     setRolling(true);
     setRollStartTime(performance.now() / 1000);
 
-    const faceIndex = Math.floor(Math.random() * 4);
+    const faceIndex = Math.floor(Math.random() * 20);
     const faceNumber = faceIndex + 1;
     setResult(faceNumber);
 
@@ -167,8 +171,7 @@ export default function D4() {
     setRollDirection([dir.x, dir.y, dir.z]);
     setResetSignal((s) => s + 1);
 
-    // compute quaternion for rolled face
-    const tempGeo = new THREE.TetrahedronGeometry(1).toNonIndexed();
+    const tempGeo = new THREE.IcosahedronGeometry(1).toNonIndexed();
     tempGeo.computeVertexNormals();
     const normals = tempGeo.attributes.normal;
     const i0 = faceIndex * 3;
@@ -181,25 +184,25 @@ export default function D4() {
     const targetQuaternion = new THREE.Quaternion().setFromUnitVectors(faceNormal, up);
 
     setTimeout(() => {
-      setTargetQuat(targetQuaternion);
       setRolling(false);
+      setTargetQuat(targetQuaternion);
+      if (onRollComplete) onRollComplete(faceNumber);
     }, ROLL_DURATION_MS);
   };
 
   return (
-    <div style={{ width: 340 }}>
-      <div style={{ width: 300, height: 300, margin: "0 auto" }} onClick={rollDice}>
+    <div style={{ width: 250, height: 250 }}>
+      <div style={{ width: "100%", height: "100%", margin: "0 auto" }} onClick={rollDice}>
         <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
 
-          {/* Invisible floor */}
-          <mesh position={[0, -1.4, 0]} visible={false}>
+          <mesh position={[0, FLOOR_Y, 0]} visible={false}>
             <boxGeometry args={[5, 0.1, 5]} />
             <meshBasicMaterial transparent opacity={0} />
           </mesh>
 
-          <D4Mesh
+          <D20Mesh
             rolling={rolling}
             targetQuaternion={targetQuat}
             materials={materials}
@@ -207,9 +210,10 @@ export default function D4() {
             rollStartTime={rollStartTime}
             resetSignal={resetSignal}
             initialQuaternion={initialQuat}
+            bounce={bounce}
+            ref={diceRef}
           />
 
-          {/* Disable all camera interaction */}
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
       </div>
