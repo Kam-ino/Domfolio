@@ -11,28 +11,56 @@
   
 }
 
-/* SCATTER BOARD */
+/* SCATTER BOARD — full-bleed: 100vw wide with 50px margins, fixed 1000px tall.
+   The left margin uses the full-bleed trick (50% - 50vw) to escape the
+   centered section container, then insets 50px. */
 .scatter-board {
   position: relative;
-  width: 100%;
-  height: 900px;
+  z-index: 2; /* above the tabs, so they tuck behind the board */
+  width: calc(100vw - 100px);
+  height: 1000px;
+  /* No top margin so the folder tabs sit on the board's edge; 50px elsewhere */
+  margin: 0 0 50px calc(50% - 50vw + 50px);
   background: url("/public/wood-texture.png");
   background-size: cover;
   border: 12px solid #5a3b22;
   border-radius: 16px;
-  margin-top: 0;
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.45);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.45);
+  overflow: hidden; /* keep the scrolls on the board */
 }
 
 .scatter-item {
   position: absolute;
-  width: 260px; /* fixed card width */
+  /* width is set inline (scales with the number of scrolls) */
   cursor: pointer;
-  transition: transform 0.15s ease, z-index 0.1s ease;
+  transform-origin: center center;
+  transition: transform 0.18s ease, filter 0.18s ease;
 }
 
+/* Narrow screens: stack scrolls in a tidy centered column, board grows to fit */
+.scatter-board--stack {
+  height: auto !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 34px 16px 28px;
+}
+
+.scatter-board--stack .scatter-item {
+  position: relative;
+  left: auto;
+  top: auto;
+  max-width: 100%;
+}
+
+.scatter-board--stack .scatter-item:hover {
+  transform: scale(1.04) rotate(0deg) !important;
+}
+
+/* Lift the scroll in place on hover (positioned by top/left, so no translate) */
 .scatter-item:hover {
-  transform: scale(1.3) rotate(0deg) !important;
+  transform: scale(1.14) rotate(0deg) !important;
   z-index: 50;
 }
 
@@ -51,19 +79,22 @@
   margin-bottom: 18px;
 }
 
-/* Tabs */
+/* Tabs — full-bleed aligned to the board's left edge, tucked BEHIND the board
+   so they peek out at the top-left corner. */
 .quest-tabbed {
-  width: 100%;
-  max-width: 900px;
-  margin-bottom: -12px;
+  width: calc(100vw - 100px);
+  margin: 0 0 -16px calc(50% - 50vw + 50px);
   position: relative;
+  z-index: 1; /* behind the board (board is z-index: 2) */
   font-family: "IM Fell English SC", serif;
 }
 
-/* Tab labels container */
+/* Tab labels container — anchored to the top-left of the board */
 .quest-tab-labels {
   display: flex;
+  justify-content: flex-start;
   gap: 6px;
+  padding-left: 28px;
 }
 
 /* Tab Labels */
@@ -106,21 +137,24 @@
   gap: 20px;
 }
 
-/* Quest Card (parchment poster) */
+/* Quest Card (parchment poster) — fills its .scatter-item wrapper.
+   Padding + text scale with --cw (set per card from JS). */
 .quest-card {
+  --cw: 300px;
   background: linear-gradient(180deg, #fff8df, #f6e8c9);
   border: 3px solid #b89b6b;
   border-radius: 12px;
-  padding: 18px;
+  padding: calc(var(--cw) * 0.05) calc(var(--cw) * 0.055);
   cursor: pointer;
   position: relative;
   height: auto;
-  width: 400px;
+  width: 100%;
+  box-sizing: border-box;
   /* Soft stacked shadow effect */
   box-shadow:
     0 4px 6px rgba(0, 0, 0, 0.25),
     0 8px 14px rgba(0, 0, 0, 0.18),
-    0 0 6px rgba(0,0,0,0.15) inset;
+    0 0 6px rgba(0, 0, 0, 0.15) inset;
 
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
@@ -134,22 +168,43 @@
 
 .quest-ribbon {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 6px 10px;
+  top: calc(var(--cw, 300px) * 0.04);
+  right: calc(var(--cw, 300px) * 0.04);
+  padding: calc(var(--cw, 300px) * 0.02) calc(var(--cw, 300px) * 0.033);
   border-radius: 6px;
   color: white;
   font-weight: 700;
   font-family: "IM Fell English SC", serif;
   transform: rotate(10deg);
 }
-.ribbon-text { font-size: 14px; }
+.ribbon-text { font-size: calc(var(--cw, 300px) * 0.046); }
 
-/* Card text */
-.quest-title { font-size: 18px; margin: 6px 0; color: #3b2413;}
-.quest-sub { font-size: 13px; color: #6b4b2a; margin-bottom: 10px;}
-.quest-preview { padding-left: 18px; color: #3a2418; }
-.quest-footer { display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:13px; color:#5b3a28; }
+/* Card text — all sized relative to the scroll width (--cw) */
+.quest-title {
+  font-size: calc(var(--cw, 300px) * 0.057);
+  line-height: 1.2;
+  margin: 2px 0 4px;
+  padding-right: calc(var(--cw, 300px) * 0.15);
+  color: #3b2413;
+}
+.quest-sub { font-size: calc(var(--cw, 300px) * 0.043); color: #6b4b2a; margin-bottom: 8px; }
+.quest-preview {
+  padding-left: calc(var(--cw, 300px) * 0.06);
+  margin: 6px 0;
+  color: #3a2418;
+  font-size: calc(var(--cw, 300px) * 0.044);
+  line-height: 1.32;
+}
+.quest-preview li { margin-bottom: 3px; }
+.quest-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: calc(var(--cw, 300px) * 0.042);
+  color: #5b3a28;
+}
 .reward { font-weight:700; color:#4b2c16; }
 
 /* Modal overlay & parchment popup */
@@ -283,26 +338,71 @@
   width: auto;
   height: auto;
   max-height: 300px;
-  -webkit-filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35))
-                  drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
-  filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35)) 
-          drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.35));
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   object-fit: cover;
+  cursor: zoom-in;
 }
 
-.quest-image:hover {     
-  transform: scale(3);
-  -webkit-filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35))
-                  drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
-  filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.35)) 
-          drop-shadow(4px 4px 10px rgba(0,0,0,0.35));
-  
-  z-index: 200;
+/* Subtle in-place cue; the real enlargement is the centered preview below. */
+.quest-image:hover {
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+/* Centered hover preview — enlarges the image, capped at 600px tall, centered
+   on screen. inset:0 + margin:auto centers it reliably regardless of the
+   modal's containing block; pointer-events:none keeps the thumbnail hovered
+   (no flicker) and lets clicks pass through to close. */
+.quest-image-preview {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: min(600px, 85vh);
+  width: auto;
+  max-width: 90vw;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75);
+  z-index: 3000;
+  pointer-events: none;
+  animation: questPreviewPop 0.2s ease;
+}
+
+@keyframes questPreviewPop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Responsive */
 @media (max-width: 720px) {
   .modal-parchment { width: 92%; padding: 18px; }
-  .quest-card { min-height: 180px; }
+
+  /* Tighter full-bleed insets so the board uses more of a phone screen */
+  .scatter-board,
+  .quest-tabbed {
+    width: calc(100vw - 32px);
+    margin-left: calc(50% - 50vw + 16px);
+  }
+
+  .qb-root {
+    padding: 14px;
+    margin: 10px auto;
+  }
+  .qb-header h1 {
+    font-size: 24px;
+  }
+  .quest-tab-label {
+    font-size: 16px;
+    padding: 8px 14px;
+  }
+  .quest-tab-labels {
+    padding-left: 14px;
+  }
 }

@@ -228,6 +228,10 @@
   transition-delay: calc(var(--i, 0) * var(--staggerMs, 55ms));
 }
 
+.staggerMenu__item p{
+  font-size: 1.5rem;
+}
+
 .staggerMenu__panel.open .staggerMenu__item {
   opacity: 1;
   transform: translateY(0);
@@ -235,6 +239,98 @@
 
 .staggerMenu__item + .staggerMenu__item {
   margin-top: 10px;
+}
+
+/* =========================================================
+   Mobile static panel: no trigger, content always shown inline.
+   ========================================================= */
+.staggerMenu--static {
+  display: block;
+  width: 100%;
+}
+
+.staggerMenu__static {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--panelRadius);
+  border: var(--panelBorder) solid #7a5a33;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.32), transparent 56%),
+    linear-gradient(180deg, rgba(255, 248, 220, 0.97) 0%, rgba(245, 230, 190, 0.97) 100%);
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.14),
+    0 12px 30px rgba(0, 0, 0, 0.3);
+  color: #2b2b2b;
+  font-family: "IM Fell English SC", serif;
+  font-size: 17px;
+  line-height: 1.32;
+  padding: 18px 20px;
+}
+
+/* Content is always visible here (override the staggered hidden default) */
+.staggerMenu__static .staggerMenu__item {
+  opacity: 1;
+  transform: none;
+}
+
+.staggerMenu__static h1,
+.staggerMenu__static h2 {
+  margin: 4px 0 12px;
+  font-size: 24px;
+  line-height: 1.08;
+}
+.staggerMenu__static h3 {
+  margin: 10px 0 8px;
+  font-size: 20px;
+}
+.staggerMenu__static ul,
+.staggerMenu__static ol {
+  margin: 0;
+  padding-left: 22px;
+}
+.staggerMenu__static li {
+  margin: 8px 4px;
+}
+.staggerMenu__static * {
+  min-width: 0;
+  word-break: break-word;
+}
+
+/* =========================================================
+   Mobile: shrink the trigger + cap the slide-out panel so the
+   Stat Guide fits a phone instead of being 800px wide.
+   ========================================================= */
+@media (max-width: 700px) {
+  .staggerMenu {
+    --triggerOverlap: 64px;
+  }
+  .staggerMenu__trigger {
+    font-size: 24px;
+    height: 230px;
+    min-width: 92px;
+    padding: 10px 8px;
+  }
+  .staggerMenu__panel {
+    width: calc(100vw - 80px);
+    max-width: 320px;
+    height: 300px;
+    font-size: 17px;
+    line-height: 1.3;
+  }
+  .staggerMenu__panel h1,
+  .staggerMenu__panel h2 {
+    font-size: 24px;
+    margin: 6px 0 12px;
+  }
+  .staggerMenu__panel h3 {
+    font-size: 20px;
+  }
+  .staggerMenu__panel.open.from-right {
+    padding: 12px 10px 12px 74px;
+  }
+  .staggerMenu__panel.open.from-left {
+    padding: 12px 74px 12px 10px;
+  }
 }
 
 /* Optional: nicer scrollbars (Chrome/Edge) */

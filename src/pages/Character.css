@@ -1,287 +1,303 @@
+/* ============================================================
+   Character Sheet — responsive layout
+   Fills its container width; nothing is sized to the viewport,
+   so it never overflows / gets clipped at the edges.
+   ============================================================ */
 .character-sheet {
-    display: grid;
-    grid-template-columns: repeat(5, auto-fit) /*140px 380px 1fr 1fr 1fr*/;
-    grid-template-rows: repeat(5, auto-fit) /*200px 300px 700px 270px 270px*/;
-    column-gap: 40px;
-    row-gap: 80px;
-    padding: 40px;
-    position: relative;
-    margin: auto
-    
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "char       char       char"
+    "stats      summary    summary"
+    "stats      portraits  skills"
+    "guide      saving     dice";
+  column-gap: 32px;
+  row-gap: 48px;
+  align-items: start;
+  box-sizing: border-box;
 }
 
-h1 {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: 32px;
+/* Typography — scoped to the sheet so it doesn't leak to other sections.
+   Capped with clamp() so big headings can't force horizontal overflow. */
+.character-sheet h1 {
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+}
+.character-sheet h2 {
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+}
+.character-sheet h3 {
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+}
+.character-sheet p,
+.character-sheet li {
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
+  line-height: 1.4;
 }
 
-h2 {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: calc(1vw + 24px);  
-}
-
-h3 {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: calc(1vw + 15px);  
-}
-
-p {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: 24px;  
-}
-
-li {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: 24px;
-}
-
+/* ---- Header panel (name + metadata) ---- */
 .character {
-    box-sizing: border-box;
-
-    position: relative;
-    height: fit-content;
-    width: fit-content;
-    min-width: 1000px;
-
-    background: linear-gradient(
+  grid-area: char;
+  box-sizing: border-box;
+  width: 100%;
+  background: linear-gradient(
     90deg,
     rgba(245, 230, 190, 0.95) 0%,
     rgba(255, 248, 220, 0.95) 50%,
     rgba(245, 230, 190, 0.95) 100%
-    );
-    border: 4px solid #7A5A33;
-    box-shadow:
-    inset 0 0 15px rgba(0, 0, 0, 0.25),
-    0 4px 4px rgba(0, 0, 0, 0.25);    border-radius: 15px;
-    padding: 20px;
-    grid-column: span 3 / span 3;
-
+  );
+  border: 4px solid #7a5a33;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: 24px 32px;
 }
 
 .cgrid {
-    display: grid;
-    grid-template-columns: repeat(2,calc(100vw/2 - 70px));
-    height: inherit;
-    max-width: inherit;
-    overflow-wrap: break-word /*to be changed*/
+  display: grid;
+  /* 2 columns when there's room, 1 when narrow — never overflows */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px 32px;
+  overflow-wrap: anywhere;
 }
 
 .cname {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: calc(1vw + 45px);
+  margin: 0 0 8px;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  line-height: 1.05;
 }
 
 .ctext {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: calc(1vw + 15px);  
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  line-height: 1.35;
 }
 
 .cformat {
-    overflow-wrap: normal;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
+/* ---- Stat bubbles (left rail) ---- */
 .stats-column {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    height: fit-content;
-    width: 140px;
-    position: relative;
-
-    grid-row: span 2 / span 5;
-    grid-row-start: 2;
-    grid-column-start: 1;
+  grid-area: stats;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }
 
-.stat-bubbles {
-    display: 'flex';
-    flex-direction: 'column';
-    align-items: 'center';
-    margin-bottom: 20px;
+.stat-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .stat-img {
-    width: 140px;
-    height: 'auto';
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  transition: transform 0.2s ease;
 }
-
 .stat-img:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .stat-label {
-    margin-top: 5px;
-    font-size: 24px;
-    font-family: "IM Fell English SC", serif;
-    color: #333;
-    text-align: center;
-    width: inherit;
+  margin-top: 4px;
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  font-family: "IM Fell English SC", serif;
+  color: #333;
+  text-align: center;
 }
 
+/* ---- Stat-guide collapsible (under the stat rail) ---- */
 .guide {
-    grid-column-start: 1;
-    grid-row-start: 4;
-    width: 140px;
-    height: fit-content;
-    margin-top: 20px;
+  grid-area: guide;
+  width: 100%;
 }
 
+/* ---- Summary panel ---- */
 .summary-box {
-    grid-column: span 2 / span 3;
-    grid-row-start: 2;
-    width:fit-content;
-    min-width: 820px;
-    height: fit-content;
-    
-    background: linear-gradient(
+  grid-area: summary;
+  box-sizing: border-box;
+  width: 100%;
+  background: linear-gradient(
     90deg,
     rgba(245, 230, 190, 0.95) 0%,
     rgba(255, 248, 220, 0.95) 50%,
     rgba(245, 230, 190, 0.95) 100%
-    );
-    border: 4px solid #7A5A33;
-    box-shadow:
-    inset 0 0 15px rgba(0, 0, 0, 0.25),
-    0 4px 4px rgba(0, 0, 0, 0.25);      
-    border-radius: 15px;
-    padding: 20px;
+  );
+  border: 4px solid #7a5a33;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: 24px;
 }
 
 .summary-format {
-    margin: 0;
-    max-width: fit-content;
+  max-width: 100%;
 }
 
-.summary-text p{
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    word-wrap: normal;
+.summary-text {
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  /* The component sets an inline 28px on the main quote; this is the fallback. */
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
-.portraits {
-    grid-column-start: 2;
-    grid-row-start: 3;
-    width: 400px;
-    height: 800px;
-    margin: -70px 0 0 -20px;
-}
-
-.portrait img {
-    width: 600px;
-    min-width: 330px;
-}
-
+/* ---- Card stacks (portraits + skills) ----
+   minHeight is set inline from JS (reserves room for the fanned cards). The
+   stack is centered in that reserved box so the fan doesn't bleed onto the
+   neighbouring panels. */
+.portraits,
 .skills {
-    grid-column-start: 3;
-    grid-row-start: 3;
-    width: 550px;
-    height: 800px;
-    margin: -100px 0 0 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0;
 }
 
-.snp img{
-    /* background: linear-gradient(
-    90deg,
-    rgba(245, 230, 190, 0.95) 0%,
-    rgba(255, 248, 220, 0.95) 50%,
-    rgba(245, 230, 190, 0.95) 100%
-    );    
-    box-shadow:
-    inset 0 0 15px rgba(0, 0, 0, 0.25),
-    0 4px 4px rgba(0, 0, 0, 0.25);
-    border: 4px solid #7A5A33;
-    border-radius: 15px;
-    padding: 20px;
-
-    
-    width: 550px;
-    height: fit-content; */
-    width: auto;
-    height: 900px;
-
+/* Keep the stacked card images within their card width instead of bleeding
+   out at fixed 600/900px sizes. */
+.portrait img,
+.snp img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
 
-.snp-text {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: 32px;
-    list-style: none;
+/* ---- Editable skill cards (skills stack) ---- */
+.skill-card {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #fff8df 0%, #f2e3bd 100%);
+  border: 3px solid #b89b6b;
+  border-radius: 14px;
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.28),
+    inset 0 0 22px rgba(120, 90, 40, 0.12);
+  padding: 22px 22px 14px;
+  color: #3b2413;
+  font-family: "IM Fell English SC", serif;
+  overflow: hidden;
 }
 
-.snp-text li::before {
-    content: attr(data-icon)
+.skill-card-title {
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  text-align: center;
+  font-size: clamp(1.25rem, 1.9vw, 1.7rem);
+  color: #4b2c16;
+  border-bottom: 2px solid #b89b6b;
 }
 
-.saving {
-    grid-column-start: 2;
-    grid-row-start: 4;
-
-    background: linear-gradient(
-    90deg,
-    rgba(245, 230, 190, 0.95) 0%,
-    rgba(255, 248, 220, 0.95) 50%,
-    rgba(245, 230, 190, 0.95) 100%
-    );    
-    box-shadow:
-    inset 0 0 15px rgba(0, 0, 0, 0.25),
-    0 4px 4px rgba(0, 0, 0, 0.25);
-    border: 4px solid #7A5A33;
-    border-radius: 15px;
-    padding: 20px;
-
-    width: fit-content;
-    height: fit-content;
+.skill-card-list {
+  margin: 0;
+  padding: 0 4px 0 26px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  overflow-y: auto;
 }
 
+.skill-card-list li {
+  position: relative;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  line-height: 1.3;
+}
+
+.skill-card-list li::before {
+  content: "⚔";
+  position: absolute;
+  left: -22px;
+  color: #8b5a2b;
+  font-size: 0.85em;
+}
+
+.snp-text,
 .saving-text {
-    margin: 0;
-    color: #333;
-    font-family: "IM Fell English SC", serif;
-    font-size: 32px;
-    list-style: none;
+  margin: 0;
+  color: #333;
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  list-style: none;
+  padding-left: 0;
 }
 
+.snp-text li::before,
 .saving-text li::before {
-    content: attr(data-icon)
+  content: attr(data-icon);
+  margin-right: 8px;
 }
 
+/* ---- Saving throws panel ---- */
+.saving {
+  grid-area: saving;
+  box-sizing: border-box;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(245, 230, 190, 0.95) 0%,
+    rgba(255, 248, 220, 0.95) 50%,
+    rgba(245, 230, 190, 0.95) 100%
+  );
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25);
+  border: 4px solid #7a5a33;
+  border-radius: 15px;
+  padding: 24px;
+}
+
+.saving-text li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* ---- Dice tray ---- */
 .dice-case {
+  grid-area: dice;
+  box-sizing: border-box;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  /* minmax(0, 1fr) lets the tracks shrink below the dice's intrinsic size so
+     all three columns fit instead of overflowing the tray. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   list-style: none;
-  padding: 22px;                 /* inner padding like the red tray */
-  grid-column-start: 3;
-  grid-row-start: 4;
-  width: fit-content;
-  height: fit-content;
+  padding: 22px;
   /* black leather outer frame */
   background: linear-gradient(180deg, #1b1b1b 0%, #0f0f0f 100%);
   border-radius: 18px;
   border: 10px solid #0b0b0b;
-
-  /* leather-ish depth */
   box-shadow:
     inset 0 0 0 2px rgba(255, 255, 255, 0.06),
     inset 0 0 22px rgba(0, 0, 0, 0.8),
     0 10px 30px rgba(0, 0, 0, 0.5);
-
   position: relative;
   overflow: hidden;
 }
@@ -290,32 +306,93 @@ li {
 .dice-case::before {
   content: "";
   position: absolute;
-  inset: 14px;                   /* thickness of the black frame */
+  inset: 14px;
   border-radius: 12px;
-
   background:
-    /* subtle felt fibers */
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06), transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(0,0,0,0.15), transparent 45%),
-    /* base felt */
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.06), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, 0.15), transparent 45%),
     linear-gradient(180deg, #c00012 0%, #8b000b 100%);
-
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.10),
-    inset 0 10px 20px rgba(0,0,0,0.35);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 10px 20px rgba(0, 0, 0, 0.35);
   z-index: 0;
 }
 
-/* ensure dice sit above the felt layer */
 .dice-case > * {
   position: relative;
   z-index: 1;
-}
-
-/* optional: make each dice cell feel inset */
-.dice-case > * {
   border-radius: 12px;
   padding: 8px;
-  background: rgba(0,0,0,0.10);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* Each die ships as a fixed 250px canvas; override so it fills its grid cell
+   and stays square — this lets all six dice fit in the tray (3 x 2) instead
+   of the third column overflowing and being clipped. */
+.dice-case > div {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1;
+}
+.dice-case > div > div {
+  height: 100% !important;
+}
+
+/* ============================================================
+   Responsive collapse — single clean column below desktop.
+   (A single breakpoint avoids the awkward intermediate widths where
+   a multi-column sheet got wider than the viewport and was clipped.)
+   ============================================================ */
+@media (max-width: 960px) {
+  .character-sheet {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "char"
+      "stats"
+      "summary"
+      "guide"
+      "portraits"
+      "skills"
+      "saving"
+      "dice";
+    column-gap: 0;
+    row-gap: 36px;
+    justify-items: center;
+  }
+
+  /* Panels span the column; the stat rail becomes a centered wrap row */
+  .character,
+  .summary-box,
+  .saving,
+  .dice-case {
+    max-width: 720px;
+    width: 100%;
+  }
+
+  .summary-text{
+    font-size: 1rem;
+  }
+
+  /* Stat Guide renders as a full-width static panel on mobile */
+  .guide {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .stats-column {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .stat-bubble {
+    width: 20vw;
+  }
+
+  .portraits,
+  .skills {
+    width: 100%;
+  }
 }

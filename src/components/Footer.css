@@ -1,0 +1,88 @@
+.footer {
+  position: relative;
+  background: linear-gradient(180deg, rgba(28, 18, 9, 0.96), rgba(15, 10, 5, 0.99));
+  color: #f3e6c8;
+  padding: clamp(3.5rem, 8vw, 6rem) 1.25rem;
+  text-align: center;
+  border-top: 4px solid #7a5a33;
+}
+
+.footer-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.footer-title {
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0;
+  color: #f6e4b8;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.footer-text {
+  font-family: "Spectral", serif;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #c9b48a;
+  margin: 1rem auto 2.5rem;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "IM Fell English SC", serif;
+  font-size: 1rem;
+  color: #f1d79a;
+  text-decoration: none;
+  padding: 0.7rem 1.25rem;
+  border: 2px solid #7a5a33;
+  border-radius: 10px;
+  background: rgba(255, 248, 220, 0.05);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-link:hover {
+  transform: translateY(-3px);
+  background: rgba(230, 185, 79, 0.15);
+  border-color: #e6b94f;
+  text-decoration: none;
+}
+
+.footer-link-icon {
+  font-size: 1.1rem;
+}
+
+.footer-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2.5rem auto 1.5rem;
+  max-width: 280px;
+  color: #7a5a33;
+}
+
+.footer-rule::before,
+.footer-rule::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #7a5a33, transparent);
+}
+
+.footer-note {
+  font-family: "Spectral", serif;
+  font-size: 0.85rem;
+  color: #9c8458;
+  margin: 0;
+}

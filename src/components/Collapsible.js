@@ -23,6 +23,18 @@ export default function Collapsible({
   const rootRef = useRef(null);
   const buttonRef = useRef(null);
 
+  // On phones we drop the trigger entirely and show the content inline.
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 700px)").matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 700px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   const [resolvedSide, setResolvedSide] = useState(side === "auto" ? "right" : side);
 
   const setOpen = (next) => {
@@ -100,6 +112,21 @@ export default function Collapsible({
   }, [open]);
 
   const childArray = React.Children.toArray(children);
+
+  // Mobile: no button — just the open parchment panel with the content.
+  if (isMobile) {
+    return (
+      <div ref={rootRef} className={`staggerMenu staggerMenu--static ${className}`}>
+        <div className="staggerMenu__static" role="region" aria-label={title}>
+          {childArray.map((node, i) => (
+            <div key={i} className="staggerMenu__item" style={{ ["--i"]: i }}>
+              {node}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   // ✅ KEY FIX: make closed transform start behind trigger by canceling triggerOverlap
   const nudge = 14;

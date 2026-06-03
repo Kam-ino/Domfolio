@@ -1,14 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Spectral:wght@400;700&display=swap");
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Keep anchored sections clear of the sticky navbar */
+  scroll-padding-top: 84px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
-  background: url("/public/parchment.jpg");
-  background-size: cover;
-  background-attachment: fixed;
+  /* The parchment background image is set in public/index.html via %PUBLIC_URL%
+     so webpack's css-loader doesn't try to bundle a public/ asset. A fallback
+     tone is kept here in case the image fails to load. */
+  background-color: #d8c39a;
   color: #3a2a1a;
   font-family: "Spectral", serif;
   overflow-x: hidden;
+}
+
+.app-root {
+  position: relative;
+  width: 100%;
+  overflow-x: clip;
+}
+
+/* Let the character sheet span the full section width (minus the section's
+   ~1 inch side padding) instead of being capped like the other sections. */
+#about .section-inner {
+  max-width: none;
 }
 
 /* Character Sheet Container */

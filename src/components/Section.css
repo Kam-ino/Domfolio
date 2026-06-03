@@ -1,0 +1,107 @@
+.section {
+  position: relative;
+  width: 100%;
+  /* ~1 inch of breathing room on the sides at desktop widths */
+  padding: clamp(3.5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 5.5rem);
+  scroll-margin-top: 84px;
+  overflow-x: clip;
+}
+
+/* Alternating tones so adjacent sections read as distinct chapters */
+.section--dark {
+  background:
+    linear-gradient(180deg, rgba(34, 22, 12, 0.92), rgba(20, 13, 7, 0.96));
+  color: #f3e6c8;
+}
+
+.section--light::before {
+  /* Soft parchment wash that lets the fixed body texture peek through */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 248, 220, 0.35), rgba(245, 230, 190, 0.15));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---- Section header ---- */
+.section-header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-family: "Spectral", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #8b4513;
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
+}
+
+.section--dark .section-eyebrow {
+  color: #d9a441;
+}
+
+.section-title {
+  font-family: "IM Fell English SC", serif;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.05;
+  margin: 0;
+  color: #4b2c16;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.section--dark .section-title {
+  color: #f6e4b8;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.section-subtitle {
+  font-family: "Spectral", serif;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #6a4b2a;
+  margin: 0.75rem auto 0;
+  max-width: 640px;
+}
+
+.section--dark .section-subtitle {
+  color: #c9b48a;
+}
+
+/* Decorative divider under the heading */
+.section-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.25rem auto 0;
+  max-width: 320px;
+}
+
+.section-rule::before,
+.section-rule::after {
+  content: "";
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #7a5a33, transparent);
+}
+
+.section-rule-icon {
+  font-size: 1.25rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.section-body {
+  position: relative;
+  z-index: 1;
+}

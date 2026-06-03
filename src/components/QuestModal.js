@@ -1,8 +1,12 @@
 // src/components/QuestModal.jsx
-import React from "react";
-import "./QuestBoard.css"; 
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
+import "./QuestBoard.css";
 
 export default function QuestModal({ quest, onClose }) {
+  // Filename of the image currently hovered (shows the centered preview).
+  const [hoverImg, setHoverImg] = useState(null);
+
   if (!quest) return null;
 
   return (
@@ -25,6 +29,8 @@ export default function QuestModal({ quest, onClose }) {
                 src={`/images/${img}`}
                 alt={`quest-img-${i}`}
                 className="quest-image"
+                onMouseEnter={() => setHoverImg(img)}
+                onMouseLeave={() => setHoverImg(null)}
             />
             ))}
         </div>
@@ -53,6 +59,20 @@ export default function QuestModal({ quest, onClose }) {
           </a>
         </div>
       </div>
+
+      {/* Centered hover preview — capped at 600px tall, ignores the pointer so
+          the thumbnail keeps :hover (no flicker) and clicks still close.
+          Portaled to <body> so it centers against the real viewport rather
+          than the overlay's backdrop-filter containing block. */}
+      {hoverImg &&
+        createPortal(
+          <img
+            src={`/images/${hoverImg}`}
+            alt="quest preview"
+            className="quest-image-preview"
+          />,
+          document.body
+        )}
     </div>
   );
 }

@@ -13,12 +13,13 @@ const difficultyColors = {
   E:    { border: "#e6dccb", glow: "#fbf7ef" }  // Pale Parchment
 };
 
-export default function QuestCard({ quest, onOpen }) {
+export default function QuestCard({ quest, onOpen, cardW = 300 }) {
   const color = difficultyColors[quest.difficulty] || difficultyColors["C"];
   return (
     <div
       className="quest-card"
       style={{
+        "--cw": `${cardW}px`,
         borderColor: color.border,
         boxShadow: `0 8px 20px rgba(0,0,0,0.25), 0 0 16px ${color.glow}66 inset`
       }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./Character.css"
 import Collapsible from "../components/Collapsible";
 import Stack from "../components/CardStack";
@@ -9,7 +9,93 @@ import D10 from "../components/dice/D10";
 import D12 from "../components/dice/D12";
 import D20 from "../components/dice/D20";
 
+// Measure an element's width so the (fixed-size) card stacks can be sized to
+// fit their column on any screen instead of overflowing on narrow ones.
+function useElemWidth() {
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, width];
+}
+
+// Cards fan out from a corner, so the rendered stack is wider than one card.
+// On wide columns subtract a small margin; on narrow ones leave ~28% headroom
+// so the fanned, rotated cards still fit without being clipped.
+function fitCardWidth(base, w) {
+    if (!w) return base;
+    const target = w > 520 ? w - 40 : Math.round(w * 0.72);
+    return Math.max(160, Math.min(base, target));
+}
+
+// Vertical space a fanned stack needs: the card height (width * aspect) plus
+// headroom for the rotated cards that fan up and out, so it never overlaps the
+// panels above/below it.
+function stackReserve(cardW, aspect) {
+    return Math.round(cardW * aspect + cardW * 0.7);
+}
+
+// ---- Skill cards (shown in the "skills" stack) ----
+// Edit this array to put your own skills. Each card is a title + list of items.
+const SKILL_CARDS = [
+    {
+        id: 1,
+        title: "Core Abilities",
+        items: [
+            "Responsive Web Design",
+            "Component Architecture (React Hooks, Context API)",
+            "RESTful API Integration",
+            "State Management (Redux, Context)",
+            "Debugging & Optimization",
+            "UI/UX Collaboration (Figma)",
+        ],
+    },
+    {
+        id: 2,
+        title: "Technical Skills",
+        items: [
+            "JavaScript (ES6+)",
+            "React.js / Next.js",
+            "Node.js / Express",
+            "Python · C++ · C#",
+            "HTML5 / CSS3 / SCSS",
+            "SQL / NoSQL",
+        ],
+    },
+    {
+        id: 3,
+        title: "Tools & Cloud",
+        items: [
+            "Git / GitHub",
+            "ClickUp · Postman",
+            "Vite · Webpack",
+            "AWS Cloud Foundations",
+            "Intro to Generative AI",
+        ],
+    },
+    {
+        id: 4,
+        title: "Soft Skills",
+        items: [
+            "Problem Solving",
+            "Adaptability",
+            "Collaboration",
+            "Documentation",
+        ],
+    },
+];
+
 function CharacterDesktop() {
+    const [skillsRef, skillsW] = useElemWidth();
+    const [portraitsRef, portraitsW] = useElemWidth();
+
     const stats = [
         { file: 'Stat 1.png', label: 'STR' },
         { file: 'Stat 2.png', label: 'DEX' },
@@ -61,40 +147,20 @@ function CharacterDesktop() {
         ),
         },
     ]
-    const cardsData = [
-        {
-        id: 4,
+    // Text cards built from the SKILL_CARDS data above (edit that array in code).
+    const cardsData = SKILL_CARDS.map((card) => ({
+        id: card.id,
         content: (
-            <div className="snp">
-                <img src="/images/snp (4).png" alt="snp4"/>
+            <div className="skill-card">
+                <h4 className="skill-card-title">{card.title}</h4>
+                <ul className="skill-card-list">
+                    {card.items.map((item, ii) => (
+                        <li key={ii}>{item}</li>
+                    ))}
+                </ul>
             </div>
         ),
-        },
-        {
-        id: 3,
-        content: (
-            <div className="snp">
-                <img src="/images/snp (3).png" alt="snp3"/>
-            </div>
-        ),
-        },
-        {
-        id: 2,
-        content: (
-            <div className="snp">
-                <img src="/images/snp (2).png" alt="snp2"/>
-            </div>
-        ),
-        },
-        {
-        id: 1,
-        content: (
-            <div className="snp">
-                <img src="/images/snp (1).png" alt="snp1"/>
-            </div>
-        ),
-        },
-    ];
+    }));
 
     return (
         <div className="character-sheet">
@@ -137,28 +203,42 @@ function CharacterDesktop() {
             <div className="summary-box">
                 <div className="summary-format">
                     <h1>Summary:</h1>
-                    <p className="summary-text" style={{fontSize:"28px"}}>“I am a Computer Engineering undergraduate with hands-on experience in full stack and frontend development using React, JavaScript, and Node.js. From my university and organization projects, I gained strong foundations in programming, system design, and problem solving, which I am eager to apply in real-world projects. I am looking for an opportunity to work in a collaborative environment where I can continue to grow and sharpen my technical skills while contributing to meaningful applications. My goal is to grow into a well-rounded developer who delivers efficient, user-focused solutions while learning from experienced professionals."</p>
+                    <p className="summary-text" >“I am a Computer Engineering undergraduate with hands-on experience in full stack and frontend development using React, JavaScript, and Node.js. From my university and organization projects, I gained strong foundations in programming, system design, and problem solving, which I am eager to apply in real-world projects. I am looking for an opportunity to work in a collaborative environment where I can continue to grow and sharpen my technical skills while contributing to meaningful applications. My goal is to grow into a well-rounded developer who delivers efficient, user-focused solutions while learning from experienced professionals."</p>
                     <p className="summary-text" style={{marginTop:"10px"}}>Alignment: Neutral Good – always striving to improve code and collaborate fairly.</p>
                     <p className="summary-text" style={{marginTop:"10px"}}>Special Trait: “Design Adaptation” – gains +2 bonus to Implementing Designs into Code.</p>
                 </div>
             </div>
 
-            <div className="skills">
+            <div
+                className="skills"
+                ref={skillsRef}
+                style={{ minHeight: stackReserve(fitCardWidth(400, skillsW), 1.4) }}
+            >
                 <Stack
                     randomRotation={true}
                     sensitivity={180}
                     sendToBackOnClick={false}
-                    cardDimensions={{ width: 400}}
+                    cardDimensions={{
+                        width: fitCardWidth(550, skillsW),
+                        height: Math.round(fitCardWidth(550, skillsW) * 1.4),
+                    }}
                     cardsData={cardsData}
                 />
             </div>
 
-            <div className="portraits">
+            <div
+                className="portraits"
+                ref={portraitsRef}
+                style={{ minHeight: stackReserve(fitCardWidth(550, portraitsW), 1.2) }}
+            >
                 <Stack
                     randomRotation={true}
                     sensitivity={180}
                     sendToBackOnClick={false}
-                    cardDimensions={{ width: 550}}
+                    cardDimensions={{
+                        width: fitCardWidth(550, portraitsW),
+                        height: Math.round(fitCardWidth(550, portraitsW) * 1.2),
+                    }}
                     cardsData={pics}
                 />
             </div>

@@ -1,13 +1,13 @@
-/* GENERAL LAYOUT */
+/* GENERAL LAYOUT — full-bleed + centered (100vw minus 50px side margins),
+   escaping the centered section container via the full-bleed margin trick. */
 .game {
   height: 90vh;
-  width: 90vw;
+  width: calc(100vw - 100px);
+  margin: 20px 0 20px calc(50% - 50vw + 50px);
   border: 12px solid #5a3b22;
   border-radius: 16px;
-  margin: 20px 5vw;
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.45);
-  align-items: center;
-  justify-content: center;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
 }
 
 .game-background {
@@ -185,7 +185,8 @@
 }
 /* CLASS SELECT SCREEN */
 .class-select-screen {
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -201,7 +202,10 @@
 
 .class-buttons {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+  max-width: 100%;
 }
 
 .class-buttons button {
@@ -257,6 +261,41 @@
   .player-visual,
   .enemy-visual {
     width: 150px;
+  }
+}
+
+/* ---- Phone layout ---- */
+@media (max-width: 700px) {
+  .game {
+    width: calc(100vw - 32px);
+    margin-left: calc(50% - 50vw + 16px);
+    height: auto;
+    min-height: 86vh;
+    border-width: 8px;
+  }
+  .game-background {
+    height: auto;
+    min-height: 86vh;
+  }
+  .class-select-screen {
+    height: auto;
+    min-height: 82vh;
+    padding: 28px 14px;
+    gap: 22px;
+  }
+  .class-icon {
+    width: 120px;
+  }
+  .game-layout {
+    width: 100%;
+    padding: 0 6px;
+  }
+  .ability-grid {
+    width: 100%;
+  }
+  .ability-btn {
+    font-size: 16px;
+    padding: 10px;
   }
 }
 
