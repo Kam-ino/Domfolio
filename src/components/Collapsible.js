@@ -113,7 +113,7 @@ export default function Collapsible({
 
   const childArray = React.Children.toArray(children);
 
-  // Mobile: no button — just the open parchment panel with the content.
+  // Mobile: no button - just the open parchment panel with the content.
   if (isMobile) {
     return (
       <div ref={rootRef} className={`staggerMenu staggerMenu--static ${className}`}>

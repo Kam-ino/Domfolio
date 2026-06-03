@@ -1,4 +1,4 @@
-/* GENERAL LAYOUT — full-bleed + centered (100vw minus 50px side margins),
+/* GENERAL LAYOUT - full-bleed + centered (100vw minus 50px side margins),
    escaping the centered section container via the full-bleed margin trick. */
 .game {
   height: 90vh;

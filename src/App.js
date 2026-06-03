@@ -41,7 +41,7 @@ export default function App() {
           tone="light"
           eyebrow="Interlude"
           title="The Arena"
-          subtitle="Choose your class and try to slay the dragon — a little something I built for fun."
+          subtitle="Choose your class and try to slay the dragon - a little something I built for fun."
         >
           <MiniDnDGame />
         </Section>

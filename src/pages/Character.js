@@ -43,51 +43,126 @@ function stackReserve(cardW, aspect) {
 }
 
 // ---- Skill cards (shown in the "skills" stack) ----
-// Edit this array to put your own skills. Each card is a title + list of items.
+// Edit this array to put your own skills. Each card has a title and one or more
+// sections (a heading + list of items).
 const SKILL_CARDS = [
     {
         id: 1,
-        title: "Core Abilities",
-        items: [
-            "Responsive Web Design",
-            "Component Architecture (React Hooks, Context API)",
-            "RESTful API Integration",
-            "State Management (Redux, Context)",
-            "Debugging & Optimization",
-            "UI/UX Collaboration (Figma)",
+        title: "Skills & Proficiencies",
+        sections: [
+            {
+                heading: "Core Abilities",
+                items: [
+                    "Responsive Web Design",
+                    "Component Architecture (React Hooks, Context API)",
+                    "Data Handling & RESTful API Integration",
+                    "State Management (Redux, Context API)",
+                    "Debugging, Troubleshooting & Optimization",
+                    "AI-Assisted Programming (Claude Code)",
+                    "UI/UX Collaboration with Designers (Figma)",
+                    "Project Management (ClickUp / Trello)",
+                    "Toolchain Familiarity (Vite, Webpack, NPM)",
+                    "Marketing Strategy Generation"
+                ],
+            },
+            {
+                heading: "Tools & Technical Proficiencies",
+                items: [
+                    "AWS Cloud Foundations",
+                    "AWS Machine Learning Foundations",
+                    "Google Cloud Platform / Gemini Integration",
+                    "SQL / NoSQL / Postgress / GraphQL Databases",
+                    "JSON / API Handling",
+                    "Postman, Replit, Glitch, VS Code",
+                    "Vercel / Render Deployment"
+                ],
+            },
         ],
     },
     {
         id: 2,
-        title: "Technical Skills",
-        items: [
-            "JavaScript (ES6+)",
-            "React.js / Next.js",
-            "Node.js / Express",
-            "Python · C++ · C#",
-            "HTML5 / CSS3 / SCSS",
-            "SQL / NoSQL",
+        title: "Other Proficiencies & Languages",
+        sections: [
+            {
+                heading: "Soft Skills & Traits",
+                items: [
+                    "Quick Learner - Gains +2 bonus when learning new frameworks",
+                    "Team Collaborator - Advantage on pair-programming checks",
+                    "Persistence - Immune to “Compilation Errors: Panic Attack”",
+                    "Critical Debugger - 20% chance to fix bugs by intuition alone",
+                ],
+            },
+            {
+                heading: "Languages Known",
+                items: [
+                    "Common (English, Tagalog, Japanese)",
+                    "Elvish (JavaScript, TypeScript)",
+                    "Dwarvish (Python)",
+                    "Celestial (Linux)",
+                ],
+            },
+            {
+                heading: "Tools of the Trade",
+                items: [
+                    "GitHub (Version Control)",
+                    "ClickUp (Project Management)",
+                    "VS Code / Postman",
+                    "Figma / Canva (Design Space)",
+                    "Claude Code (Coding Assistant)",
+                ],
+            },
         ],
     },
     {
         id: 3,
-        title: "Tools & Cloud",
-        items: [
-            "Git / GitHub",
-            "ClickUp · Postman",
-            "Vite · Webpack",
-            "AWS Cloud Foundations",
-            "Intro to Generative AI",
+        title: "Equipment",
+        sections: [
+            {
+                heading: "Weapon (Laptop)",
+                items: [
+                    "Intel Core i7",
+                    "32GB RAM",
+                    "NVIDIA GeForce RTX 5060 GPU",
+                    "2TB Storage",
+                ],
+            },
+            {
+                heading: "Scrolls (Certifications)",
+                items: [
+                    "AWS Educate Introduction to Cloud 101",
+                    "AWS Educate Machine Learning Foundations",
+                    "AWS Educate Introduction to Generative AI",
+                    "AWS Academy Cloud Foundations",
+                    "Introduction to Generative AI and Prompt Engineering",
+                    "Applied Machine Learning in Python",
+                    "Applied Plotting, Charting and Data Representation in Python",
+                    "Cisco Introduction to Cybersecurity",
+                    "CCNA: Switching, Routing, and Wireless Essentials",
+                    "CCNA: Introduction to Networks",
+                    "CCNA: Enterprise Networking, Security, and Automation",
+                ],
+            },
         ],
     },
     {
         id: 4,
-        title: "Soft Skills",
-        items: [
-            "Problem Solving",
-            "Adaptability",
-            "Collaboration",
-            "Documentation",
+        title: "Mastery",
+        sections: [
+            {
+                heading: "Weapon Proficiencies",
+                items: [
+                    "Lvl 5: React.js / Next.js (Quick, elegant front-end builds)",
+                    "Lvl 5: JavaScript / TypeScript (Fluent in modern scripting magic)",
+                    "Lvl 2: Node.js / Python (Backend and API wizardry)",
+                    "Lvl 5: HTML5 / CSS3 (Visual alchemy and layout spells)",
+                    "Lvl 4: Git / GitHub / CLI (Battle-ready with version control)",
+                    "Lvl 3: MySQL / MongoDB / Supabase (Keeper of relational and document archives)",
+                    "Lvl 3: Data Structures / Algorithms (Mastery of computational tactics)",
+                    "Lvl 5: Component-based Design (Crafts interfaces with user empathy)",
+                    "Lvl 5: Debugging & Optimization (Hunts bugs with precision)",
+                    "Lvl 3: Agile Development (Navigates projects through iterative quests)",
+                ],
+            },
         ],
     },
 ];
@@ -95,6 +170,22 @@ const SKILL_CARDS = [
 function CharacterDesktop() {
     const [skillsRef, skillsW] = useElemWidth();
     const [portraitsRef, portraitsW] = useElemWidth();
+
+    // Cards are a uniform 400 x 800 on desktop; on the single-column phone /
+    // tablet layout they shrink to fit the column (keeping the 1:2 ratio) so
+    // they don't get clipped.
+    const [narrow, setNarrow] = useState(
+        () => typeof window !== "undefined" && window.matchMedia("(max-width: 960px)").matches
+    );
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 960px)");
+        const update = () => setNarrow(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
+    const skillCardW = narrow ? fitCardWidth(500, skillsW) : 400;
+    const skillCardH = 650;
 
     const stats = [
         { file: 'Stat 1.png', label: 'STR' },
@@ -153,11 +244,18 @@ function CharacterDesktop() {
         content: (
             <div className="skill-card">
                 <h4 className="skill-card-title">{card.title}</h4>
-                <ul className="skill-card-list">
-                    {card.items.map((item, ii) => (
-                        <li key={ii}>{item}</li>
+                <div className="skill-card-body">
+                    {card.sections.map((sec, si) => (
+                        <div className="skill-section" key={si}>
+                            <h5 className="skill-section-heading">{sec.heading}</h5>
+                            <ul className="skill-card-list">
+                                {sec.items.map((item, ii) => (
+                                    <li key={ii}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
         ),
     }));
@@ -212,16 +310,15 @@ function CharacterDesktop() {
             <div
                 className="skills"
                 ref={skillsRef}
-                style={{ minHeight: stackReserve(fitCardWidth(400, skillsW), 1.4) }}
+                // style={{ minHeight: stackReserve(skillCardW, 2) }}
             >
+                <p>Swipe from the Titles to flip the stack</p>
                 <Stack
                     randomRotation={true}
                     sensitivity={180}
                     sendToBackOnClick={false}
-                    cardDimensions={{
-                        width: fitCardWidth(550, skillsW),
-                        height: Math.round(fitCardWidth(550, skillsW) * 1.4),
-                    }}
+                    /* Uniform 400 x 800 (shrinks to fit on narrow screens) */
+                    cardDimensions={{ width: skillCardW, height: skillCardH }}
                     cardsData={cardsData}
                 />
             </div>
@@ -229,8 +326,9 @@ function CharacterDesktop() {
             <div
                 className="portraits"
                 ref={portraitsRef}
-                style={{ minHeight: stackReserve(fitCardWidth(550, portraitsW), 1.2) }}
+                // style={{ minHeight: stackReserve(fitCardWidth(550, portraitsW), 1.2) }}
             >
+                <p>My Bounty Posters</p>
                 <Stack
                     randomRotation={true}
                     sensitivity={180}

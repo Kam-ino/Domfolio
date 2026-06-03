@@ -43,7 +43,7 @@ const regions = [
     name: "🏛️ Ancient Core",
     subtitle: "Legacy Lands",
     description:
-      "Dusty plains powered by primal code — C, C++, and C#. The old gods of computation still dwell here, maintaining the foundation of all frameworks.",
+      "Dusty plains powered by primal code - C, C++, and C#. The old gods of computation still dwell here, maintaining the foundation of all frameworks.",
   },
 ];
 

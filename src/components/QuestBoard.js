@@ -1,4 +1,4 @@
-// src/QuestBoard.jsx — full-bleed board, random placement, count-based scaling
+// src/QuestBoard.jsx - full-bleed board, random placement, count-based scaling
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import quests from "./quests";
 import QuestCard from "./QuestCard";
@@ -9,8 +9,6 @@ import "./QuestBoard.css";
 const BOARD_H = 1000; // px (matches .scatter-board height)
 const EDGE_PAD = 28; // keep scrolls off the wooden frame
 const MAX_OVERLAP = 0.2; // allow scrolls to overlap up to ~20%
-const CARD_W = 300; // nominal scroll width used to decide column count
-const COL_GAP = 36; // nominal gap between columns
 
 // Scroll width shrinks as more scrolls land on the board.
 function scrollWidth(n) {
@@ -64,23 +62,27 @@ export default function QuestBoard() {
   const layout = useMemo(() => {
     const n = filtered.length;
     const width = boardW || 1200;
-    const cols = Math.max(1, Math.min(3, Math.floor(width / (CARD_W + COL_GAP))));
+    const isNarrow = width < 820;
 
-    // Stack the scrolls in a tidy column on phones/tablets/narrow panes — the
-    // random scatter only reads well when the board is genuinely wide. Below
-    // ~820px it would cram and overlap, so stack instead.
-    if (width < 820) {
-      const cardW = Math.min(340, Math.max(200, width - 56));
-      const positions = filtered.map((_, i) => ({
-        rotation: (mulberry32(hashStr(activeTab) ^ (i * 2654435761))() - 0.5) * 6,
-      }));
-      return { cardW, positions, stacked: true };
+    // Card width is count-based (like desktop) but capped to a share of the
+    // board so on a narrow phone board the scrolls scale down and still
+    // scatter (instead of stacking into one column).
+    const cardW = Math.min(scrollWidth(n), Math.round(width * 0.55));
+    // Narrow cards wrap more text, so they're taller — estimate accordingly.
+    const cardH = Math.round(cardW * (isNarrow ? 1.5 : 1.2));
+    const edge = Math.max(12, Math.min(EDGE_PAD, Math.round(width * 0.05)));
+
+    // On a narrow board, grow it taller so the scrolls can spread out with the
+    // same low overlap as desktop instead of piling on top of each other.
+    let boardH = BOARD_H;
+    if (isNarrow) {
+      const TARGET_FILL = 0.5; // scroll area / board area
+      const needed = Math.ceil((n * cardW * cardH) / (TARGET_FILL * width));
+      boardH = Math.min(3000, Math.max(BOARD_H, needed));
     }
 
-    const cardW = scrollWidth(n);
-    const cardH = Math.round(cardW * 1.2); // approx scroll height for placement
-    const maxX = Math.max(0, width - cardW - EDGE_PAD * 2);
-    const maxY = Math.max(0, BOARD_H - cardH - EDGE_PAD * 2);
+    const maxX = Math.max(0, width - cardW - edge * 2);
+    const maxY = Math.max(0, boardH - cardH - edge * 2);
 
     const rng = mulberry32(hashStr(activeTab) ^ (n * 2654435761));
 
@@ -95,7 +97,7 @@ export default function QuestBoard() {
       let best = null;
       let bestScore = Infinity;
       for (let t = 0; t < 280; t++) {
-        const cand = { x: EDGE_PAD + rng() * maxX, y: EDGE_PAD + rng() * maxY };
+        const cand = { x: edge + rng() * maxX, y: edge + rng() * maxY };
         let mx = 0;
         for (const p of placed) {
           const ov = overlapFrac(cand, p);
@@ -115,34 +117,36 @@ export default function QuestBoard() {
       placed.push(best);
     }
 
-    return { cardW, positions: placed, stacked: false };
+    return { cardW, positions: placed, boardH };
   }, [filtered, activeTab, boardW]);
 
   return (
     <div className="qb-root">
       {/* <header className="qb-header">
-        <h1>🛡️ Quest Board — Adventures of Dominic Guevarra</h1>
+        <h1>🛡️ Quest Board - Adventures of Dominic Guevarra</h1>
         <p className="qb-sub">Pinned notices scattered are my previous work experiences.</p>
       </header> */}
 
       <QuestTabs active={activeTab} setActive={setActiveTab} />
 
       <div
-        className={`scatter-board ${layout.stacked ? "scatter-board--stack" : ""}`}
+        className="scatter-board"
         ref={boardRef}
+        style={{ height: `${layout.boardH}px` }}
       >
         {filtered.map((quest, index) => {
           const pos = layout.positions[index];
-          const style = layout.stacked
-            ? { width: `${layout.cardW}px`, transform: `rotate(${pos.rotation}deg)` }
-            : {
+          return (
+            <div
+              key={quest.id}
+              className="scatter-item"
+              style={{
                 left: `${pos.x}px`,
                 top: `${pos.y}px`,
                 width: `${layout.cardW}px`,
                 transform: `rotate(${pos.rotation}deg)`,
-              };
-          return (
-            <div key={quest.id} className="scatter-item" style={style}>
+              }}
+            >
               <QuestCard
                 quest={quest}
                 cardW={layout.cardW}

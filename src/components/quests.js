@@ -3,9 +3,9 @@
     {
         id: "mq1",
         title: "Forging the Centennial Clock",
-        subtitle: "Lead Programmer — ARISE",
+        subtitle: "Lead Programmer - ARISE",
         type: "Main",
-        difficulty: "A",
+        difficulty: "C",
         timeline: "Dec 2023 – Jan 2024",
         details: [
         "Led a guild of JavaScript apprentices to craft a digital clock for Mapúa University's 100th anniversary.",
@@ -19,7 +19,7 @@
     {
         id: "mq2",
         title: "Full-Stack Developer of Many Tools",
-        subtitle: "Full-Time Developer — WEAVNONO LLC",
+        subtitle: "'Full-Fledged' Full-Time Full-Stack Developer",
         type: "Main",
         difficulty: "SS+",
         timeline: "2024 – Present",
@@ -39,7 +39,7 @@
     {
         id: "mq3",
         title: "The AWS Cloudfront Expedition",
-        subtitle: "Frontend Developer — AWS Cloud Club (Mapúa)",
+        subtitle: "Frontend Developer - AWS Cloud Club (Mapúa)",
         type: "Main",
         difficulty: "A",
         timeline: "Jan 2025 – Jun 2025",
@@ -70,18 +70,38 @@
 
     {
         id: "mq5",
-        title: "The Engineering Pilgrimage",
-        subtitle: "B.S. Computer Engineering — Mapúa University",
+        title: "Transmutation of Runic Paintings (WIP)",
+        subtitle: "LocAds",
         type: "Main",
-        difficulty: "SS",
-        timeline: "Expected Graduation: Aug 2026",
+        difficulty: "A",
+        timeline: "April 2026 - Present",
         details: [
-        "Specialized in Low-Code Web App Development.",
-        "Thesis: AI-Driven E. coli Detection using YOLOv9 (unpublished).",
-        "Research: LIDAR & ATmega328P overhead obstacle detection (unpublished)."
+        "Built a web app that translates English advertising creatives into 7 European languages: DE, ES, FR, PL, PT, CS, and EL.",
+        "Preserved original layouts, fonts, colors, and photographic backgrounds pixel-for-pixel during localization.",
+        "Developed a Next.js + FastAPI pipeline using Google Cloud Vision for OCR, Gemini 2.5 Flash for advertising-quality translation, and FLUX.1-Fill / Imagen 3 / LaMa for generative inpainting.",
+        "Implemented adaptive typography matching across 13 font categories with variable-font weight detection so localized copy visually matched the original brand style.",
+        "Added locale-aware formatting and brand-glossary protection to keep translated creatives accurate, consistent, and production-ready."
         ],
-        reward: "AI Knowledge +4, Embedded Systems +2, Low-Code Mastery +2",
-        images: []
+        reward: "AI Knowledge +2, Full-Stack Development +3, Localization +3, AI Imaging +2, GCP Mastery +2",
+        images: ["LocAdsWIP.png", "LocAdsProcessing.png",]
+    },
+
+        {
+        id: "mq6",
+        title: "Self Writing Book of Creative Scripts (WIP)",
+        subtitle: "AdFactory",
+        type: "Main",
+        difficulty: "A",
+        timeline: "April 2026 - Present",
+        details: [
+        "Built AdFactory, a static-ad generation system for e-commerce focused on producing fewer, higher-quality creatives instead of large batches of weak outputs.",
+        "Designed two strategic generation lanes: Iterate for exploiting known winners and Big Swing for exploring new creative concepts.",
+        "Implemented Kill Criteria to define when iteration should stop instead of endlessly generating more variants.",
+        "Added a 10-gate compliance check on every prompt before image generation to reduce wasted credits on policy-violating outputs.",
+        "Generates 25 production-ready Nano Banana prompts per run, gated by required avatar research that the system refuses to skip.",
+        ],
+        reward: "Digital Marketing +4, Web Scraping +2, Prompt Engineering +2, Creative Strategy +3",
+        images: ["AdFactory1.png","AdFactory2.png","AdFactory3.png"]
     },
 
     // SIDE QUESTS (Projects)
@@ -147,22 +167,8 @@
 
     {
         id: "sq5",
-        title: "Circuits of the Old Kingdom",
-        subtitle: "Logic Circuit Design & Fabrication",
-        type: "Side",
-        difficulty: "B",
-        details: [
-        "Designed and fabricated logic circuits for clients.",
-        "Built hardware solutions using ICs and electrical components."
-        ],
-        reward: "Circuit Crafting +3, Hardware Knowledge +1",
-        images: ["Tronics.jpg","TronicsBuild.jpg","TronicsScreen.jpg" ]
-    },
-
-    {
-        id: "sq6",
         title: "Voice of the Customer",
-        subtitle: "Aftersales Call Center Agent — Pre-Dev Era",
+        subtitle: "Aftersales Call Center Agent - Pre-Dev Era",
         type: "Side",
         difficulty: "D",
         timeline: "Sept 2025 - Nov 2025",
@@ -177,7 +183,7 @@
     },
 
     {
-        id: "sq7",
+        id: "sq6",
         title: "The Many-Tongued Banner",
         subtitle: "Ads Translation Specialist",
         type: "Side",
@@ -193,8 +199,24 @@
         reward: "Linguistics +3, Cultural Insight +2, Precision +2, Marketing Adaptation +1",
         images: [ ]
     },
+    {
+        id: "sq7",
+        title: "Forging the SEA Beacon",
+        subtitle: "Triple AI/ML Integration",
+        type: "Side",
+        difficulty: "S",
+        timeline: "April 2026 – Present",
+        details: [
+            "PLACED TOP 2 OUT OF 40. Moving on to Semi-Finals",
+            "Created a Startup level Application with a team of aspiring AI and ML Engineers for ASEAN AI Hackathon 2026",
+            "Pitched an AI-driven Disaster Alert System based on Flood Threshold Data, Typhoon Trajectory Prediction, and Sentiment Analysis of News & Social Media Posts",
+            "Custom alert messages powered by Google Gemini and localized to Thai, Vietnamese, and Filipino through Google Cloud Platform"
+        ],
+        reward: "AI Integration +6, Cloud Computing +2, Full Stack Development +5, Charisma(Marketing) +3",
+        images: [ "SEABeaconTop40.png","SEABeaconDemo.png","SEABeaconMeeting.jpg" ]
+    },
 
-    // GUILD CONTRACTS (Certs)
+    // GUILD CONTRACTS (Education)
     {
         id: "gc1",
         title: "AWS Cloud Series",
@@ -237,7 +259,37 @@
         ],
         reward: "Networking +2, Security Awareness +1",
         images: ["CISCOIntro.png","CISCOEnterprise.png","CISCOSwitching.png","CISCOCyberSec.png" ]
-    }
+    },
+
+    {
+        id: "gc4",
+        title: "Circuits of the Old Kingdom",
+        subtitle: "Logic Circuit Design & Fabrication",
+        type: "Guild",
+        difficulty: "B",
+        details: [
+        "Designed and fabricated logic circuits for clients.",
+        "Built hardware solutions using ICs and electrical components."
+        ],
+        reward: "Circuit Crafting +3, Hardware Knowledge +1",
+        images: ["Tronics.jpg","TronicsBuild.jpg","TronicsScreen.jpg" ]
+    },
+
+    {
+        id: "gc5",
+        title: "The Engineering Pilgrimage",
+        subtitle: "B.S. Computer Engineering - Mapúa University",
+        type: "Guild",
+        difficulty: "SS",
+        timeline: "2021 - Present",
+        details: [
+        "Specialized in Low-Code Web App Development.",
+        "Thesis: AI-Driven E. coli Detection using YOLOv9 (unpublished).",
+        "Research: LIDAR & ATmega328P overhead obstacle detection (unpublished)."
+        ],
+        reward: "AI Knowledge +4, Embedded Systems +2, Low-Code Mastery +2",
+        images: ["Thesis1.png","Thesis2.png","Thesis3.png",]
+    },
     ];
 
     export default quests;
