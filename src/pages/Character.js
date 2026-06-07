@@ -237,6 +237,22 @@ function CharacterDesktop() {
             </div>
         ),
         },
+        {
+        id: 6,
+        content: (
+            <div className="portrait">
+                <img src="/images/Poster (6).png" alt="Me 5"/>
+            </div>
+        ),
+        },
+        {
+        id: 7,
+        content: (
+            <div className="portrait">
+                <img src="/images/Poster (7).png" alt="Me 5"/>
+            </div>
+        ),
+        },
     ]
     // Text cards built from the SKILL_CARDS data above (edit that array in code).
     const cardsData = SKILL_CARDS.map((card) => ({

@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Character from "./pages/Character";
 import Adventures from "./pages/Adventures";
 import MiniDnDGame from "./components/Game";
+import TechStack from "./components/TechStack";
 
 export default function App() {
   return (
@@ -24,6 +25,16 @@ export default function App() {
           subtitle="Stats, skills, and the story so far."
         >
           <Character />
+        </Section>
+
+        <Section
+          id="stack"
+          tone="dark"
+          eyebrow="The Armory"
+          title="Arsenal"
+          subtitle="The languages, frameworks, and tools I wield."
+        >
+          <TechStack />
         </Section>
 
         <Section

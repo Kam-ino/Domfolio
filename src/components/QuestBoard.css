@@ -26,7 +26,7 @@
   border: 12px solid #5a3b22;
   border-radius: 16px;
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.45);
-  overflow: hidden; /* keep the scrolls on the board */
+  overflow: visible;
 }
 
 .scatter-item {
@@ -79,8 +79,6 @@
   margin-bottom: 18px;
 }
 
-/* Tabs - full-bleed aligned to the board's left edge, tucked BEHIND the board
-   so they peek out at the top-left corner. */
 .quest-tabbed {
   width: calc(100vw - 100px);
   margin: 0 0 -16px calc(50% - 50vw + 50px);
@@ -137,8 +135,6 @@
   gap: 20px;
 }
 
-/* Quest Card (parchment poster) - fills its .scatter-item wrapper.
-   Padding + text scale with --cw (set per card from JS). */
 .quest-card {
   --cw: 300px;
   background: linear-gradient(180deg, #fff8df, #f6e8c9);
@@ -159,7 +155,6 @@
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-/* Extra shadow on hover */
 .quest-card:hover {
   box-shadow:
     0 10px 20px rgba(0,0,0,0.35),
@@ -188,6 +183,21 @@
   color: #3b2413;
 }
 .quest-sub { font-size: calc(var(--cw, 300px) * 0.043); color: #6b4b2a; margin-bottom: 8px; }
+
+/* First image shown on the scroll (teaser) - scales with the scroll width.
+   drop-shadow hugs the image's alpha silhouette (e.g. badge shields) instead
+   of a rectangular box/frame around the transparent PNG. */
+.quest-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 4px 0 10px;
+  filter:
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))
+    drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+}
+
 .quest-preview {
   padding-left: calc(var(--cw, 300px) * 0.06);
   margin: 6px 0;
@@ -238,7 +248,7 @@
 /* ---- Wax Seal Button ---- */
 .wax-close-btn {
   position: absolute;
-  top: -25px;         /* overlaps the modal */
+  top: -25px;         
   right: -25px;
   background: none;
   border: none;
@@ -254,7 +264,6 @@
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
 }
 
-/* Hover animation: seal grows + shines */
 .wax-close-btn:hover {
   transform: scale(1.12);
   filter: brightness(1.1);
@@ -275,7 +284,6 @@
   z-index: 2000;
 }
 .modal-parchment {
-  /* Capped so wide project screenshots can't blow the modal up to full screen */
   width: min(600px, calc(100vw - 36px));
   max-width: calc(100vw - 36px);
   max-height: 88vh;
@@ -347,33 +355,28 @@
 }
 
 .modal-images {
-  margin-top: 20px;
+  margin-top: 16px;
   display: grid;
-  /* uniform thumbnails that share the row and shrink to fit the modal width */
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  /* auto-fit + small min packs thumbnails into full rows (no empty cells) */
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
 }
 
 .quest-image {
   width: 100%;
-  height: 150px;
-  filter: drop-shadow(2px 3px 8px rgba(0, 0, 0, 0.3));
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  
   object-fit: cover;
   border-radius: 8px;
   cursor: zoom-in;
+  filter: drop-shadow(2px 3px 8px rgba(0, 0, 0, 0.3));
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-/* Subtle in-place cue; the real enlargement is the centered preview below. */
 .quest-image:hover {
   transform: scale(1.05);
   z-index: 1;
 }
 
-/* Centered hover preview - enlarges the image, capped at 600px tall, centered
-   on screen. inset:0 + margin:auto centers it reliably regardless of the
-   modal's containing block; pointer-events:none keeps the thumbnail hovered
-   (no flicker) and lets clicks pass through to close. */
 .quest-image-preview {
   position: fixed;
   inset: 0;
@@ -383,7 +386,11 @@
   max-width: 90vw;
   object-fit: contain;
   border-radius: 12px;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75);
+  /* drop-shadow follows the image's alpha silhouette (e.g. badge shields),
+     so the shadow wraps the actual shape instead of a floating rectangle */
+  filter:
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 26px 50px rgba(0, 0, 0, 0.4));
   z-index: 3000;
   pointer-events: none;
   animation: questPreviewPop 0.2s ease;
@@ -407,7 +414,6 @@
     margin-top: 40px; 
   }
 
-  /* No hover-zoom / centered preview on mobile (touch has no hover) */
   .quest-image {
     cursor: default;
   }
@@ -415,13 +421,10 @@
     transform: none;
   }
 
-  /* Hide the bullet-list preview on the (small) mobile quest cards;
-     full details are shown in the modal on tap. */
   .quest-preview {
     display: none;
   }
 
-  /* Tighter full-bleed insets so the board uses more of a phone screen */
   .scatter-board,
   .quest-tabbed {
     width: calc(100vw - 32px);

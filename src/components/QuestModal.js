@@ -1,13 +1,12 @@
 // src/components/QuestModal.jsx
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import Masonry from "./Masonry";
 import "./QuestBoard.css";
 
 export default function QuestModal({ quest, onClose }) {
-  // Filename of the image currently hovered (shows the centered preview).
+  // Hovered image -> centered enlarge preview (desktop only; touch has no hover)
   const [hoverImg, setHoverImg] = useState(null);
-
-  // The hover-to-enlarge preview is a desktop-only feature (no hover on touch).
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(max-width: 720px)").matches
   );
@@ -20,6 +19,12 @@ export default function QuestModal({ quest, onClose }) {
   }, []);
 
   if (!quest) return null;
+
+  const masonryItems =
+    quest.images?.map((img, i) => {
+      const src = `/images/${img}`;
+      return { id: `${quest.id}-${i}`, img: src, url: src, height: 600 };
+    }) ?? [];
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -34,19 +39,25 @@ export default function QuestModal({ quest, onClose }) {
           <h2 className="modal-title">{quest.title}</h2>
           <h4 className="modal-sub">{quest.subtitle}</h4>
           <p className="modal-time">{quest.timeline}</p>
-          {quest.images && quest.images.length > 0 && (
-          <div className="modal-images">
-              {quest.images.map((img, i) => (
-              <img
-                  key={i}
-                  src={`/images/${img}`}
-                  alt={`quest-img-${i}`}
-                  className="quest-image"
-                  onMouseEnter={isMobile ? undefined : () => setHoverImg(img)}
-                  onMouseLeave={isMobile ? undefined : () => setHoverImg(null)}
+          {masonryItems.length > 0 && (
+            <div className="modal-masonry">
+              <Masonry
+                items={masonryItems}
+                animateFrom="bottom"
+                duration={0.6}
+                stagger={0.06}
+                scaleOnHover={true}
+                hoverScale={0.97}
+                blurToFocus={true}
+                colorShiftOnHover={false}
+                onItemEnter={isMobile ? undefined : (it) => setHoverImg(it.img)}
+                onItemLeave={isMobile ? undefined : () => setHoverImg(null)}
+                onItemClick={isMobile ? (it) => window.open(it.img, "_blank", "noopener") : () => {}}
               />
-              ))}
-          </div>
+              <p className="modal-masonry-hint">
+                {isMobile ? "Tap an image to view it full size" : "Hover over an image to enlarge"}
+              </p>
+            </div>
           )}
           <div className="modal-details">
             <ul>
@@ -74,18 +85,13 @@ export default function QuestModal({ quest, onClose }) {
         </div>
       </div>
 
-      {/* Centered hover preview (desktop only) - capped at 600px tall, ignores
-          the pointer so the thumbnail keeps :hover (no flicker) and clicks
-          still close. Portaled to <body> so it centers against the real
-          viewport rather than the overlay's backdrop-filter containing block. */}
+      {/* Centered enlarge preview on hover (desktop). pointer-events:none keeps
+          the tile hovered (no flicker). Portaled to <body> so it centers on the
+          real viewport. */}
       {!isMobile &&
         hoverImg &&
         createPortal(
-          <img
-            src={`/images/${hoverImg}`}
-            alt="quest preview"
-            className="quest-image-preview"
-          />,
+          <img src={hoverImg} alt="quest preview" className="quest-image-preview" />,
           document.body
         )}
     </div>

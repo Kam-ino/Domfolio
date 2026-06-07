@@ -15,6 +15,10 @@ const difficultyColors = {
 
 export default function QuestCard({ quest, onOpen, cardW = 300 }) {
   const color = difficultyColors[quest.difficulty] || difficultyColors["C"];
+  const hasImage = Array.isArray(quest.images) && quest.images.length > 0;
+  // With an image, the scroll is a teaser: first image + first detail point.
+  // Without one, show a few detail points. Full set is shown in the modal.
+  const previewCount = hasImage ? 1 : 3;
   return (
     <div
       className="quest-card"
@@ -34,8 +38,18 @@ export default function QuestCard({ quest, onOpen, cardW = 300 }) {
 
       <h3 className="quest-title">{quest.title}</h3>
       <div className="quest-sub">{quest.subtitle}</div>
+
+      {hasImage && (
+        <img
+          className="quest-card-img"
+          src={`/images/${quest.images[0]}`}
+          alt=""
+          loading="lazy"
+        />
+      )}
+
       <ul className="quest-preview">
-        {quest.details.slice(0, 3).map((d, i) => (
+        {quest.details.slice(0, previewCount).map((d, i) => (
           <li key={i}>{d}</li>
         ))}
       </ul>

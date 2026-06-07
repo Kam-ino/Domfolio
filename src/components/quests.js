@@ -70,11 +70,11 @@
 
     {
         id: "mq5",
-        title: "Transmutation of Runic Paintings (WIP)",
+        title: "Transmutation of Runic Paintings",
         subtitle: "LocAds",
         type: "Main",
         difficulty: "A",
-        timeline: "April 2026 - Present",
+        timeline: "April 2026 - May 2026",
         details: [
         "Built a web app that translates English advertising creatives into 7 European languages: DE, ES, FR, PL, PT, CS, and EL.",
         "Preserved original layouts, fonts, colors, and photographic backgrounds pixel-for-pixel during localization.",
@@ -88,11 +88,11 @@
 
         {
         id: "mq6",
-        title: "Self Writing Book of Creative Scripts (WIP)",
+        title: "Self Writing Book of Creative Scripts",
         subtitle: "AdFactory",
         type: "Main",
         difficulty: "A",
-        timeline: "April 2026 - Present",
+        timeline: "April 2026 - June 2026",
         details: [
         "Built AdFactory, a static-ad generation system for e-commerce focused on producing fewer, higher-quality creatives instead of large batches of weak outputs.",
         "Designed two strategic generation lanes: Iterate for exploiting known winners and Big Swing for exploring new creative concepts.",
@@ -213,7 +213,7 @@
             "Custom alert messages powered by Google Gemini and localized to Thai, Vietnamese, and Filipino through Google Cloud Platform"
         ],
         reward: "AI Integration +6, Cloud Computing +2, Full Stack Development +5, Charisma(Marketing) +3",
-        images: [ "SEABeaconTop40.png","SEABeaconDemo.png","SEABeaconMeeting.jpg" ]
+        images: [ "SEABeaconTop40.png","SEABeaconDemo.png","SEABeaconMeeting.jpg", "SEABeaconLogo.png" ]
     },
 
     // GUILD CONTRACTS (Education)
@@ -272,7 +272,7 @@
         "Built hardware solutions using ICs and electrical components."
         ],
         reward: "Circuit Crafting +3, Hardware Knowledge +1",
-        images: ["Tronics.jpg","TronicsBuild.jpg","TronicsScreen.jpg" ]
+        images: ["Tronics.jpg","TronicsBuild.jpg","TronicsScreen.jpg", "Design2.jpg", "Design3.jpg" ]
     },
 
     {
@@ -288,7 +288,7 @@
         "Research: LIDAR & ATmega328P overhead obstacle detection (unpublished)."
         ],
         reward: "AI Knowledge +4, Embedded Systems +2, Low-Code Mastery +2",
-        images: ["Thesis1.png","Thesis2.png","Thesis3.png",]
+        images: ["Thesis1.png", "ThesisCase.png","Thesis2.png","Thesis3.png", "Design2.jpg", "Thesis4.png", "Design1.jpg",]
     },
     ];
 
