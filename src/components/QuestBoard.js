@@ -4,6 +4,7 @@ import quests from "./quests";
 import QuestCard from "./QuestCard";
 import QuestModal from "./QuestModal";
 import QuestTabs from "./QuestTabs";
+import QuestLegend from "./QuestLegend";
 import "./QuestBoard.css";
 
 const BOARD_H = 1000; // px (matches .scatter-board height)
@@ -72,18 +73,21 @@ export default function QuestBoard() {
     // Card width is count-based (like desktop) but capped to a share of the
     // board so on a narrow phone board the scrolls scale down and still
     // scatter (instead of stacking into one column).
-    const cardW = Math.min(scrollWidth(n), Math.round(width * 0.55));
+    const cardW = Math.min(scrollWidth(n), Math.round(width * (isNarrow ? 0.5 : 0.55)));
     // Narrow cards wrap more text, so they're taller — estimate accordingly.
     const cardH = Math.round(cardW * (isNarrow ? 1.5 : 1.2));
     const edge = Math.max(12, Math.min(EDGE_PAD, Math.round(width * 0.05)));
+
+    // Allow less overlap on a narrow board so the scrolls don't pile up.
+    const maxOverlap = isNarrow ? 0.1 : MAX_OVERLAP;
 
     // On a narrow board, grow it taller so the scrolls can spread out with the
     // same low overlap as desktop instead of piling on top of each other.
     let boardH = BOARD_H;
     if (isNarrow) {
-      const TARGET_FILL = 0.5; // scroll area / board area
+      const TARGET_FILL = 0.42; // scroll area / board area
       const needed = Math.ceil((n * cardW * cardH) / (TARGET_FILL * width));
-      boardH = Math.min(3000, Math.max(BOARD_H, needed));
+      boardH = Math.min(3400, Math.max(BOARD_H, needed));
     }
 
     const maxX = Math.max(0, width - cardW - edge * 2);
@@ -107,9 +111,9 @@ export default function QuestBoard() {
         for (const p of placed) {
           const ov = overlapFrac(cand, p);
           if (ov > mx) mx = ov;
-          if (mx > MAX_OVERLAP) break;
+          if (mx > maxOverlap) break;
         }
-        if (mx <= MAX_OVERLAP) {
+        if (mx <= maxOverlap) {
           best = cand;
           break;
         }
@@ -132,34 +136,40 @@ export default function QuestBoard() {
         <p className="qb-sub">Pinned notices scattered are my previous work experiences.</p>
       </header> */}
 
-      <QuestTabs active={activeTab} setActive={setActiveTab} />
+      {/* Full-bleed stage: tabs (top-left) + legend (top-right) + board share
+          one positioning context so the legend can float over the board. */}
+      <div className="qb-stage">
+        <QuestTabs active={activeTab} setActive={setActiveTab} />
 
-      <div
-        className="scatter-board"
-        ref={boardRef}
-        style={{ height: `${layout.boardH}px` }}
-      >
-        {filtered.map((quest, index) => {
-          const pos = layout.positions[index];
-          return (
-            <div
-              key={quest.id}
-              className="scatter-item"
-              style={{
-                left: `${pos.x}px`,
-                top: `${pos.y}px`,
-                width: `${layout.cardW}px`,
-                transform: `rotate(${pos.rotation}deg)`,
-              }}
-            >
-              <QuestCard
-                quest={quest}
-                cardW={layout.cardW}
-                onOpen={() => setOpenQuest(quest)}
-              />
-            </div>
-          );
-        })}
+        <QuestLegend />
+
+        <div
+          className="scatter-board"
+          ref={boardRef}
+          style={{ height: `${layout.boardH}px` }}
+        >
+          {filtered.map((quest, index) => {
+            const pos = layout.positions[index];
+            return (
+              <div
+                key={quest.id}
+                className="scatter-item"
+                style={{
+                  left: `${pos.x}px`,
+                  top: `${pos.y}px`,
+                  width: `${layout.cardW}px`,
+                  transform: `rotate(${pos.rotation}deg)`,
+                }}
+              >
+                <QuestCard
+                  quest={quest}
+                  cardW={layout.cardW}
+                  onOpen={() => setOpenQuest(quest)}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <QuestModal quest={openQuest} onClose={() => setOpenQuest(null)} />

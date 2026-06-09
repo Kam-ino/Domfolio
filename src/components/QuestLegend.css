@@ -1,0 +1,140 @@
+/* src/components/QuestLegend.css */
+
+/* Pinned to the top-right of the board's full-bleed stage, level with the
+   left-hand tabs. z-index sits above the board (z-index: 2) so the dropdown
+   floats in front of the wood instead of pushing layout down. */
+.quest-legend {
+  position: absolute;
+  top: 0;
+  right: 28px; /* mirrors the tab labels' 28px left padding */
+  /* No z-index here on purpose: this stays z-index:auto so it does NOT create a
+     stacking context. That lets the trigger and the panel layer independently
+     around the board (trigger behind it, panel in front of it). */
+  font-family: "Spectral", serif;
+}
+
+/* Trigger styled like a folder tab so it reads as a sibling of the tabs */
+.quest-legend_trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  white-space: nowrap;
+  padding: 5px 20px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #4b2c16, #34200f);
+  color: #fff7df;
+  border: 3px solid #7a5a33;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  font-family: "IM Fell English SC", serif;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.quest-legend:hover .quest-legend_trigger,
+.quest-legend:focus-within .quest-legend_trigger {
+  background: linear-gradient(180deg, #5a3719, #3f2712);
+}
+
+.quest-legend_arrow {
+  font-size: 0.95rem;
+  transition: transform 0.25s ease;
+}
+.quest-legend:hover .quest-legend_arrow,
+.quest-legend:focus-within .quest-legend_arrow {
+  transform: rotate(90deg);
+}
+
+/* Floating dropdown panel — absolutely positioned so it never affects layout.
+   Hidden by default, revealed on hover/focus of the legend. */
+.quest-legend_panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 6; /* floats in front of the board (z-index: 2) when revealed */
+  width: 340px;
+  max-width: 80vw;
+  padding-top: 8px; /* transparent bridge keeps hover continuous */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.quest-legend:hover .quest-legend_panel,
+.quest-legend:focus-within .quest-legend_panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.quest-legend_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Parchment rows */
+.quest-legend_item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #fff8e6, #f3e4c6);
+  border: 2px solid #b89b6b;
+  border-left: 6px solid #7a5a33;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.quest-legend_icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.quest-legend_text {
+  display: flex;
+  flex-direction: column;
+}
+
+.quest-legend_title {
+  font-family: "IM Fell English SC", serif;
+  font-size: 1.05rem;
+  color: #4b2c16;
+  line-height: 1.2;
+}
+
+.quest-legend_sub {
+  font-size: 0.85rem;
+  color: #6b4b2a;
+}
+
+@media (max-width: 720px) {
+  .quest-legend {
+    right: 10px;
+  }
+  /* Icon-only on mobile so it stays compact and never overlaps the tabs */
+  .quest-legend_trigger {
+    padding: 5px 11px;
+    gap: 0;
+  }
+  .quest-legend_book {
+    font-size: 20px;
+  }
+  .quest-legend_label,
+  .quest-legend_arrow {
+    display: none;
+  }
+  .quest-legend_panel {
+    width: 250px;
+  }
+}

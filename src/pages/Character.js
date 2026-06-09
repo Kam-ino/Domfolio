@@ -188,12 +188,12 @@ function CharacterDesktop() {
     const skillCardH = 650;
 
     const stats = [
-        { file: 'Stat 1.png', label: 'STR' },
-        { file: 'Stat 2.png', label: 'DEX' },
-        { file: 'Stat 3.png', label: 'CON' },
-        { file: 'Stat 4.png', label: 'INT' },
-        { file: 'Stat 5.png', label: 'WIS' },
-        { file: 'Stat 6.png', label: 'CHA' },
+        { file: 'Stat 1.webp', label: 'STR' },
+        { file: 'Stat 2.webp', label: 'DEX' },
+        { file: 'Stat 3.webp', label: 'CON' },
+        { file: 'Stat 4.webp', label: 'INT' },
+        { file: 'Stat 5.webp', label: 'WIS' },
+        { file: 'Stat 6.webp', label: 'CHA' },
     ];
     
     const pics = [
@@ -201,7 +201,7 @@ function CharacterDesktop() {
         id: 1,
         content: (
             <div className="portrait">
-                <img src="./images/Poster (1).png" alt="Me 1"/>
+                <img src="./images/Poster (1).webp" alt="Me 1"/>
             </div>
         ),
         },
@@ -209,7 +209,7 @@ function CharacterDesktop() {
         id: 2,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (2).png" alt="Me 2"/>
+                <img src="/images/Poster (2).webp" alt="Me 2"/>
             </div>
         ),
         },
@@ -217,7 +217,7 @@ function CharacterDesktop() {
         id: 3,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (3).png" alt="Me 3"/>
+                <img src="/images/Poster (3).webp" alt="Me 3"/>
             </div>
         ),
         },
@@ -225,7 +225,7 @@ function CharacterDesktop() {
         id: 4,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (4).png" alt="Me 4"/>
+                <img src="/images/Poster (4).webp" alt="Me 4"/>
             </div>
         ),
         },
@@ -233,7 +233,7 @@ function CharacterDesktop() {
         id: 5,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (5).png" alt="Me 5"/>
+                <img src="/images/Poster (5).webp" alt="Me 5"/>
             </div>
         ),
         },
@@ -241,7 +241,7 @@ function CharacterDesktop() {
         id: 6,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (6).png" alt="Me 5"/>
+                <img src="/images/Poster (6).webp" alt="Me 5"/>
             </div>
         ),
         },
@@ -249,7 +249,7 @@ function CharacterDesktop() {
         id: 7,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (7).png" alt="Me 5"/>
+                <img src="/images/Poster (7).webp" alt="Me 5"/>
             </div>
         ),
         },
