@@ -22,23 +22,23 @@ function shuffle(arr) {
 export default function Game() {
   const baseEnemies = useMemo(
     () => [
-      { name: "Goblin", hp: 15, maxHp: 15, dice: 6, image: "/images/Goblin.png", isDead: false },
-      { name: "Orc", hp: 28, maxHp: 28, dice: 12, image: "/images/Orc.png", isDead: false },
-      { name: "Skeleton", hp: 12, maxHp: 12, dice: 10, image: "/images/Skeleton.png", isDead: false },
+      { name: "Goblin", hp: 15, maxHp: 15, dice: 6, image: "/images/Goblin.webp", isDead: false },
+      { name: "Orc", hp: 28, maxHp: 28, dice: 12, image: "/images/Orc.webp", isDead: false },
+      { name: "Skeleton", hp: 12, maxHp: 12, dice: 10, image: "/images/Skeleton.webp", isDead: false },
     ],
     []
   );
 
   const boss = useMemo(
-    () => ({ name: "Dragon", hp: 50, maxHp: 50, dice: 20, image: "/images/Dragon.png", isDead: false }),
+    () => ({ name: "Dragon", hp: 50, maxHp: 50, dice: 20, image: "/images/Dragon.webp", isDead: false }),
     []
   );
 
   const classes = useMemo(
     () => ({
-      Wizard: { hp: 35, image: "/images/CharacterSprite (1).png" },
-      Warrior: { hp: 60, image: "/images/CharacterSprite (2).png" },
-      Rogue: { hp: 50, image: "/images/CharacterSprite (3).png" },
+      Wizard: { hp: 35, image: "/images/CharacterSprite (1).webp" },
+      Warrior: { hp: 60, image: "/images/CharacterSprite (2).webp" },
+      Rogue: { hp: 50, image: "/images/CharacterSprite (3).webp" },
     }),
     []
   );

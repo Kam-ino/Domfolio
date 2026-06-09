@@ -2,7 +2,10 @@
    collide with anything else in the app. */
 .modal-masonry {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 8px;
+  /* room so edge tiles' shadows aren't clipped by the modal's overflow-y scroll
+     (overflow-y:auto forces overflow-x to clip) */
+  padding: 14px 18px 26px;
 }
 
 .modal-masonry-hint {
@@ -20,7 +23,9 @@
 .modal-masonry .item-wrapper {
   position: absolute;
   will-change: transform, width, height, opacity;
-  padding: 6px;
+  /* bigger gap than the shadow blur so a tile's shadow lands in the gap
+     instead of under (and covered by) the neighbouring tile */
+  padding: 11px;
   cursor: pointer;
   top: 0;
   left: 0;
@@ -37,8 +42,8 @@
      transparent badge shields cast a shadow that wraps their shape instead of
      a rectangular tile box. Opaque photos still get a soft rounded shadow. */
   filter:
-    drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35))
-    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+    drop-shadow(0 3px 5px rgba(0, 0, 0, 0.32))
+    drop-shadow(0 7px 13px rgba(0, 0, 0, 0.26));
 }
 
 .modal-masonry .color-overlay {

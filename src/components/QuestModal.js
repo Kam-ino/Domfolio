@@ -18,6 +18,22 @@ export default function QuestModal({ quest, onClose }) {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  // Lock background scrolling while the modal is open, so the wheel scrolls the
+  // modal (not the page behind it). Pad for the removed scrollbar to avoid a jump.
+  useEffect(() => {
+    if (!quest) return;
+    const { body, documentElement: html } = document;
+    const scrollbar = window.innerWidth - html.clientWidth;
+    const prevOverflow = body.style.overflow;
+    const prevPad = body.style.paddingRight;
+    body.style.overflow = "hidden";
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+    return () => {
+      body.style.overflow = prevOverflow;
+      body.style.paddingRight = prevPad;
+    };
+  }, [quest]);
+
   if (!quest) return null;
 
   const masonryItems =
@@ -26,13 +42,16 @@ export default function QuestModal({ quest, onClose }) {
       return { id: `${quest.id}-${i}`, img: src, url: src, height: 600 };
     }) ?? [];
 
-  return (
+  // Portaled to <body> so the fixed overlay is positioned against the real
+  // viewport, not the transformed Section ancestor (which would let the board
+  // behind it show through / move when scrolling).
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-parchment" onClick={(e) => e.stopPropagation()}>
 
         {/* Wax Seal = Close Button (stays outside the scroll area) */}
         <button className="modal-wax-button" onClick={onClose}>
-          <img src="/images/wax-seal.png" alt="close seal" className="wax-img" />
+          <img src="/images/wax-seal.webp" alt="close seal" className="wax-img" />
         </button>
 
         <div className="modal-scroll">
@@ -94,6 +113,7 @@ export default function QuestModal({ quest, onClose }) {
           <img src={hoverImg} alt="quest preview" className="quest-image-preview" />,
           document.body
         )}
-    </div>
+    </div>,
+    document.body
   );
 }

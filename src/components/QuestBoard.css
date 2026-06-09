@@ -274,21 +274,27 @@
   transform: scale(0.95);
 }
 
+/* The whole overlay scrolls (no inner scrollbar). It centers a short modal and
+   top-aligns + scrolls a tall one (safe center). */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.45);
-  display:flex;
-  justify-content:center;
-  align-items:center;
   z-index: 2000;
+  overflow-y: scroll;
+  overscroll-behavior-y: none;
+  display: grid;
+  justify-items: center;
+  align-content: safe start;
+  padding: 48px 16px 60px;
+  height: 100%;
+  scrollbar-width: none;
 }
+
+/* The modal grows to its full content height (no internal scroll/cap) */
 .modal-parchment {
   width: min(600px, calc(100vw - 36px));
   max-width: calc(100vw - 36px);
-  max-height: 88vh;
-  display: flex;
-  flex-direction: column;
   background: linear-gradient(180deg,#fff8e6,#f6ead0);
   border: 4px solid #7a5a33;
   border-radius: 12px;
@@ -296,14 +302,11 @@
   position: relative;
   box-shadow: 0 40px 120px rgba(0,0,0,0.6);
   animation: dropIn .28s ease;
+  margin-top: 60px;
 }
 
-/* Inner scroll so a tall modal stays on screen; the wax seal sits outside it. */
 .modal-scroll {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  padding-right: 4px;
+  width: 100%;
 }
 .modal-scroll::-webkit-scrollbar {
   width: 8px;

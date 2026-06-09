@@ -283,7 +283,8 @@ function CharacterDesktop() {
                     <div className="cformat">
                         <p className="cname">Dominic Santiago Guevarra</p>
                         <p className="ctext">Class & Level: Frontend Developer, Lvl 5</p>
-                        <p className="ctext">Land of Origin: Marikina City, Philippines</p>                       
+                        <p className="ctext">Land of Origin: Marikina City, Philippines</p>
+                        <p className="ctext">Bounty: 50,000</p>                       
                     </div>
                     <div className="cformat">
                         <p className="ctext">Background: Computer Engineering at Mapua University</p>

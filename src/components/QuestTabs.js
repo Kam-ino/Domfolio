@@ -2,7 +2,7 @@
 import React from "react";
 
 export default function QuestTabs({ active, setActive }) {
-  const tabs = ["Main", "Side", "Guild", "All"];
+  const tabs = ["Main", "Side", "Guild", "Forge", "All"];
 
   return (
     <div className="quest-tabbed">

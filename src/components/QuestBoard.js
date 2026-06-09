@@ -52,9 +52,14 @@ export default function QuestBoard() {
     return () => ro.disconnect();
   }, []);
 
+  // A quest's `type` may be a single string ("Main") or an array of strings
+  // (["Main", "Forge"]) so one quest can appear under multiple tabs.
+  const hasType = (q, tab) =>
+    Array.isArray(q.type) ? q.type.includes(tab) : q.type === tab;
+
   const filtered = useMemo(
     () =>
-      activeTab === "All" ? quests : quests.filter((q) => q.type === activeTab),
+      activeTab === "All" ? quests : quests.filter((q) => hasType(q, activeTab)),
     [activeTab]
   );
 
