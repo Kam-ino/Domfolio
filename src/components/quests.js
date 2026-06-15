@@ -35,7 +35,7 @@
             "Developing a Shopify Bundle App to enhance e-commerce performance and user experience."
         ],
         reward: "Intelligence +4, Dexterity +3, Automation Mastery +2, API Integration +1, Shopify Engineering +1",
-        images: [ "Wautomation.webp","Wmodel.webp","Winvoice.webp" ]
+        images: [ "Wautomation.webp","Wmodel.webp","Winvoice.webp", "LocAdsWIP.webp", "AdFactory1.webp", "AdFactory2.webp", "AdFactory3.webp", "LocAdsProcessing.webp", "EmailMaker.webp" ]
     },
 
     {
@@ -152,7 +152,7 @@
             "Custom alert messages powered by Google Gemini and localized to Thai, Vietnamese, and Filipino through Google Cloud Platform"
         ],
         reward: "AI Integration +6, Cloud Computing +2, Full Stack Development +5, Charisma(Marketing) +3",
-        images: [ "SEABeaconTop40.webp","SEABeaconDemo.webp","SEABeaconMeeting.webp", "SEABeaconLogo.webp", "certificate_Dominic_Santiago_Guevarra.webp" ]
+        images: [ "SEABeaconTop40.webp","SEABeaconDemo.webp","SEABeaconMeeting.webp", "SEABeaconLogo.webp", "certificate_Dominic_Santiago_Guevarra.webp", "SEABeaconTeam.webp" ]
     },
 
     // ====================================================================
@@ -306,6 +306,25 @@
         images: ["AdFactory1.webp","AdFactory2.webp","AdFactory3.webp"]
     },
 
+    {
+        id: "fp3",
+        title: "Forge of the Self-Sending Scrolls",
+        subtitle: "Full-Stack Developer (EmailMaker)",
+        type: "Forge",
+        difficulty: "B",
+        timeline: "June 2026 - Present",
+        details: [
+            "Built a full React + TypeScript web app that turns brand reference images into ready-to-send, Klaviyo-compatible email flows.",
+            "Used Google Cloud Vision to detect a reference layout's colors and sections, then auto-generated a library of styled, reusable email modules (hero, product, comparison, testimonial, USP banners, footer, and more).",
+            "Designed a drag-and-drop canvas with inline editing — inspired by level-creation games like Super Mario Maker, Dungeon Maker, and Fallout Shelter — for composing emails module by module.",
+            "Integrated Google's Nano Banana (Gemini) image model to swap in AI-generated imagery, and supported Klaviyo dynamic tags like {{ first_name }}.",
+            "Exported clean, table-based, inline-styled HTML that drops straight into Klaviyo, with a flow panel managing multi-email sequences (e.g. a 6-step welcome series with send timing).",
+            "Added a brand kit that instantly regenerates the entire series for any brand, discount code, and accent color.",
+
+        ],
+        reward: "Full-Stack Development +4, AI Imaging +2, Computer Vision +2, UX Design +2, Email Sorcery +2",
+        images: ["EmailMaker.webp"]
+    },
     ];
 
     export default quests;
