@@ -1,6 +1,7 @@
 /* GENERAL LAYOUT - full-bleed + centered (100vw minus 50px side margins),
    escaping the centered section container via the full-bleed margin trick. */
 .game {
+  position: relative; /* containing block for the dice overlay */
   height: 90vh;
   width: calc(100vw - 100px);
   margin: 20px 0 20px calc(50% - 50vw + 50px);
@@ -8,6 +9,40 @@
   border-radius: 16px;
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.45);
   overflow: hidden;
+}
+
+/* DICE ROLL OVERLAY — covers the whole game (not the whole page), like a
+   Baldur's Gate skill-check screen. Absolutely positioned against .game so it
+   sits in front of the battle while staying inside the wooden frame. */
+.dice-modal-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Dark backdrop shown over the game. The art itself is set via an inline
+     background-image in DiceModal.js (a runtime URL from /public) so a missing
+     file just 404s silently and this backdrop shows — instead of breaking the
+     build the way a CSS url() to a non-existent file would. */
+  background-color: rgba(0, 0, 0, 0.88);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: diceOverlayFade 0.25s ease;
+}
+
+@keyframes diceOverlayFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dice-modal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .game-background {
@@ -264,38 +299,100 @@
   }
 }
 
-/* ---- Phone layout ---- */
+/* ---- Phone layout: Game Boy style (battle screen on top, controls below) ---- */
 @media (max-width: 700px) {
   .game {
     width: calc(100vw - 32px);
     margin-left: calc(50% - 50vw + 16px);
     height: auto;
-    min-height: 86vh;
+    min-height: 0;
     border-width: 8px;
   }
   .game-background {
     height: auto;
-    min-height: 86vh;
+    min-height: 0;
+    padding: 12px;
+    align-items: stretch;
   }
+
+  /* Stack as a vertical handheld and reorder via flex `order` so the fight is
+     on top and the action choices are at the bottom (DOM order is log/abilities/fight). */
+  .game-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0;
+    padding: 0;
+    gap: 12px;
+  }
+
+  /* FIGHT = the "screen" at the very top. Enemy sits high-right, hero low-left
+     over the cave backdrop, like a classic handheld RPG battle. */
+  .fight {
+    order: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 10px;
+    padding: 16px 14px 18px;
+    min-height: 200px;
+    background: linear-gradient(180deg, rgba(10, 14, 12, 0.5), rgba(8, 12, 10, 0.8));
+    border: 3px solid #11140f;
+    border-radius: 12px;
+    box-shadow: inset 0 0 26px rgba(0, 0, 0, 0.7), 0 4px 0 rgba(0, 0, 0, 0.4);
+  }
+  .player-section,
+  .enemy-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .enemy-section { align-self: flex-start; } /* enemy up high */
+  .player-section { align-self: flex-end; }  /* hero down low */
+  .player-visual,
+  .enemy-visual { width: 116px; }
+  .fight .hp-bar { width: 110px; margin-top: 4px; }
+  .fight .name-label { font-size: 16px; margin: 2px 0 0; }
+
+  /* LOG = the battle text box, directly under the screen */
+  .log-box {
+    order: 2;
+    width: 100%;
+    min-height: 0;
+    height: 118px;
+    max-height: 118px;
+    font-size: 13px;
+    padding: 10px 12px;
+    border: 3px solid #11140f;
+  }
+
+  /* ACTION CHOICES = the controls, at the bottom */
+  .ability-grid {
+    order: 3;
+    width: 100%;
+    margin-top: 0;
+    gap: 10px;
+  }
+  .ability-btn {
+    font-size: 15px;
+    padding: 12px 8px;
+  }
+  .moveon-btn {
+    font-size: 22px;
+  }
+
+  /* class select screen */
   .class-select-screen {
     height: auto;
-    min-height: 82vh;
+    min-height: 60vh;
     padding: 28px 14px;
     gap: 22px;
   }
   .class-icon {
     width: 120px;
-  }
-  .game-layout {
-    width: 100%;
-    padding: 0 6px;
-  }
-  .ability-grid {
-    width: 100%;
-  }
-  .ability-btn {
-    font-size: 16px;
-    padding: 10px;
   }
 }
 

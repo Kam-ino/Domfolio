@@ -7,13 +7,13 @@ import QuestTabs from "./QuestTabs";
 import QuestLegend from "./QuestLegend";
 import "./QuestBoard.css";
 
-const BOARD_H = 1000; // px (matches .scatter-board height)
+const BOARD_H = 800; // px (matches .scatter-board height)
 const EDGE_PAD = 28; // keep scrolls off the wooden frame
 const MAX_OVERLAP = 0.2; // allow scrolls to overlap up to ~20%
 
 // Scroll width shrinks as more scrolls land on the board.
 function scrollWidth(n) {
-  const w = 360 - (n - 3) * 12;
+  const w = 360 - (n - 2) * 12;
   return Math.max(185, Math.min(360, Math.round(w)));
 }
 
@@ -73,21 +73,25 @@ export default function QuestBoard() {
     // Card width is count-based (like desktop) but capped to a share of the
     // board so on a narrow phone board the scrolls scale down and still
     // scatter (instead of stacking into one column).
-    const cardW = Math.min(scrollWidth(n), Math.round(width * (isNarrow ? 0.5 : 0.55)));
-    // Narrow cards wrap more text, so they're taller — estimate accordingly.
-    const cardH = Math.round(cardW * (isNarrow ? 1.5 : 1.2));
     const edge = Math.max(12, Math.min(EDGE_PAD, Math.round(width * 0.05)));
+    const maxOverlap = isNarrow ? 0.12 : MAX_OVERLAP;
 
-    // Allow less overlap on a narrow board so the scrolls don't pile up.
-    const maxOverlap = isNarrow ? 0.1 : MAX_OVERLAP;
-
-    // On a narrow board, grow it taller so the scrolls can spread out with the
-    // same low overlap as desktop instead of piling on top of each other.
-    let boardH = BOARD_H;
+    // The board height stays the SAME on every tab. On a narrow board we keep a
+    // fixed height and instead scale the scroll size to the count, so a busy tab
+    // packs tighter (smaller scrolls) without ever changing the board's size.
+    let cardW, cardH, boardH;
     if (isNarrow) {
-      const TARGET_FILL = 0.42; // scroll area / board area
-      const needed = Math.ceil((n * cardW * cardH) / (TARGET_FILL * width));
-      boardH = Math.min(3400, Math.max(BOARD_H, needed));
+      const NARROW_H = 800; // fixed phone board height (consistent per tab)
+      const RATIO = 1.4;     // narrow scrolls are taller (text wraps more)
+      const FILL = 0.5;      // target scroll-area / board-area
+      const ideal = Math.sqrt((FILL * width * NARROW_H) / (Math.max(1, n) * RATIO));
+      cardW = Math.round(Math.max(110, Math.min(width * 0.5, ideal)));
+      cardH = Math.round(cardW * RATIO);
+      boardH = NARROW_H;
+    } else {
+      cardW = Math.min(scrollWidth(n), Math.round(width * 0.55));
+      cardH = Math.round(cardW * 1.2);
+      boardH = BOARD_H;
     }
 
     const maxX = Math.max(0, width - cardW - edge * 2);

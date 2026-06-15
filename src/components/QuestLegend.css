@@ -124,7 +124,7 @@
   }
   /* Icon-only on mobile so it stays compact and never overlaps the tabs */
   .quest-legend_trigger {
-    padding: 5px 11px;
+    padding: 0px 11px;
     gap: 0;
   }
   .quest-legend_book {

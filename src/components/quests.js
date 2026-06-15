@@ -51,7 +51,7 @@
         "Improved cross-team collaboration between designers and backend."
         ],
         reward: "React Mastery +3, Cloud Literacy +2, Agile Adaptability +1",
-        images: [ "AWSCCLP.webp","AWSCCTeam.webp","AWSCCTeam (1).webp" ]
+        images: [ "AWSCCLP.webp","AWSCCTeam.webp","AWSCCTeamPage.webp" ]
     },
 
     {
@@ -152,7 +152,7 @@
             "Custom alert messages powered by Google Gemini and localized to Thai, Vietnamese, and Filipino through Google Cloud Platform"
         ],
         reward: "AI Integration +6, Cloud Computing +2, Full Stack Development +5, Charisma(Marketing) +3",
-        images: [ "SEABeaconTop40.webp","SEABeaconDemo.webp","SEABeaconMeeting.webp", "SEABeaconLogo.webp" ]
+        images: [ "SEABeaconTop40.webp","SEABeaconDemo.webp","SEABeaconMeeting.webp", "SEABeaconLogo.webp", "certificate_Dominic_Santiago_Guevarra.webp" ]
     },
 
     // ====================================================================
