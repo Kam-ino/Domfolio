@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -6,8 +6,12 @@ import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Character from "./pages/Character";
 import Adventures from "./pages/Adventures";
-import MiniDnDGame from "./components/Game";
 import TechStack from "./components/TechStack";
+
+// Code-split the Arena: it pulls in three.js / react-three-fiber for the 3D
+// dice, which is the heaviest part of the bundle. Loading it as a separate
+// chunk keeps the initial JS small so the rest of the page paints faster.
+const MiniDnDGame = lazy(() => import("./components/Game"));
 
 export default function App() {
   return (
@@ -54,7 +58,9 @@ export default function App() {
           title="The Arena"
           subtitle="Choose your class and try to slay the dragon - a little something I built for fun."
         >
-          <MiniDnDGame />
+          <Suspense fallback={<div style={{ minHeight: "60vh" }} />}>
+            <MiniDnDGame />
+          </Suspense>
         </Section>
       </main>
 

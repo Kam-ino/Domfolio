@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import D4 from "./dice/D4";
-import D6 from "./dice/D6";
-import D8 from "./dice/D8";
-import D10 from "./dice/D10";
-import D12 from "./dice/D12";
-import D20 from "./dice/D20";
+import React, { Suspense, lazy } from "react";
+// Lazy-loaded (three.js) — shares the dice chunk with the Character section.
+const D4 = lazy(() => import("./dice/D4"));
+const D6 = lazy(() => import("./dice/D6"));
+const D8 = lazy(() => import("./dice/D8"));
+const D10 = lazy(() => import("./dice/D10"));
+const D12 = lazy(() => import("./dice/D12"));
+const D20 = lazy(() => import("./dice/D20"));
 
 export default function DiceModal({ diceSides, onRollComplete, ability }) {
   const diceMap = {
@@ -34,9 +35,11 @@ export default function DiceModal({ diceSides, onRollComplete, ability }) {
       style={{ backgroundImage: "url('/images/dice-bg.webp')" }}
     >
       <div className="dice-modal-container">
-        <DiceComponent
-          onRollComplete={(value) => handleRollComplete(value, ability)}
-        />
+        <Suspense fallback={null}>
+          <DiceComponent
+            onRollComplete={(value) => handleRollComplete(value, ability)}
+          />
+        </Suspense>
       </div>
     </div>
   );

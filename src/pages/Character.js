@@ -1,13 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
 import "./Character.css"
 import Collapsible from "../components/Collapsible";
 import Stack from "../components/CardStack";
-import D4 from "../components/dice/D4";
-import D6 from "../components/dice/D6";
-import D8 from "../components/dice/D8";
-import D10 from "../components/dice/D10";
-import D12 from "../components/dice/D12";
-import D20 from "../components/dice/D20";
+// Lazy-loaded: the 3D dice pull in three.js. Splitting them into an on-demand
+// chunk keeps three.js out of the initial bundle.
+const D4 = lazy(() => import("../components/dice/D4"));
+const D6 = lazy(() => import("../components/dice/D6"));
+const D8 = lazy(() => import("../components/dice/D8"));
+const D10 = lazy(() => import("../components/dice/D10"));
+const D12 = lazy(() => import("../components/dice/D12"));
+const D20 = lazy(() => import("../components/dice/D20"));
 
 // Measure an element's width so the (fixed-size) card stacks can be sized to
 // fit their column on any screen instead of overflowing on narrow ones.
@@ -201,7 +203,7 @@ function CharacterDesktop() {
         id: 1,
         content: (
             <div className="portrait">
-                <img src="./images/Poster (1).webp" alt="Me 1"/>
+                <img src="./images/Poster (1).webp" alt="Me 1" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -209,7 +211,7 @@ function CharacterDesktop() {
         id: 2,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (2).webp" alt="Me 2"/>
+                <img src="/images/Poster (2).webp" alt="Me 2" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -217,7 +219,7 @@ function CharacterDesktop() {
         id: 3,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (3).webp" alt="Me 3"/>
+                <img src="/images/Poster (3).webp" alt="Me 3" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -225,7 +227,7 @@ function CharacterDesktop() {
         id: 4,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (4).webp" alt="Me 4"/>
+                <img src="/images/Poster (4).webp" alt="Me 4" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -233,7 +235,7 @@ function CharacterDesktop() {
         id: 5,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (5).webp" alt="Me 5"/>
+                <img src="/images/Poster (5).webp" alt="Me 5" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -241,7 +243,7 @@ function CharacterDesktop() {
         id: 6,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (6).webp" alt="Me 5"/>
+                <img src="/images/Poster (6).webp" alt="Me 5" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -249,7 +251,7 @@ function CharacterDesktop() {
         id: 7,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (7).webp" alt="Me 5"/>
+                <img src="/images/Poster (7).webp" alt="Me 5" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -303,6 +305,8 @@ function CharacterDesktop() {
                         src={`/images/${stat.file}`} // Adjust path if needed
                         alt={stat.label}
                         className="stat-img"
+                        loading="lazy"
+                        decoding="async"
                     />
                     <p className="stat-label">{stat.label}</p>
                     </div>
@@ -373,12 +377,14 @@ function CharacterDesktop() {
             </div>
 
             <div className="dice-case">
+                <Suspense fallback={null}>
                 <D4 bounce={false} />
                 <D6 bounce={false} />
                 <D8 bounce={false} />
                 <D10 bounce={false} />
                 <D12 bounce={false} />
                 <D20 bounce={false} />
+                </Suspense>
             </div>
         </div>
     );

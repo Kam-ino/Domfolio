@@ -610,7 +610,7 @@ export default function Game() {
           <div className="class-buttons">
             {Object.keys(classes).map((cls) => (
               <button key={cls} onClick={() => startGame(cls)}>
-                <img src={classes[cls].image} alt="" className="class-icon" />
+                <img src={classes[cls].image} alt="" className="class-icon" loading="lazy" decoding="async" />
                 <span style={{ fontFamily: "IM Fell English SC", fontSize: "25px" }}>{cls}</span>
               </button>
             ))}
