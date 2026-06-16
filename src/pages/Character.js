@@ -67,18 +67,6 @@ const SKILL_CARDS = [
                     "Marketing Strategy Generation"
                 ],
             },
-            {
-                heading: "Tools & Technical Proficiencies",
-                items: [
-                    "AWS Cloud Foundations",
-                    "AWS Machine Learning Foundations",
-                    "Google Cloud Platform / Gemini Integration",
-                    "SQL / NoSQL / Postgress / GraphQL Databases",
-                    "JSON / API Handling",
-                    "Postman, Replit, Glitch, VS Code",
-                    "Vercel / Render Deployment"
-                ],
-            },
         ],
     },
     {
@@ -117,17 +105,8 @@ const SKILL_CARDS = [
     },
     {
         id: 3,
-        title: "Equipment",
+        title: "Guild Licenses",
         sections: [
-            {
-                heading: "Weapon (Laptop)",
-                items: [
-                    "Intel Core i7",
-                    "32GB RAM",
-                    "NVIDIA GeForce RTX 5060 GPU",
-                    "2TB Storage",
-                ],
-            },
             {
                 heading: "Scrolls (Certifications)",
                 items: [
@@ -148,8 +127,17 @@ const SKILL_CARDS = [
     },
     {
         id: 4,
-        title: "Mastery",
+        title: "Weapon & Weapon Skills",
         sections: [
+            {
+                heading: "Weapon (Laptop)",
+                items: [
+                    "Intel Core i7",
+                    "32GB RAM",
+                    "NVIDIA GeForce RTX 5060 GPU",
+                    "2TB Storage",
+                ],
+            },
             {
                 heading: "Weapon Proficiencies",
                 items: [
@@ -167,6 +155,27 @@ const SKILL_CARDS = [
             },
         ],
     },
+    {
+        id: 5,
+        title: "Mastery",
+        sections: [
+            {
+                heading: "Tools & Technical Proficiencies",
+                items: [
+                    "AWS Cloud Foundations",
+                    "AWS Machine Learning Foundations",
+                    "Google Cloud Platform / Gemini Integration",
+                    "SQL / NoSQL / Postgress / GraphQL Databases",
+                    "JSON / API Handling",
+                    "Postman, Replit, Glitch, VS Code",
+                    "Vercel / Render Deployment",
+                    "Claude Code / Magnific / Gemini",
+                    "Nano Banana / Seedance / Grok"
+                ],
+            },
+        ],
+    },
+                
 ];
 
 function CharacterDesktop() {
