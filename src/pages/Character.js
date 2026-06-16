@@ -153,7 +153,6 @@ const SKILL_CARDS = [
                     "Lvl 5: React.js / Next.js (Quick, elegant front-end builds)",
                     "Lvl 5: JavaScript / TypeScript (Fluent in modern scripting magic)",
                     "Lvl 2: Node.js / Python (Backend and API wizardry)",
-                    "Lvl 5: HTML5 / CSS3 (Visual alchemy and layout spells)",
                     "Lvl 4: Git / GitHub / CLI (Battle-ready with version control)",
                     "Lvl 3: MySQL / MongoDB / Supabase (Keeper of relational and document archives)",
                     "Lvl 3: Data Structures / Algorithms (Mastery of computational tactics)",
