@@ -1,6 +1,7 @@
 .stack-container {
   position: relative;
   perspective: 600px;
+  min-width: 300px;
 }
 
 .card {

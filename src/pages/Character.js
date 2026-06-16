@@ -116,7 +116,6 @@ const SKILL_CARDS = [
                     "AWS Academy Cloud Foundations",
                     "Introduction to Generative AI and Prompt Engineering",
                     "Applied Machine Learning in Python",
-                    "Applied Plotting, Charting and Data Representation in Python",
                     "Cisco Introduction to Cybersecurity",
                     "CCNA: Switching, Routing, and Wireless Essentials",
                     "CCNA: Introduction to Networks",
