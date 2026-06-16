@@ -105,8 +105,17 @@ const SKILL_CARDS = [
     },
     {
         id: 3,
-        title: "Guild Licenses",
+        title: "Equipment",
         sections: [
+            {
+                heading: "Weapon (Laptop)",
+                items: [
+                    "Intel Core i7",
+                    "32GB RAM",
+                    "NVIDIA GeForce RTX 5060 GPU",
+                    "2TB Storage",
+                ],
+            },
             {
                 heading: "Scrolls (Certifications)",
                 items: [
@@ -116,6 +125,7 @@ const SKILL_CARDS = [
                     "AWS Academy Cloud Foundations",
                     "Introduction to Generative AI and Prompt Engineering",
                     "Applied Machine Learning in Python",
+                    "Applied Plotting, Charting and Data Representation in Python",
                     "Cisco Introduction to Cybersecurity",
                     "CCNA: Switching, Routing, and Wireless Essentials",
                     "CCNA: Introduction to Networks",
@@ -126,7 +136,7 @@ const SKILL_CARDS = [
     },
     {
         id: 4,
-        title: "Weapon & Weapon Skills",
+        title: "Mastery",
         sections: [
             {
                 heading: "Weapon (Laptop)",
@@ -143,9 +153,11 @@ const SKILL_CARDS = [
                     "Lvl 5: React.js / Next.js (Quick, elegant front-end builds)",
                     "Lvl 5: JavaScript / TypeScript (Fluent in modern scripting magic)",
                     "Lvl 2: Node.js / Python (Backend and API wizardry)",
+                    "Lvl 5: HTML5 / CSS3 (Visual alchemy and layout spells)",
                     "Lvl 4: Git / GitHub / CLI (Battle-ready with version control)",
                     "Lvl 3: MySQL / MongoDB / Supabase (Keeper of relational and document archives)",
                     "Lvl 3: Data Structures / Algorithms (Mastery of computational tactics)",
+                    "Lvl 5: Component-based Design (Crafts interfaces with user empathy)",
                     "Lvl 5: Debugging & Optimization (Hunts bugs with precision)",
                     "Lvl 3: Agile Development (Navigates projects through iterative quests)",
                 ],
