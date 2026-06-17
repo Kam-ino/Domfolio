@@ -1,7 +1,6 @@
 .stack-container {
   position: relative;
   perspective: 600px;
-  min-width: 300px;
 }
 
 .card {
@@ -24,4 +23,10 @@
   width: fit-content;
   height: fit-content;
   object-fit: cover;
+}
+
+@media (max-width: 960px) {
+  .stack-container {
+    min-width: 300px;
+  }
 }
