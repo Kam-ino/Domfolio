@@ -1,6 +1,5 @@
 /* src/QuestBoard.css */
-/* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Spectral:wght@300;400;600;700&display=swap");
+/* Fonts are loaded once in public/index.html (preconnect + single stylesheet). */
 
 .qb-root {
   font-family: "Spectral", serif;
@@ -24,6 +23,8 @@
   height: 800px;
   /* No top margin so the folder tabs sit on the board's edge; 50px below */
   margin: 0 0 50px 0;
+  /* Resolved at build time by css-loader against the project root, so the
+     leading /public is correct here (this is NOT a runtime HTTP path). */
   background: url("/public/wood-texture.png");
   background-size: cover;
   border: 12px solid #5a3b22;
@@ -332,9 +333,31 @@
 .modal-time { color:#6b4b2a; font-size:13px; margin-bottom:12px; }
 .modal-details ul { padding-left:18px; color:#3b2413; }
 .modal-reward { margin-top:12px; font-weight:700; color:#3b2413; }
-.modal-actions { margin-top:18px; display:flex; gap:12px; }
-.btn { padding:10px 14px; background:#4b2c16; color:#fff8dc; border-radius:8px; text-decoration:none; }
+.modal-actions { margin-top:18px; display:flex; flex-wrap:wrap; gap:12px; }
+/* Works for both <a class="btn"> and <button class="btn"> so the CTA row is
+   visually consistent regardless of element type. */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:12px 16px;
+  min-height:44px; /* comfortable touch target on mobile */
+  background:#4b2c16;
+  border:2px solid #4b2c16;
+  color:#fff8dc;
+  border-radius:8px;
+  text-decoration:none;
+  font-family:"IM Fell English SC", serif;
+  font-size:1rem;
+  line-height:1;
+  cursor:pointer;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
 .btn.ghost { background: transparent; border:2px solid #4b2c16; color:#4b2c16; }
+.btn.ghost:hover { background: rgba(75,44,22,0.08); }
+.btn:focus-visible { outline: 3px solid #f1d79a; outline-offset: 2px; }
 
 .modal-wax-button {
   --seal: clamp(52px, 11vw, 100px); /* responsive seal size */
@@ -351,6 +374,12 @@
 
 .modal-wax-button:hover {
   transform: scale(0.90) rotate(1deg);
+}
+
+.modal-wax-button:focus-visible {
+  outline: 3px solid #f1d79a;
+  outline-offset: 4px;
+  border-radius: 50%;
 }
 
 .wax-img {

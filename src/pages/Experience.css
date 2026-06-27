@@ -1,5 +1,4 @@
-/* Fonts: add to index.html or import via CSS as shown */
-@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Spectral:wght@300;400;600;700&display=swap");
+/* Fonts are loaded once in public/index.html (preconnect + single stylesheet). */
 
 /* Root page background (parchment) */
 body {

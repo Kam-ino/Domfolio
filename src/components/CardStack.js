@@ -38,7 +38,11 @@ export default function Stack({
   cardDimensions = { width: 500, height: 500 },
   cardsData = [],
   animationConfig = { stiffness: 260, damping: 20 },
-  sendToBackOnClick = false
+  sendToBackOnClick = false,
+  // When true, cards are sized to their own content height (the container grows
+  // to the tallest) instead of all sharing cardDimensions.height. Used by the
+  // skill stack so each card hugs its content.
+  adaptiveHeight = false
 }) {
   const [cards, setCards] = useState(
     cardsData.length
@@ -63,10 +67,10 @@ export default function Stack({
 
   return (
     <div
-      className="stack-container"
+      className={`stack-container${adaptiveHeight ? " stack-container--adaptive" : ""}`}
       style={{
         width: cardDimensions.width,
-        height: cardDimensions.height,
+        height: adaptiveHeight ? undefined : cardDimensions.height,
         perspective: 600
       }}
     >
@@ -91,7 +95,7 @@ export default function Stack({
                 }}
                 style={{
                     width: cardDimensions.width,
-                    height: cardDimensions.height,
+                    height: adaptiveHeight ? undefined : cardDimensions.height,
                 }}
                 >
                 <div className="card-content">{card.content}</div>

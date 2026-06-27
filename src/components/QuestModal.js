@@ -4,6 +4,12 @@ import { createPortal } from "react-dom";
 import Masonry from "./Masonry";
 import "./QuestBoard.css";
 
+// Real, working résumé link (the same one the footer uses). The previous
+// "Download CV" button pointed at a local file:/// path that only resolved on
+// the author's machine.
+const RESUME_URL =
+  "https://drive.google.com/file/d/16SPsT7gw2MgRJkKQ3aOUJpnngh_EEcCw/view?usp=sharing";
+
 export default function QuestModal({ quest, onClose }) {
   // Hovered image -> centered enlarge preview (desktop only; touch has no hover)
   const [hoverImg, setHoverImg] = useState(null);
@@ -50,8 +56,13 @@ export default function QuestModal({ quest, onClose }) {
       <div className="modal-parchment" onClick={(e) => e.stopPropagation()}>
 
         {/* Wax Seal = Close Button (stays outside the scroll area) */}
-        <button className="modal-wax-button" onClick={onClose}>
-          <img src="/images/wax-seal.webp" alt="close seal" className="wax-img" />
+        <button className="modal-wax-button" onClick={onClose} aria-label="Close">
+          <img
+            src="/images/wax-seal.webp"
+            alt=""
+            aria-hidden="true"
+            className="wax-img"
+          />
         </button>
 
         <div className="modal-scroll">
@@ -91,15 +102,51 @@ export default function QuestModal({ quest, onClose }) {
           </div>
 
           <div className="modal-actions">
-            <a className="btn" href="/#">View Project</a>
+            {/* Only shown when the quest declares a real link (see quests.js).
+                Proprietary client work simply omits these. */}
+            {quest.liveUrl && (
+              <a
+                className="btn"
+                href={quest.liveUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span aria-hidden="true">⚔️</span> Visit the Realm
+              </a>
+            )}
+            {quest.repoUrl && (
+              <a
+                className="btn ghost"
+                href={quest.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span aria-hidden="true">🗡️</span> Read the Source
+              </a>
+            )}
             <a
               className="btn ghost"
-              href="file:///mnt/data/Dominic Santiago Guevarra CV (1).pdf"
+              href={RESUME_URL}
               target="_blank"
               rel="noreferrer"
             >
-              Download CV
+              <span aria-hidden="true">📜</span> Download CV
             </a>
+            <button
+              type="button"
+              className="btn"
+              onClick={() => {
+                onClose();
+                // Let the modal unmount before scrolling to the contact section.
+                requestAnimationFrame(() =>
+                  document
+                    .getElementById("contact")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                );
+              }}
+            >
+              <span aria-hidden="true">✉️</span> Send a Raven
+            </button>
           </div>
         </div>
       </div>
@@ -110,7 +157,7 @@ export default function QuestModal({ quest, onClose }) {
       {!isMobile &&
         hoverImg &&
         createPortal(
-          <img src={hoverImg} alt="quest preview" className="quest-image-preview" />,
+          <img src={hoverImg} alt="" className="quest-image-preview" />,
           document.body
         )}
     </div>,

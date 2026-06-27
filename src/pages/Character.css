@@ -189,17 +189,23 @@
   border-radius: 8px;
 }
 
-/* The card image wrapper is fit-content by default; for skill cards make it
-   fill the fixed card box so the card is the full 400 x 800. */
+/* The skill card is content-sized; let its wrapper wrap it without forcing a
+   height (the card's own height is managed in JS). */
 .skills .card-content {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
-/* ---- Skill cards (skills stack) ---- */
+/* ---- Skill cards (skills stack) ----
+   Height is set per-card in Character.js: it adapts to the content but is
+   floored at max(500px, 2 x width) — i.e. a minimum 1:2 aspect ratio. When the
+   content is shorter than that floor, JS scales the typography up via
+   --skill-scale so the card fills instead of leaving empty space. Every size
+   below is em-based so that single scale drives the whole card together. */
 .skill-card {
+  --skill-scale: 1;
   width: 100%;
-  height: 100%;
+  min-height: 500px; /* fallback floor before JS measures/sizes the card */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -209,70 +215,62 @@
   box-shadow:
     0 10px 22px rgba(0, 0, 0, 0.28),
     inset 0 0 22px rgba(120, 90, 40, 0.12);
-  padding: 18px 20px 14px;
+  padding: 1.1em 1.25em 0.9em;
   color: #3b2413;
   font-family: "IM Fell English SC", serif;
+  font-size: calc(16px * var(--skill-scale));
   overflow: hidden;
 }
 
 .skill-card-title {
   flex: 0 0 auto;
-  margin: 0 0 10px;
-  padding-bottom: 8px;
+  margin: 0 0 0.5em;
+  padding-bottom: 0.35em;
   text-align: center;
-  font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+  font-size: 1.5em;
   color: #4b2c16;
   border-bottom: 2px solid #b89b6b;
 }
 
-/* Scrollable body so dense cards (certs, mastery) don't get clipped. The card
-   background/title stay draggable (pointer-events:none); the body re-enables
-   pointer events so you can scroll it. */
+/* Body fills the remaining card height. Content is scaled (via --skill-scale) to
+   fit without scrolling; the rare card too dense to fit grows the whole card
+   instead. Centered so any residual slack is matted top & bottom. */
 .skill-card-body {
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
+  overflow: hidden;
   pointer-events: auto;
-  padding-right: 4px;
-}
-
-.skill-card-body::-webkit-scrollbar {
-  width: 7px;
-}
-.skill-card-body::-webkit-scrollbar-thumb {
-  background: rgba(122, 90, 51, 0.45);
-  border-radius: 6px;
-}
-
-.skill-section + .skill-section {
-  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: 0.7em;
 }
 
 .skill-section-heading {
-  margin: 0 0 6px;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  margin: 0 0 0.35em;
+  font-size: 1.12em;
   color: #6a4318;
 }
 
 .skill-card-list {
   margin: 0;
-  padding: 0 2px 0 22px;
+  padding: 0 0.2em 0 1.4em;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.4em;
 }
 
 .skill-card-list li {
   position: relative;
-  font-size: clamp(0.82rem, 1.2vw, 1rem);
-  line-height: 1.28;
+  font-size: 0.98em;
+  line-height: 1.3;
 }
 
 .skill-card-list li::before {
   content: "⚔";
   position: absolute;
-  left: -20px;
+  left: -1.1em;
   color: #8b5a2b;
   font-size: 0.8em;
 }
@@ -434,10 +432,10 @@
     flex-direction: column;
   }
 
-  .skill-card {
-    height: 500px;
-  }
-  
+  /* .skill-card keeps height:100% here so it fills its (portrait) card box —
+     the card box height is sized proportionally in Character.js so it no longer
+     renders square. */
+
   .saving{
     margin-top: 150px;
   }

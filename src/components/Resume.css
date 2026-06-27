@@ -1,0 +1,248 @@
+.resume {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* ---- Toolbar: contact line + download CTA ---- */
+.resume-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(1.2rem, 3vw, 2rem);
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed rgba(122, 90, 51, 0.4);
+}
+
+.resume-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--c-ink-soft);
+}
+.resume-contact a {
+  color: var(--c-wood-dark);
+  text-decoration: none;
+}
+.resume-contact a:hover {
+  text-decoration: underline;
+}
+
+/* Gold "decree" download button (matches the hero primary CTA) */
+.resume-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  padding: 0.7rem 1.4rem;
+  min-height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 2px solid var(--c-wood);
+  background: linear-gradient(180deg, var(--c-gold), var(--c-gold-deep));
+  color: var(--c-ink);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.resume-download:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4), var(--glow-gold);
+}
+.resume-download:focus-visible {
+  outline: 3px solid var(--c-gold-deep);
+  outline-offset: 3px;
+}
+
+/* ---- Two-column layout: campaign log + sidebar ---- */
+.resume-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(1rem, 2.5vw, 1.6rem);
+  align-items: start;
+}
+
+.resume-main,
+.resume-aside {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 1.6rem);
+  min-width: 0;
+}
+
+/* ---- Parchment panel (shared) ---- */
+.resume-panel {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 223, 0.96),
+    rgba(242, 227, 189, 0.96)
+  );
+  border: 3px solid var(--c-wood);
+  border-radius: var(--r-md);
+  box-shadow: var(--emboss), 0 6px 16px rgba(30, 20, 10, 0.25);
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+}
+
+.resume-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--c-wood);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+  color: var(--c-wood-dark);
+}
+.resume-panel-icon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.resume-summary p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.65;
+  color: var(--c-ink-soft);
+}
+
+/* ---- Experience timeline ---- */
+.resume-exp {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+.resume-exp-item {
+  position: relative;
+  padding-left: 1.35rem;
+  border-left: 2px solid rgba(122, 90, 51, 0.45);
+}
+.resume-exp-item::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 0.35rem;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  border: 2px solid var(--c-wood-dark);
+  box-shadow: 0 0 6px rgba(230, 185, 79, 0.5);
+}
+.resume-exp-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.3rem 0.75rem;
+}
+.resume-role {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--c-wood-dark);
+}
+.resume-date {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--c-ink-muted);
+  white-space: nowrap;
+}
+.resume-exp ul {
+  margin: 0.55rem 0 0;
+  padding: 0 0 0 1.2rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.resume-exp ul li {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 0.97rem;
+  line-height: 1.5;
+  color: var(--c-ink-soft);
+}
+.resume-exp ul li::before {
+  content: "⚔";
+  position: absolute;
+  left: -1.2rem;
+  top: 0.1em;
+  font-size: 0.78em;
+  color: var(--c-wood);
+}
+
+/* ---- Skills ---- */
+.resume-skill + .resume-skill {
+  margin-top: 0.85rem;
+}
+.resume-skill-label {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  color: var(--c-wood-dark);
+  margin-bottom: 0.15rem;
+}
+.resume-skill-items {
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--c-ink-soft);
+}
+
+/* ---- Education ---- */
+.resume-edu-degree {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  color: var(--c-wood-dark);
+}
+.resume-edu-school {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--c-ink-muted);
+  margin-bottom: 0.6rem;
+}
+
+/* ---- Shared bullet lists (education notes, certificates) ---- */
+.resume-bullets {
+  margin: 0;
+  padding: 0 0 0 1.2rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.resume-bullets li {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--c-ink-soft);
+}
+.resume-bullets li::before {
+  content: "✦";
+  position: absolute;
+  left: -1.2rem;
+  top: 0.05em;
+  color: var(--c-gold-deep);
+  font-size: 0.85em;
+}
+
+/* ---- Bottom CTA ---- */
+.resume-cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+@media (max-width: 860px) {
+  .resume-grid {
+    grid-template-columns: 1fr;
+  }
+}
