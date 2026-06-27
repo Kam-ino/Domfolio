@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect, Suspense, lazy } from "react";
 import "./Character.css"
 import Collapsible from "../components/Collapsible";
 import Stack from "../components/CardStack";
@@ -37,11 +37,91 @@ function fitCardWidth(base, w) {
     return Math.max(160, Math.min(base, target));
 }
 
-// Vertical space a fanned stack needs: the card height (width * aspect) plus
-// headroom for the rotated cards that fan up and out, so it never overlaps the
-// panels above/below it.
-function stackReserve(cardW, aspect) {
-    return Math.round(cardW * aspect + cardW * 0.7);
+// Sizes a single skill card to its content with a minimum 1:2 aspect ratio and
+// a 500px floor. If the content is shorter than that floor, the card stays at
+// the floor and the typography is scaled up (via the --skill-scale CSS variable)
+// so it fills the card instead of leaving empty space. If the content is taller,
+// the card grows to fit it (no scrolling).
+function useFitSkillCard(cardRef, bodyRef, width) {
+  useLayoutEffect(() => {
+    const card = cardRef.current;
+    const body = bodyRef.current;
+    if (!card || !body) return;
+    let raf = 0;
+
+    const fit = () => {
+      card.style.setProperty("--skill-scale", "1");
+      card.style.height = "auto";
+      card.style.minHeight = "0"; // measure true content height (CSS floors at 500)
+
+      const w = card.offsetWidth || width || 400;
+      const floor = Math.max(500, Math.round(w * 2)); // min 500px, min 1:2 aspect
+      const natural = card.offsetHeight;
+
+      if (natural >= floor) {
+        // Content already exceeds the floor — grow the card to fit it.
+        card.style.height = `${natural}px`;
+        return;
+      }
+
+      // Lock to the floor and scale the type up until the content fills it.
+      card.style.height = `${floor}px`;
+      if (body.clientHeight <= 0) return;
+      let lo = 1, hi = 1.9, best = 1;
+      for (let i = 0; i < 10; i++) {
+        const mid = (lo + hi) / 2;
+        card.style.setProperty("--skill-scale", String(mid));
+        // Re-read clientHeight each pass: the title scales too, changing the
+        // body's available height.
+        if (body.scrollHeight <= body.clientHeight) {
+          best = mid;
+          lo = mid;
+        } else {
+          hi = mid;
+        }
+      }
+      card.style.setProperty("--skill-scale", best.toFixed(3));
+    };
+
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(fit);
+    };
+
+    fit();
+    window.addEventListener("resize", schedule);
+    // The display webfont changes text metrics once loaded — re-fit then.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(schedule).catch(() => {});
+    }
+    return () => {
+      window.removeEventListener("resize", schedule);
+      cancelAnimationFrame(raf);
+    };
+  }, [cardRef, bodyRef, width]);
+}
+
+function SkillCard({ card, width }) {
+  const cardRef = useRef(null);
+  const bodyRef = useRef(null);
+  useFitSkillCard(cardRef, bodyRef, width);
+  return (
+    <div className="skill-card" ref={cardRef}>
+      <h4 className="skill-card-title">{card.title}</h4>
+      <div className="skill-card-body" ref={bodyRef}>
+        {card.sections.map((sec, si) => (
+          <div className="skill-section" key={si}>
+            <h5 className="skill-section-heading">{sec.heading}</h5>
+            <ul className="skill-card-list">
+              {sec.items.map((item, ii) => (
+                <li key={ii}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // ---- Skill cards (shown in the "skills" stack) ----
@@ -139,15 +219,6 @@ const SKILL_CARDS = [
         title: "Mastery",
         sections: [
             {
-                heading: "Weapon (Laptop)",
-                items: [
-                    "Intel Core i7",
-                    "32GB RAM",
-                    "NVIDIA GeForce RTX 5060 GPU",
-                    "2TB Storage",
-                ],
-            },
-            {
                 heading: "Weapon Proficiencies",
                 items: [
                     "Lvl 5: React.js / Next.js (Quick, elegant front-end builds)",
@@ -204,7 +275,11 @@ function CharacterDesktop() {
         return () => mq.removeEventListener("change", update);
     }, []);
     const skillCardW = narrow ? fitCardWidth(500, skillsW) : 400;
-    const skillCardH = 650;
+    // Portrait, but sized to hug the typical card's content so short cards
+    // aren't mostly empty. The stack is uniform-height, so the densest cards
+    // (e.g. the cert list) still scroll their body; the rest fit. ~1.25 ratio
+    // on narrow, a trimmer 600 on desktop (was a too-tall 650).
+    const skillCardH = narrow ? Math.round(skillCardW * 1.25) : 600;
 
     const stats = [
         { file: 'Stat 1.webp', label: 'STR' },
@@ -274,25 +349,10 @@ function CharacterDesktop() {
         },
     ]
     // Text cards built from the SKILL_CARDS data above (edit that array in code).
+    // Each card sizes itself to its content (see SkillCard / useFitSkillCard).
     const cardsData = SKILL_CARDS.map((card) => ({
         id: card.id,
-        content: (
-            <div className="skill-card">
-                <h4 className="skill-card-title">{card.title}</h4>
-                <div className="skill-card-body">
-                    {card.sections.map((sec, si) => (
-                        <div className="skill-section" key={si}>
-                            <h5 className="skill-section-heading">{sec.heading}</h5>
-                            <ul className="skill-card-list">
-                                {sec.items.map((item, ii) => (
-                                    <li key={ii}>{item}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        ),
+        content: <SkillCard card={card} width={skillCardW} />,
     }));
 
     return (
@@ -339,9 +399,9 @@ function CharacterDesktop() {
             <div className="summary-box">
                 <div className="summary-format">
                     <h1>Summary:</h1>
-                    <p className="summary-text" >“I am a Computer Engineering undergraduate with hands-on experience in full stack and frontend development using React, JavaScript, and Node.js. From my university and organization projects, I gained strong foundations in programming, system design, and problem solving, which I am eager to apply in real-world projects. I am looking for an opportunity to work in a collaborative environment where I can continue to grow and sharpen my technical skills while contributing to meaningful applications. My goal is to grow into a well-rounded developer who delivers efficient, user-focused solutions while learning from experienced professionals."</p>
-                    <p className="summary-text" style={{marginTop:"10px"}}>Alignment: Neutral Good – always striving to improve code and collaborate fairly.</p>
-                    <p className="summary-text" style={{marginTop:"10px"}}>Special Trait: “Design Adaptation” – gains +2 bonus to Implementing Designs into Code.</p>
+                    <p className="summary-text" >Hailing from the city-state of Marikina, Dominic Santiago Guevarra is a full-stack artificer equally at home in two realms — the radiant kingdom of Reactoria, where he shapes living interfaces from React crystals, and the smoldering Forge of Nodeheim, where he bends servers and APIs to his will. Of late he has taken to summoning tireless constructs — automations that greet merchants' patrons, mend broken checkouts, and spin marketing scrolls through the night — and to fortifying the grand bazaars of commerce until their coffers overflow. Fluent in Elvish (JavaScript &amp; TypeScript) and Dwarvish (Python), and counseled by arcane oracles that quicken his craft, he wanders ever onward in search of the next worthy quest.</p>
+                    <p className="summary-text" style={{marginTop:"10px", color:"#8A9A5B"}}>Alignment: Neutral Good – always striving to improve code and collaborate fairly.</p>
+                    <p className="summary-text" style={{marginTop:"10px", color:"#0F52BA"}}>Special Trait: “Design Adaptation” – gains +2 bonus to Implementing Designs into Code.</p>
                 </div>
             </div>
 
@@ -355,7 +415,9 @@ function CharacterDesktop() {
                     randomRotation={true}
                     sensitivity={180}
                     sendToBackOnClick={false}
-                    /* Uniform 400 x 800 (shrinks to fit on narrow screens) */
+                    adaptiveHeight={true}
+                    /* width is uniform; each card's height adapts to its content
+                       (min 500px, min 1:2 aspect) — see SkillCard. */
                     cardDimensions={{ width: skillCardW, height: skillCardH }}
                     cardsData={cardsData}
                 />

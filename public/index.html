@@ -2,55 +2,158 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <!--
+      NOTE: Replace the absolute URLs below (canonical, og:url, og:image, the
+      JSON-LD `url`/`image`) with your real deployed domain. They currently
+      assume GitHub Pages for the Kam-ino/Domfolio repo. Social cards and
+      canonical tags only work with ABSOLUTE URLs, so a placeholder is used.
+    -->
+
+    <!-- ===== Primary meta ===== -->
+    <title>Dominic Guevarra · Full-Stack Engineer Portfolio | Domfolio</title>
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Dominic Santiago Guevarra — full-stack engineer crafting fast, polished React &amp; Node.js web apps. AI-driven products and a hackathon finalist (Top 2 of 40, ASEAN AI Hackathon 2026). Explore the quest log."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="author" content="Dominic Santiago Guevarra" />
+    <meta
+      name="keywords"
+      content="Dominic Guevarra, full-stack developer, full-stack engineer, React developer, Node.js developer, frontend engineer, web developer Philippines, software portfolio, AI engineer"
+    />
+    <meta name="theme-color" content="#4b2c16" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href="https://kam-ino.github.io/Domfolio/" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Domfolio - Dominic Guevarra</title>
-    <!-- Devicon: tech-stack icons -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- ===== Open Graph (Facebook, LinkedIn, Discord, etc.) ===== -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Domfolio" />
+    <meta property="og:title" content="Dominic Guevarra · Full-Stack Engineer" />
+    <meta
+      property="og:description"
+      content="A developer's character sheet — full-stack engineer building fast, polished React &amp; Node.js products. Roll for initiative and explore the quest log."
+    />
+    <meta property="og:url" content="https://kam-ino.github.io/Domfolio/" />
+    <meta
+      property="og:image"
+      content="https://kam-ino.github.io/Domfolio/images/Hero.webp"
+    />
+    <meta property="og:image:alt" content="Dominic Santiago Guevarra" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- ===== Twitter / X card ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dominic Guevarra · Full-Stack Engineer" />
+    <meta
+      name="twitter:description"
+      content="Full-stack engineer building fast, polished React &amp; Node.js products. Explore the quest log."
+    />
+    <meta
+      name="twitter:image"
+      content="https://kam-ino.github.io/Domfolio/images/Hero.webp"
+    />
+
+    <!-- ===== Fonts: preconnect + ONE consolidated stylesheet =====
+      This replaces the render-blocking @import statements that were duplicated
+      across App.css, QuestBoard.css and Experience.css. Loading the font here
+      (with preconnect) lets the browser start the request immediately. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+      href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Spectral:wght@300;400;600;700&display=swap"
     />
+
+    <!-- ===== Preload the hero LCP image so the first paint isn't blocked ===== -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="%PUBLIC_URL%/images/Hero.webp"
+      fetchpriority="high"
+    />
+
+    <!-- ===== Devicon (tech-stack icons, below the fold) loaded async =====
+      Loaded non-render-blocking so it doesn't delay first paint; it's only
+      needed once the visitor scrolls to the Arsenal section. Pinned to an exact
+      version so the CSS + icon font are immutable and long-cacheable (avoids the
+      extra @latest redirect + short cache lifetime). -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/devicon.min.css"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/devicon.min.css"
+      />
+    </noscript>
+
+    <!-- ===== Structured data: Person (rich results / knowledge panel) ===== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Dominic Santiago Guevarra",
+        "url": "https://kam-ino.github.io/Domfolio/",
+        "image": "https://kam-ino.github.io/Domfolio/images/Hero.webp",
+        "jobTitle": "Full-Stack Engineer",
+        "email": "mailto:dominicguevarra08@gmail.com",
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Mapúa University"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Marikina City",
+          "addressCountry": "PH"
+        },
+        "knowsAbout": [
+          "React",
+          "Node.js",
+          "JavaScript",
+          "TypeScript",
+          "Python",
+          "Full-Stack Development",
+          "AI Integration",
+          "Cloud Computing"
+        ],
+        "sameAs": [
+          "https://github.com/Kam-ino",
+          "https://www.linkedin.com/in/dominic-guevarra-110b11285/"
+        ]
+      }
+    </script>
+
     <style>
       /* Parchment texture lives in public/, referenced here so webpack's
          css-loader never tries to bundle it as a module. */
       body {
-        background: #d8c39a url("%PUBLIC_URL%/parchment.jpg") center / cover fixed
-          no-repeat;
+        background: #d8c39a url("%PUBLIC_URL%/parchment.jpg") center / cover
+          fixed no-repeat;
+      }
+      /* `background-attachment: fixed` is janky / expensive to repaint on many
+         mobile browsers — fall back to a normal scrolling background there. */
+      @media (max-width: 820px) {
+        body {
+          background-attachment: scroll;
+        }
       }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

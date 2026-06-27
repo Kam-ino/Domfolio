@@ -1,0 +1,87 @@
+/* ============================================================================
+   Domfolio Design Tokens
+   ----------------------------------------------------------------------------
+   A single source of truth for the medieval-fantasy palette, typography,
+   spacing, radii, shadows and motion used across the site. Derived from the
+   colors that were previously hard-coded per-component. New components consume
+   these via var(--token); existing components can migrate incrementally.
+   Imported first in src/index.js so the variables exist globally and early.
+   ============================================================================ */
+
+:root {
+  /* ---- Parchment / light surfaces ---- */
+  --c-parchment-50: #fffaf0;
+  --c-parchment-100: #fff8df;
+  --c-parchment-200: #f6e8c9;
+  --c-parchment-300: #f2e3bd;
+  --c-parchment-400: #e6d4a4;
+
+  /* ---- Ink / text on light ---- */
+  --c-ink: #2b1c0f;
+  --c-ink-soft: #3a2a1a;
+  --c-ink-muted: #6a4b2a;
+
+  /* ---- Wood / structural browns ---- */
+  --c-wood: #7a5a33;
+  --c-wood-dark: #4b2c16;
+  --c-wood-deep: #2e1d12;
+  --c-leather: #5a3b22;
+
+  /* ---- Night / dark sections ---- */
+  --c-night-900: #140d07;
+  --c-night-800: #1c1209;
+  --c-night-700: #22160c;
+  --c-cream: #f3e6c8;
+  --c-cream-muted: #c9b48a;
+
+  /* ---- Accents ---- */
+  --c-gold: #e6b94f;
+  --c-gold-bright: #f1d79a;
+  --c-gold-deep: #c0902f;
+  --c-crimson: #961515;
+  --c-crimson-deep: #8b000b;
+  --c-success: #5fd07a; /* "available" status dot */
+
+  /* ---- Typography ---- */
+  --font-display: "IM Fell English SC", "Spectral", Georgia, serif;
+  --font-body: "Spectral", Georgia, "Times New Roman", serif;
+
+  /* Fluid type scale */
+  --fs-eyebrow: clamp(0.72rem, 1.6vw, 0.92rem);
+  --fs-h1: clamp(2.6rem, 8vw, 5.5rem);
+  --fs-h2: clamp(2.2rem, 5vw, 3.6rem);
+  --fs-h3: clamp(1.2rem, 2.4vw, 1.7rem);
+  --fs-lead: clamp(1.05rem, 2.2vw, 1.35rem);
+  --fs-body: clamp(1rem, 2vw, 1.2rem);
+
+  /* ---- Spacing scale ---- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  /* ---- Radii ---- */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-pill: 999px;
+
+  /* ---- Shadows / depth ---- */
+  --shadow-sm: 0 4px 12px rgba(30, 20, 10, 0.25);
+  --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --glow-gold: 0 0 18px rgba(230, 185, 79, 0.3);
+  --emboss: inset 0 0 15px rgba(0, 0, 0, 0.25);
+
+  /* ---- Motion ---- */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Layout ---- */
+  --maxw: 1200px;
+  --nav-h: 84px;
+}

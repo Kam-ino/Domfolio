@@ -12,9 +12,75 @@
 .hero-vignette {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at center, rgba(255, 248, 220, 0.35) 0%, rgba(43, 28, 15, 0.55) 70%, rgba(28, 18, 9, 0.8) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 248, 220, 0.35) 0%,
+    rgba(43, 28, 15, 0.55) 70%,
+    rgba(28, 18, 9, 0.8) 100%
+  );
   pointer-events: none;
+}
+
+/* Warm torch glow that subtly breathes behind the content */
+.hero-torch {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  width: min(900px, 90vw);
+  height: min(900px, 90vw);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(230, 185, 79, 0.22) 0%,
+    rgba(192, 144, 47, 0.08) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: torch-pulse 6s ease-in-out infinite;
+}
+
+@keyframes torch-pulse {
+  0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+/* ---- Drifting embers ---- */
+.hero-embers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ember {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd98a, #e6b94f 60%, transparent 70%);
+  box-shadow: 0 0 6px rgba(230, 185, 79, 0.8);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: ember-rise;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes ember-rise {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 0.9; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-90vh) translateX(18px); opacity: 0; }
+}
+
+/* Pause every decorative loop while the hero is offscreen (class toggled from
+   Hero.js via IntersectionObserver) and release the promoted layers. */
+.hero.is-paused .ember,
+.hero.is-paused .hero-torch,
+.hero.is-paused .hero-photo-frame,
+.hero.is-paused .hero-badge-dot {
+  animation-play-state: paused;
+  will-change: auto;
 }
 
 /* Two-column layout: text on the left, photo on the right */
@@ -33,53 +99,108 @@
   text-align: left;
 }
 
-.hero-eyebrow {
-  display: inline-block;
-  font-family: "Spectral", serif;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  font-size: clamp(0.7rem, 1.6vw, 0.9rem);
-  color: #f1d79a;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+/* ---- Availability badge ----
+   Solid dark pill so it stays legible whether it lands over the dark center of
+   the hero or the lighter parchment toward the edges/stacked layout. */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(0.72rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.06em;
+  color: var(--c-gold-bright);
+  background: linear-gradient(180deg, var(--c-wood-dark), var(--c-wood-deep));
+  border: 1px solid var(--c-gold);
+  padding: 0.45rem 1rem;
+  border-radius: var(--r-pill);
+  margin-bottom: var(--sp-4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.hero-badge-dot {
+  flex-shrink: 0; /* keep the 8px dot from being squeezed when the label wraps */
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-success);
+  box-shadow: 0 0 8px var(--c-success);
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
 }
 
 .hero-name {
-  font-family: "IM Fell English SC", serif;
-  font-size: clamp(2.6rem, 8vw, 5.5rem);
+  position: relative;
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
   line-height: 1;
   margin: 0;
   color: #fbeecb;
-  text-shadow:
-    0 2px 0 rgba(0, 0, 0, 0.3),
-    0 6px 28px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3), 0 6px 28px rgba(0, 0, 0, 0.7);
 }
 
+/* Faint glowing sigil behind the name */
+.hero-sigil {
+  position: absolute;
+  left: -0.6em;
+  top: -0.35em;
+  font-size: 1.4em;
+  color: rgba(230, 185, 79, 0.16);
+  z-index: -1;
+  text-shadow: 0 0 30px rgba(230, 185, 79, 0.4);
+  pointer-events: none;
+}
+
+/* Role line — gold keeps it on-palette and high-contrast on the dark hero */
 .hero-title {
-  font-family: "IM Fell English SC", serif;
+  font-family: var(--font-display);
   font-size: clamp(1.1rem, 3vw, 1.8rem);
-  color: #961515;
-  margin: 1rem 0 0;
+  color: var(--c-crimson-deep);
+  margin: var(--sp-3) 0 0;
   letter-spacing: 0.05em;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
+/* Clear value proposition (the part recruiters/clients actually read).
+   Larger top margin sets it apart as its own "pitch" group. */
+.hero-valueprop {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: #fff3d6;
+  margin: var(--sp-6) 0 0;
+  max-width: 560px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* Short flavor line — de-emphasized so it adds personality without competing
+   with the value proposition above it. */
 .hero-tagline {
-  font-family: "Spectral", serif;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  line-height: 1.65;
-  color: #ecdcba;
-  margin: 1.75rem 0 0;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.6vw, 1rem);
+  line-height: 1.5;
+  color: #e3d2ad;
+  margin: var(--sp-2) 0 0;
   max-width: 540px;
+  opacity: 0.8;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 1rem;
   justify-content: flex-start;
-  margin-top: 2.5rem;
+  margin-top: var(--sp-8);
 }
 
 /* Right-side photo */
@@ -88,49 +209,111 @@
   justify-content: center;
 }
 
-.hero-photo-img {
-  width: 100%;
-  max-width: 420px;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: 18px;
-  border: 4px solid #7a5a33;
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.55),
-    inset 0 0 0 1px rgba(255, 248, 220, 0.15);
+.hero-photo-frame {
+  position: relative;
+  padding: 6px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #8b6a3a, #4b2c16);
+  box-shadow: var(--shadow-lg), 0 0 28px rgba(230, 185, 79, 0.18);
+  will-change: transform;
+  animation: photo-float 7s ease-in-out infinite;
 }
 
+@keyframes photo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-photo-img {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 248, 220, 0.2);
+}
+
+/* Ornate gold corner accents on the frame */
+.frame-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 3px solid var(--c-gold);
+  filter: drop-shadow(0 0 4px rgba(230, 185, 79, 0.5));
+}
+.frame-corner--tl { top: -4px; left: -4px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+.frame-corner--tr { top: -4px; right: -4px; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+.frame-corner--bl { bottom: -4px; left: -4px; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+.frame-corner--br { bottom: -4px; right: -4px; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+
+/* ---- Buttons ---- */
 .hero-btn {
-  font-family: "IM Fell English SC", serif;
+  font-family: var(--font-display);
   font-size: 1.05rem;
   padding: 0.85rem 1.75rem;
+  min-height: 44px;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  border: 2px solid #7a5a33;
+  border: 2px solid var(--c-wood);
 }
 
 .hero-btn--primary {
-  background: linear-gradient(180deg, #e6b94f, #c0902f);
-  color: #2b1c0f;
+  background: linear-gradient(180deg, var(--c-gold), var(--c-gold-deep));
+  color: var(--c-ink);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
-
 .hero-btn--primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), var(--glow-gold);
 }
 
-.hero-btn--ghost {
-  background: rgba(255, 248, 220, 0.08);
-  color: #f1d79a;
-  backdrop-filter: blur(2px);
+/* Secondary gold-outline CTA (contact) */
+.hero-btn--gold {
+  background: rgba(230, 185, 79, 0.12);
+  color: var(--c-gold-bright);
+  border-color: var(--c-gold);
 }
-
-.hero-btn--ghost:hover {
+.hero-btn--gold:hover {
   transform: translateY(-3px);
-  background: rgba(255, 248, 220, 0.18);
+  background: rgba(230, 185, 79, 0.22);
+  box-shadow: var(--glow-gold);
+}
+
+/* Tertiary GitHub action — a low-emphasis text link so it doesn't compete with
+   the two primary CTAs at the highest-attention moment. */
+.hero-textlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: var(--c-gold-bright);
+  text-decoration: none;
+  padding: 0.5rem 0.25rem;
+  min-height: 44px;
+  border-bottom: 1px solid rgba(241, 215, 154, 0.4);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.hero-textlink:hover {
+  color: #fff;
+  border-color: var(--c-gold);
+}
+
+/* Visible keyboard focus for every interactive control in the hero */
+.hero-btn:focus-visible,
+.hero-textlink:focus-visible,
+.hero-scroll-cue:focus-visible {
+  outline: 3px solid var(--c-gold-bright);
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
 /* Stack to one column on small screens: photo above the centered text */
@@ -142,6 +325,8 @@
   .hero-content {
     text-align: center;
   }
+  .hero-badge,
+  .hero-valueprop,
   .hero-tagline {
     margin-left: auto;
     margin-right: auto;
@@ -155,22 +340,32 @@
   .hero-photo-img {
     max-width: 300px;
   }
+  /* Embers are decorative; drop them on phones to save paint/battery. */
+  .hero-embers {
+    display: none;
+  }
 }
 
-/* Animated scroll cue at the bottom of the hero */
+/* Animated scroll cue — centered horizontally with a comfortable tap target */
 .hero-scroll-cue {
   position: absolute;
-  bottom: 1.75rem;
+  bottom: 1.25rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: max-content;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.15rem;
+  padding: 0.5rem 1rem;
+  min-height: 44px;
   background: none;
   border: none;
   cursor: pointer;
   color: #ecdcba;
-  font-family: "Spectral", serif;
+  font-family: var(--font-body);
   letter-spacing: 0.3em;
   text-transform: uppercase;
   font-size: 0.7rem;
@@ -188,5 +383,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-scroll-cue { animation: none; }
+  .hero-scroll-cue,
+  .hero-torch,
+  .hero-photo-frame,
+  .hero-badge-dot {
+    animation: none;
+  }
 }

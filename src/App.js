@@ -2,9 +2,11 @@ import React, { Suspense, lazy } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import Highlights from "./components/Highlights";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Character from "./pages/Character";
+import Resume from "./components/Resume";
 import Adventures from "./pages/Adventures";
 import TechStack from "./components/TechStack";
 
@@ -21,6 +23,8 @@ export default function App() {
       <main>
         <Hero />
 
+        <Highlights />
+
         <Section
           id="about"
           tone="light"
@@ -29,6 +33,16 @@ export default function App() {
           subtitle="Stats, skills, and the story so far."
         >
           <Character />
+        </Section>
+
+        <Section
+          id="resume"
+          tone="light"
+          eyebrow="The Royal Record"
+          title="The Chronicle"
+          subtitle="Deeds, training, and titles — the formal résumé, in scroll form."
+        >
+          <Resume />
         </Section>
 
         <Section

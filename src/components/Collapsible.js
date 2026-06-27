@@ -23,12 +23,13 @@ export default function Collapsible({
   const rootRef = useRef(null);
   const buttonRef = useRef(null);
 
-  // On phones we drop the trigger entirely and show the content inline.
+  // On phones and tablets (<=960px, where the character sheet is single-column)
+  // we drop the slide-out trigger entirely and show the content inline.
   const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(max-width: 700px)").matches
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 960px)").matches
   );
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 700px)");
+    const mq = window.matchMedia("(max-width: 960px)");
     const update = () => setIsMobile(mq.matches);
     update();
     mq.addEventListener("change", update);

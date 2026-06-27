@@ -1,3 +1,8 @@
+    // Each quest may optionally declare real links that surface as buttons in
+    // the modal (QuestModal.js). Add either/both to any entry — they only
+    // render when present, so proprietary client work can safely omit them:
+    //   liveUrl: "https://your-live-demo.com",   // → "Visit the Realm"
+    //   repoUrl: "https://github.com/Kam-ino/...", // → "Read the Source"
     const quests = [
 
     // ====================================================================

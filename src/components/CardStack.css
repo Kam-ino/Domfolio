@@ -18,6 +18,21 @@
   align-items: center;
 }
 
+/* Adaptive mode: cards keep their own content height. They're stacked in a
+   single grid cell (overlapping like the absolute version) so the container
+   grows to the tallest card instead of a fixed height. */
+.stack-container--adaptive {
+  display: grid;
+  place-items: start center;
+}
+.stack-container--adaptive .card-rotate {
+  position: relative;
+  grid-area: 1 / 1;
+}
+.stack-container--adaptive .card {
+  height: auto;
+}
+
 .card-content {
   pointer-events: none;
   width: fit-content;

@@ -296,6 +296,28 @@
   word-break: break-word;
 }
 
+/* The static panel only renders on mobile/tablet (<=960px). Keep its text at a
+   sensible size — the desktop slide-out uses much larger type (e.g.
+   `.staggerMenu__item p { font-size: 1.5rem }`) which is too big here. These
+   selectors are more specific, so they win without a media query. */
+.staggerMenu__static .staggerMenu__item,
+.staggerMenu__static .staggerMenu__item p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.staggerMenu__static .staggerMenu__item h1,
+.staggerMenu__static .staggerMenu__item h2 {
+  font-size: 1.25rem;
+  line-height: 1.2;
+  margin: 2px 0 10px;
+}
+.staggerMenu__static .staggerMenu__item h3 {
+  font-size: 1.05rem;
+}
+.staggerMenu__static .staggerMenu__item li {
+  font-size: 1rem;
+}
+
 /* =========================================================
    Mobile: shrink the trigger + cap the slide-out panel so the
    Stat Guide fits a phone instead of being 800px wide.

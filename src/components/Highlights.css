@@ -1,0 +1,103 @@
+/* Torch-lit credibility band — bridges the dark hero into the lighter
+   "My Character" section below it. */
+.highlights {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    var(--c-night-900) 0%,
+    var(--c-night-800) 55%,
+    var(--c-night-700) 100%
+  );
+  border-top: 2px solid var(--c-wood);
+  border-bottom: 2px solid var(--c-wood);
+  padding: clamp(1.75rem, 4vw, 3rem) clamp(1.25rem, 4vw, 5.5rem);
+  overflow: hidden;
+}
+
+/* Faint torch glow behind the cards */
+.highlights::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(230, 185, 79, 0.12),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.highlights-inner {
+  position: relative;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.highlights-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.highlight-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+  padding: clamp(1rem, 2.5vw, 1.6rem) 0.75rem;
+  border-radius: var(--r-md);
+  background: linear-gradient(
+    180deg,
+    rgba(64, 45, 24, 0.45),
+    rgba(32, 21, 11, 0.5)
+  );
+  border: 1px solid rgba(122, 90, 51, 0.6);
+  box-shadow: var(--emboss);
+  transition: transform 0.25s var(--ease-out-expo),
+    border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.highlight-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-gold);
+  box-shadow: var(--glow-gold), var(--emboss);
+}
+
+.highlight-icon {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+.highlight-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  line-height: 1.05;
+  color: var(--c-gold-bright);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.highlight-label {
+  font-family: var(--font-display);
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+  color: var(--c-cream);
+}
+
+.highlight-sub {
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 1.4vw, 0.85rem);
+  color: var(--c-cream-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Two-up on tablets, then keep two-up on phones (cards stay legible) */
+@media (max-width: 760px) {
+  .highlights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
