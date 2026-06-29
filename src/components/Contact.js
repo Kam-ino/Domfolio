@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import "./Contact.css";
 
@@ -31,6 +31,33 @@ const CONTACT = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// ---- Send cooldown -----------------------------------------------------------
+// After a successful send, the button is disabled for 30 minutes. The timestamp
+// is kept in localStorage so the cooldown survives a page refresh. NOTE: this is
+// a soft, client-side deterrent only (a determined user can clear storage / use
+// another browser). Real abuse protection comes from the honeypot above and
+// Web3Forms' own server-side rate limiting.
+const COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
+const COOLDOWN_KEY = "domfolio:raven:lastSentAt";
+
+function cooldownUntilFromStorage() {
+  try {
+    const last = parseInt(localStorage.getItem(COOLDOWN_KEY) || "0", 10);
+    if (!last) return 0;
+    const until = last + COOLDOWN_MS;
+    return until > Date.now() ? until : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function formatRemaining(ms) {
+  const total = Math.max(0, Math.ceil(ms / 1000));
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${m}m ${String(s).padStart(2, "0")}s`;
+}
+
 const LINKS = [
   { icon: "✉️", label: "Email", value: CONTACT.email, href: `mailto:${CONTACT.email}` },
   { icon: "🗡️", label: "GitHub", value: "github.com/Kam-ino", href: CONTACT.github },
@@ -48,6 +75,22 @@ export default function Contact() {
   });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | submitting | success | mailto | error
+
+  // Cooldown: disabled until this timestamp (restored from localStorage on load).
+  const [cooldownUntil, setCooldownUntil] = useState(cooldownUntilFromStorage);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!cooldownUntil) return;
+    const id = setInterval(() => {
+      const t = Date.now();
+      setNow(t);
+      if (t >= cooldownUntil) setCooldownUntil(0); // expired -> re-enable
+    }, 1000);
+    return () => clearInterval(id);
+  }, [cooldownUntil]);
+
+  const cooling = cooldownUntil > now;
+  const remaining = formatRemaining(cooldownUntil - now);
 
   const update = (e) => {
     const { name, value } = e.target;
@@ -79,6 +122,7 @@ export default function Contact() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (status === "submitting") return;
+    if (cooldownUntil && cooldownUntil > Date.now()) return; // still cooling down
 
     const found = validate();
     if (Object.keys(found).length) {
@@ -114,6 +158,14 @@ export default function Contact() {
       if (data.success) {
         setStatus("success");
         setForm({ name: "", email: "", subject: "", message: "", botcheck: "" });
+        // Start the 30-minute cooldown (persisted so a refresh keeps it).
+        try {
+          localStorage.setItem(COOLDOWN_KEY, String(Date.now()));
+        } catch {
+          /* ignore storage failures */
+        }
+        setNow(Date.now());
+        setCooldownUntil(Date.now() + COOLDOWN_MS);
       } else {
         setStatus("error");
       }
@@ -208,10 +260,14 @@ export default function Contact() {
           <button
             type="submit"
             className="raven-submit"
-            disabled={status === "submitting"}
+            disabled={status === "submitting" || cooling}
           >
             {status === "submitting" ? (
               "Dispatching the raven…"
+            ) : cooling ? (
+              <>
+                <span aria-hidden="true">⏳</span> Raven resting — {remaining}
+              </>
             ) : (
               <>
                 <span aria-hidden="true">🪶</span> Send the Raven
@@ -239,6 +295,15 @@ export default function Contact() {
               </p>
             )}
           </div>
+
+          {/* Cooldown notice — outside the aria-live region so the ticking
+              countdown isn't announced every second. */}
+          {cooling && (
+            <p className="raven-cooldown">
+              <span aria-hidden="true">🛡️</span> A raven has already flown. To keep
+              the rookery calm, you can send another in <strong>{remaining}</strong>.
+            </p>
+          )}
         </motion.form>
 
         {/* ---- Direct links / "by other means" ---- */}
