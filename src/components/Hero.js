@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { scrollToSection } from "../lib/sectionNav";
 import "./Hero.css";
 
 // Resolved against PUBLIC_URL so the <img> src always matches the LCP preload
@@ -39,10 +40,6 @@ const item = {
     transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
-
-function scrollToId(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
@@ -115,8 +112,8 @@ export default function Hero() {
           </motion.p>
 
           <motion.p className="hero-valueprop" variants={item}>
-            I take products from first commit to production — fast, polished,
-            and built to ship.
+            I take products from first commit to production. Fast, Polished,
+            and Built to ship.
           </motion.p>
 
           <motion.p className="hero-tagline" variants={item}>
@@ -128,14 +125,14 @@ export default function Hero() {
             <button
               type="button"
               className="hero-btn hero-btn--primary"
-              onClick={() => scrollToId("about")}
+              onClick={() => scrollToSection("about")}
             >
               Begin the Adventure
             </button>
             <button
               type="button"
               className="hero-btn hero-btn--gold"
-              onClick={() => scrollToId("contact")}
+              onClick={() => scrollToSection("contact")}
             >
               <span aria-hidden="true">✉️</span> Send a Raven
             </button>
@@ -177,7 +174,7 @@ export default function Hero() {
       <motion.button
         type="button"
         className="hero-scroll-cue"
-        onClick={() => scrollToId("about")}
+        onClick={() => scrollToSection("about")}
         aria-label="Scroll to next section"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { isForcedMount, subscribeForcedMount } from "../lib/sectionNav";
 import "./Section.css";
 
 /**
@@ -28,20 +29,27 @@ export default function Section({
 }) {
   const ref = useRef(null);
   const measured = useRef(null); // last real height, remembered across unmounts
-  const [near, setNear] = useState(keepMounted);
 
   // Mount when within ~half a viewport of the section; unmount when farther.
+  const [inView, setInView] = useState(keepMounted);
   useEffect(() => {
     if (keepMounted) return;
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => setNear(entry.isIntersecting),
+      ([entry]) => setInView(entry.isIntersecting),
       { rootMargin: "120px 0px 120px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
   }, [keepMounted]);
+
+  // While a nav jump is in flight, every section force-mounts so the page height
+  // stays stable and the scroll lands accurately (see lib/sectionNav).
+  const [forced, setForced] = useState(isForcedMount);
+  useEffect(() => subscribeForcedMount(setForced), []);
+
+  const near = keepMounted || forced || inView;
 
   // While mounted, keep the latest rendered height so the placeholder can hold
   // the same space when we unmount the contents (prevents scroll jumps).

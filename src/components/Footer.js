@@ -1,55 +1,56 @@
-import { motion } from "motion/react";
 import "./Footer.css";
 
 const contact = {
   email: "dominicguevarra08@gmail.com",
-  resume: "https://drive.google.com/file/d/16SPsT7gw2MgRJkKQ3aOUJpnngh_EEcCw/view?usp=sharing",
+  resume:
+    "https://drive.google.com/file/d/16SPsT7gw2MgRJkKQ3aOUJpnngh_EEcCw/view?usp=sharing",
   github: "https://github.com/Kam-ino",
-  linkedin: "https://www.linkedin.com/in/dominic-guevarra-110b11285/"
+  linkedin: "https://www.linkedin.com/in/dominic-guevarra-110b11285/",
 };
 
+const LINKS = [
+  { label: "Email", icon: "✉️", href: `mailto:${contact.email}` },
+  { label: "GitHub", icon: "🗡️", href: contact.github },
+  { label: "LinkedIn", icon: "📓", href: contact.linkedin },
+  { label: "Résumé", icon: "📜", href: contact.resume },
+];
+
 export default function Footer() {
+  const toTop = () =>
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
   return (
-    <footer id="contact" className="footer">
-      <motion.div
-        className="footer-inner"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <h2 className="footer-title">Send a Raven</h2>
-        <p className="footer-text">
-          Have a quest for me, or just want to roll some dice? Let's connect.
-        </p>
+    <footer className="footer">
+      <div className="footer-inner">
+        <button type="button" className="footer-brand" onClick={toTop}>
+          DOMFOLIO
+        </button>
 
-        <div className="footer-links">
-          <a href={`mailto:${contact.email}`} className="footer-link">
-            <span className="footer-link-icon">✉️</span>
-            {contact.email}
-          </a>
-          <a href={contact.github} target="_blank" rel="noreferrer" className="footer-link">
-            <span className="footer-link-icon">🗡️</span>
-            GitHub
-          </a>
-          <a href={contact.linkedin} target="_blank" rel="noreferrer" className="footer-link">
-            <span className="footer-link-icon">📓</span>
-            LinkedIn
-          </a>
-          <a href={contact.resume} target="_blank" rel="noreferrer" className="footer-link">
-            <span className="footer-link-icon">📜</span>
-            Formal Resumé
-          </a>
-        </div>
+        <nav className="footer-links" aria-label="Contact links">
+          {LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              target={l.href.startsWith("http") ? "_blank" : undefined}
+              rel={l.href.startsWith("http") ? "noreferrer" : undefined}
+            >
+              <span className="footer-link-icon" aria-hidden="true">
+                {l.icon}
+              </span>
+              {l.label}
+            </a>
+          ))}
+        </nav>
 
-        <div className="footer-rule" aria-hidden="true">
-          <span>✦</span>
-        </div>
+        <button type="button" className="footer-totop" onClick={toTop}>
+          Back to the Summit <span aria-hidden="true">↑</span>
+        </button>
+      </div>
 
-        <p className="footer-note">
-          &copy; {new Date().getFullYear()} Dominic Guevarra &middot; Forged with React &amp; Three.js
-        </p>
-      </motion.div>
+      <p className="footer-note">
+        &copy; {new Date().getFullYear()} Dominic Guevarra &middot; Forged with
+        React &amp; Three.js
+      </p>
     </footer>
   );
 }

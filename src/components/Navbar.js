@@ -1,34 +1,45 @@
 import { useEffect, useState } from "react";
+import {
+  scrollToSection,
+  setSectionUrl,
+  sectionFromPath,
+  isForcedMount,
+} from "../lib/sectionNav";
 import "./Navbar.css";
 
 const LINKS = [
   { id: "about", label: "About Me" },
-  { id: "resume", label: "The Chronicle" },
-  { id: "stack", label: "Arsenal" },
-  { id: "experience", label: "My Adventures" },
+  { id: "resume", label: "Resume" },
+  { id: "stack", label: "Stack" },
+  { id: "experience", label: "Experience" },
+  { id: "services", label: "Services" },
   { id: "game", label: "The Arena" },
   { id: "contact", label: "Contact" },
 ];
-
-function scrollToId(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-}
 
 export default function Navbar() {
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Shrink/solidify the bar once the user scrolls past the hero
+  // Shrink/solidify the bar once the user scrolls past the hero; also reset the
+  // URL to the base path ("/") when back at the very top (the hero).
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
+      if (window.scrollY < 40 && !isForcedMount()) {
+        setActive("");
+        setSectionUrl("top");
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scroll-spy: highlight the section currently in view
+  // Scroll-spy: highlight the section in view and reflect it in the URL
+  // (/about, /resume, …). Skipped while a programmatic jump is animating so the
+  // URL doesn't flicker through every section it passes.
   useEffect(() => {
     const sections = LINKS.map((l) => document.getElementById(l.id)).filter(Boolean);
     if (!sections.length) return;
@@ -36,7 +47,10 @@ export default function Navbar() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
+          if (entry.isIntersecting && !isForcedMount()) {
+            setActive(entry.target.id);
+            setSectionUrl(entry.target.id);
+          }
         });
       },
       { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
@@ -46,10 +60,32 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  // Deep-link: on first load, scroll to the section named in the path (/contact)
+  // and keep things in sync with the browser's back/forward buttons.
+  useEffect(() => {
+    const id = sectionFromPath();
+    if (id) {
+      setActive(id);
+      requestAnimationFrame(() => scrollToSection(id));
+    }
+    const onPop = () => {
+      const next = sectionFromPath();
+      if (next) {
+        setActive(next);
+        scrollToSection(next);
+      } else {
+        scrollToSection("top");
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   const handleClick = (e, id) => {
     e.preventDefault();
     setMenuOpen(false);
-    scrollToId(id);
+    setActive(id === "top" ? "" : id);
+    scrollToSection(id);
   };
 
   return (

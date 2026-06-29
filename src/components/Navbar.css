@@ -125,7 +125,9 @@
   transform: translateY(-8px) rotate(-45deg);
 }
 
-@media (max-width: 720px) {
+/* Switch to the hamburger a bit earlier so the seven links never crowd the bar
+   at tablet widths. */
+@media (max-width: 880px) {
   .nav-toggle {
     display: flex;
   }

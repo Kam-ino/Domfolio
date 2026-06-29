@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Masonry from "./Masonry";
+import { scrollToSection } from "../lib/sectionNav";
 import "./QuestBoard.css";
 
 // Real, working résumé link (the same one the footer uses). The previous
@@ -138,11 +139,7 @@ export default function QuestModal({ quest, onClose }) {
               onClick={() => {
                 onClose();
                 // Let the modal unmount before scrolling to the contact section.
-                requestAnimationFrame(() =>
-                  document
-                    .getElementById("contact")
-                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
-                );
+                requestAnimationFrame(() => scrollToSection("contact"));
               }}
             >
               <span aria-hidden="true">✉️</span> Send a Raven

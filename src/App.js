@@ -9,6 +9,9 @@ import Character from "./pages/Character";
 import Resume from "./components/Resume";
 import Adventures from "./pages/Adventures";
 import TechStack from "./components/TechStack";
+import Services from "./components/Services";
+import Testimonials from "./components/Testimonials";
+import Contact from "./components/Contact";
 
 // Code-split the Arena: it pulls in three.js / react-three-fiber for the 3D
 // dice, which is the heaviest part of the bundle. Loading it as a separate
@@ -66,6 +69,26 @@ export default function App() {
         </Section>
 
         <Section
+          id="services"
+          tone="light"
+          eyebrow="The Artificer's Offerings"
+          title="Commissions"
+          subtitle="What I can forge for you — and the proof it works."
+        >
+          <Services />
+        </Section>
+
+        <Section
+          id="testimonials"
+          tone="dark"
+          eyebrow="Words from the Realm"
+          title="Tales of My Patrons"
+          subtitle="What those I've quested alongside have to say."
+        >
+          <Testimonials />
+        </Section>
+
+        <Section
           id="game"
           tone="light"
           eyebrow="Interlude"
@@ -75,6 +98,17 @@ export default function App() {
           <Suspense fallback={<div style={{ minHeight: "60vh" }} />}>
             <MiniDnDGame />
           </Suspense>
+        </Section>
+
+        <Section
+          id="contact"
+          tone="dark"
+          eyebrow="The Rookery"
+          title="Send a Raven"
+          subtitle="Have a quest for me, a role to fill, or just want to roll some dice? Let's talk."
+          keepMounted
+        >
+          <Contact />
         </Section>
       </main>
 
