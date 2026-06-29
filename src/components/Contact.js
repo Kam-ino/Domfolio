@@ -8,14 +8,16 @@ import "./Contact.css";
  * Delivery uses Web3Forms (https://web3forms.com): get a FREE access key (it's
  * emailed to you instantly, no dashboard), then either
  *   1. create a `.env` file at the project root with
- *        MY_WEB3FORMS_KEY=your-key-here
- *      and restart `npm start`, or
+ *        REACT_APP_WEB3FORMS_KEY=your-key-here
+ *      and RESTART `npm start`, or
  *   2. paste it into the fallback string below.
+ * NOTE: the REACT_APP_ prefix is REQUIRED — Create React App ignores any env
+ * var without it, so the key would silently be undefined.
  * Until a key is set, the form gracefully falls back to opening the visitor's
  * mail client (mailto) so it still works.
  */
 const WEB3FORMS_KEY =
-  process.env.MY_WEB3FORMS_KEY || "YOUR_WEB3FORMS_ACCESS_KEY";
+  process.env.REACT_APP_WEB3FORMS_KEY || "YOUR_WEB3FORMS_ACCESS_KEY";
 const KEY_CONFIGURED =
   WEB3FORMS_KEY && WEB3FORMS_KEY !== "YOUR_WEB3FORMS_ACCESS_KEY";
 
