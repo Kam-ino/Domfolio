@@ -13,7 +13,7 @@ const SERVICES = [
       "REST & GraphQL APIs on Node.js",
       "Auth, databases (SQL / NoSQL) & deployment",
     ],
-    proof: "Shipped full-stack builds for ARISE & AWS Cloud Club",
+    proof: "Shipped full-stack builds for ARISE & other clients",
   },
   {
     icon: "🤖",

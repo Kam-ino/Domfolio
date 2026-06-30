@@ -42,6 +42,27 @@
   color: var(--c-ink-soft);
 }
 
+/* The project this testimonial is about */
+.testimonial-project {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  margin-bottom: 0.95rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--r-pill);
+  background: rgba(230, 185, 79, 0.16);
+  border: 1px solid rgba(192, 144, 47, 0.5);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--c-wood-dark);
+}
+.testimonial-project-icon {
+  font-size: 0.85rem;
+}
+
 .testimonial-author {
   display: flex;
   align-items: center;

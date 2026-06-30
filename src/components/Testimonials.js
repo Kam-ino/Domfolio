@@ -1,32 +1,40 @@
 import { motion } from "motion/react";
 import "./Testimonials.css";
 
-/**
- * ⚠️ PLACEHOLDER testimonials — these are a ready-to-fill scaffold, NOT real
- * quotes. Replace each `quote`, `author`, and `role` with genuine ones once you
- * have client/colleague permission. The "Client Name" attributions make it
- * obvious they're templates if any are left un-edited.
- */
+// Real (anonymized) testimonials. `project` ties each quote to the work it's
+// about — the values below are inferred from each role/context, so adjust them
+// to the exact project names if needed.
 const TESTIMONIALS = [
   {
     quote:
-      "Dominic rebuilt our checkout and conversion climbed almost overnight. He simply understands e-commerce.",
-    author: "Client Name",
-    role: "Founder · D2C Brand",
+      "you did it. without telling me? this is insane. i love it. is very accurate",
+    author: "F**** K****",
+    role: "Founder · Dream Team",
+    project: "AI Powered Size Calculator",
     rune: "🛒",
   },
   {
     quote:
-      "The AI support agent he set up now handles the bulk of our tickets — refunds, returns, presales. It saves us hours every single day.",
-    author: "Client Name",
-    role: "Operations Lead · Shopify Store",
+      "it looks great. better than old checkout. higher conversion rate",
+    author: "F**** K****",
+    role: "Founder · Dream Team",
+    project: "Shopify Checkout Rework",
+    rune: "🛒",
+  },
+  {
+    quote:
+      "The automation's solid bro, you're a genius. THANKS A LOT LEGIT",
+    author: "A****** C*********",
+    role: "Marketing Localization Manager · Dream Team",
+    project: "LocAds",
     rune: "🤖",
   },
   {
     quote:
-      "Fast, communicative, and the code was clean. He shipped exactly what we scoped, on time, and was a pleasure to work with.",
-    author: "Client Name",
-    role: "Project Manager · ARISE",
+      "Fast, communicative, and the code was clean. Shipped exactly what we scoped and more, on time, and was a pleasure to work with.",
+    author: "M*** N****",
+    role: "President · ARISE",
+    project: "ARISE Full-Stack Website",
     rune: "⚔️",
   },
 ];
@@ -57,6 +65,14 @@ export default function Testimonials() {
             &ldquo;
           </span>
           <blockquote className="testimonial-quote">{t.quote}</blockquote>
+          {t.project && (
+            <div className="testimonial-project">
+              <span className="testimonial-project-icon" aria-hidden="true">
+                ⚒
+              </span>
+              <span className="testimonial-project-label">{t.project}</span>
+            </div>
+          )}
           <footer className="testimonial-author">
             <span className="testimonial-seal" aria-hidden="true">
               {t.rune}

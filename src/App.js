@@ -83,7 +83,7 @@ export default function App() {
           tone="dark"
           eyebrow="Words from the Realm"
           title="Tales of My Patrons"
-          subtitle="What those I've quested alongside have to say."
+          subtitle="What those I've quested alongside have to say. (Translated for convenience)"
         >
           <Testimonials />
         </Section>
