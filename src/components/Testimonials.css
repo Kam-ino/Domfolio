@@ -1,14 +1,20 @@
 .testimonials {
+  --t-gap: clamp(1rem, 2.5vw, 1.6rem);
   list-style: none;
   margin: 0 auto;
   padding: 0;
   max-width: 1120px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1rem, 2.5vw, 1.6rem);
+  /* Flexbox (not grid) so a partial last row stays centered:
+     4 items -> 3 + [centered 1];  5 items -> 3 + [centered 2]. */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--t-gap);
 }
 
 .testimonial {
+  /* Three per row (the -1px absorbs sub-pixel rounding so 3 always fit). */
+  flex: 0 1 calc((100% - 2 * var(--t-gap)) / 3 - 1px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -100,9 +106,22 @@
   color: var(--c-ink-muted);
 }
 
+/* Tablet: two per row (last row still centered). */
 @media (max-width: 900px) {
   .testimonials {
-    grid-template-columns: 1fr;
+    max-width: 760px;
+  }
+  .testimonial {
+    flex-basis: calc((100% - var(--t-gap)) / 2 - 1px);
+  }
+}
+
+/* Phone: one per row. */
+@media (max-width: 620px) {
+  .testimonials {
     max-width: 560px;
+  }
+  .testimonial {
+    flex-basis: 100%;
   }
 }

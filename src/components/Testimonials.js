@@ -37,6 +37,9 @@ const TESTIMONIALS = [
     project: "ARISE Full-Stack Website",
     rune: "⚔️",
   },
+  {
+    
+  }
 ];
 
 const card = {

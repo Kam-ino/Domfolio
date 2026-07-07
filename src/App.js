@@ -68,7 +68,7 @@ export default function App() {
           <Adventures />
         </Section>
 
-        <Section
+        {/* <Section
           id="services"
           tone="light"
           eyebrow="The Artificer's Offerings"
@@ -86,7 +86,7 @@ export default function App() {
           subtitle="What those I've quested alongside have to say. (Translated for convenience)"
         >
           <Testimonials />
-        </Section>
+        </Section> */}
 
         <Section
           id="game"
