@@ -7,9 +7,11 @@
   overflow-x: clip;
 }
 
-/* Alternating tones so adjacent sections read as distinct chapters */
+/* Alternating tones so adjacent sections read as distinct chapters.
+   The faint radial at the top reads as torchlight falling on the page. */
 .section--dark {
   background:
+    radial-gradient(1100px 480px at 50% 0%, rgba(230, 185, 79, 0.055), transparent 62%),
     linear-gradient(180deg, rgba(34, 22, 12, 0.92), rgba(20, 13, 7, 0.96));
   color: #f3e6c8;
 }
@@ -88,12 +90,19 @@
   max-width: 320px;
 }
 
-.section-rule::before,
-.section-rule::after {
-  content: "";
+/* Real elements (not pseudo-elements) so the reveal can draw them outward
+   from the centre sigil — see the ruleDraw variants in Section.js. */
+.section-rule-line {
   height: 2px;
   flex: 1;
-  background: linear-gradient(90deg, transparent, #7a5a33, transparent);
+}
+.section-rule-line--l {
+  background: linear-gradient(90deg, transparent, #7a5a33);
+  transform-origin: 100% 50%;
+}
+.section-rule-line--r {
+  background: linear-gradient(90deg, #7a5a33, transparent);
+  transform-origin: 0% 50%;
 }
 
 .section-rule-icon {

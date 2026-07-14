@@ -1,6 +1,9 @@
 import React, { Suspense, lazy } from "react";
+import { MotionConfig } from "motion/react";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import ScrollProgress from "./components/ScrollProgress";
+import BackToTop from "./components/BackToTop";
 import Hero from "./components/Hero";
 import Highlights from "./components/Highlights";
 import Section from "./components/Section";
@@ -20,10 +23,20 @@ const MiniDnDGame = lazy(() => import("./components/Game"));
 
 export default function App() {
   return (
+    // reducedMotion="user" makes every motion/react animation site-wide honor
+    // the OS "reduce motion" setting automatically (transforms are skipped,
+    // opacity/fades still run) — no per-component wiring needed.
+    <MotionConfig reducedMotion="user">
     <div className="app-root">
+      {/* Keyboard users can jump straight past the nav to the content */}
+      <a className="skip-link" href="#main">
+        Skip to the quest log
+      </a>
+
+      <ScrollProgress />
       <Navbar />
 
-      <main>
+      <main id="main">
         <Hero />
 
         <Highlights />
@@ -68,7 +81,7 @@ export default function App() {
           <Adventures />
         </Section>
 
-        {/* <Section
+        <Section
           id="services"
           tone="light"
           eyebrow="The Artificer's Offerings"
@@ -86,7 +99,7 @@ export default function App() {
           subtitle="What those I've quested alongside have to say. (Translated for convenience)"
         >
           <Testimonials />
-        </Section> */}
+        </Section>
 
         <Section
           id="game"
@@ -113,6 +126,9 @@ export default function App() {
       </main>
 
       <Footer />
+
+      <BackToTop />
     </div>
+    </MotionConfig>
   );
 }

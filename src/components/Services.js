@@ -33,10 +33,10 @@ const SERVICES = [
     subtitle: "Shopify & E-commerce",
     desc: "Custom Shopify apps and checkout tuning that lift conversion and cut the cost of bloated paid apps.",
     deliverables: [
-      "Custom Shopify apps (replace paid ones)",
+      "Custom Shopify Apps (replace paid ones)",
       "Checkout & CVR optimization",
       "Liquid theming · Shopify Plus",
-    ],
+    ],  
     proof: "+15% checkout CVR · −5% app spend for a client",
   },
   {
@@ -51,6 +51,18 @@ const SERVICES = [
     ],
     proof: "Built AdFactory & LocAds creative pipelines",
   },
+  {
+    icon: "🎨",
+    title: "Raiment of the Bazaar",
+    subtitle: "Shopify Theme Design & UI/UX",
+    desc: "Custom storefront themes crafted end-to-end — the shop's whole look, feel, and buying flow, tuned to convert and easy for merchants to edit.",
+    deliverables: [
+      "Custom Shopify themes (design → Liquid)",
+      "Editor-manageable Online Store 2.0 sections",
+      "Mobile-first product, collection & cart UX",
+    ],
+    proof: "Shipped a full custom storefront theme, brief to handoff",
+  }
 ];
 
 const card = {

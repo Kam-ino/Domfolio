@@ -32,6 +32,7 @@
 }
 
 .tech-chip {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,6 +50,33 @@
 .tech-chip:hover {
   border-color: #e6b94f;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5), 0 0 18px rgba(230, 185, 79, 0.22);
+}
+
+/* Forge-glint: a light band sweeps the chip once on hover (moving
+   background-position, so no overflow clipping is needed) */
+.tech-chip::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 9px;
+  pointer-events: none;
+  background: linear-gradient(
+      105deg,
+      transparent 42%,
+      rgba(241, 215, 154, 0.22) 50%,
+      transparent 58%
+    )
+    no-repeat;
+  background-size: 280% 100%;
+  background-position: 130% 0;
+}
+.tech-chip:hover::after {
+  background-position: -30% 0;
+  transition: background-position 0.55s ease;
+}
+
+.tech-chip:hover .tech-icon {
+  filter: drop-shadow(0 0 7px rgba(230, 185, 79, 0.45));
 }
 
 /* Light default so monochrome (non-"colored") brand icons stay visible on dark */

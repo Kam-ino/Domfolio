@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform } from 'motion/react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './CardStack.css';
 
 function CardRotate({ children, onSendToBack, sensitivity }) {
@@ -21,8 +21,12 @@ function CardRotate({ children, onSendToBack, sensitivity }) {
     <motion.div
       className="card-rotate"
       style={{ x, y, rotateX, rotateY }}
-      drag
-      dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+      /* Horizontal-only drag: this sets touch-action:pan-y so a vertical swipe
+         on a card scrolls the PAGE instead of being captured as a drag (which
+         made tall cards impossible to scroll past on mobile). Swipe left/right
+         to flip the stack. */
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.6}
       whileTap={{ cursor: 'grabbing' }}
       onDragEnd={handleDragEnd}
@@ -39,6 +43,11 @@ export default function Stack({
   cardsData = [],
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
+  // Degrees of fan between successive cards, and the pivot they rotate/scale
+  // around. On narrow screens a smaller fan + a bottom-CENTER origin keeps the
+  // stack from sprawling off to the right (it otherwise overflows the column).
+  fanDegrees = 4,
+  cardOrigin = "90% 90%",
   // When true, cards are sized to their own content height (the container grows
   // to the tallest) instead of all sharing cardDimensions.height. Used by the
   // skill stack so each card hugs its content.
@@ -65,6 +74,21 @@ export default function Stack({
     });
   };
 
+  // A random-but-STABLE rotation for each stack position, so the fan looks like
+  // a naturally-tossed pile instead of a perfect fan. Memoised so it doesn't
+  // re-randomise (and jitter) on every render; only re-rolls if the card count
+  // or fan settings change. The fan still grows toward the back, with each
+  // card's angle jittered by up to ±fanDegrees when randomRotation is on.
+  const fanAngles = useMemo(
+    () =>
+      Array.from({ length: cards.length }, (_, i) => {
+        const depth = cards.length - i - 1; // 0 = top card, larger = further back
+        const jitter = randomRotation ? (Math.random() * 2 - 1) * fanDegrees : 0;
+        return depth * fanDegrees + jitter;
+      }),
+    [cards.length, fanDegrees, randomRotation]
+  );
+
   return (
     <div
       className={`stack-container${adaptiveHeight ? " stack-container--adaptive" : ""}`}
@@ -75,17 +99,15 @@ export default function Stack({
       }}
     >
       {cards.map((card, index) => {
-        const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
-
         return (
             <CardRotate key={card.id} onSendToBack={() => sendToBack(card.id)} sensitivity={sensitivity}>
             <motion.div
                 className="card"
                 onClick={() => sendToBackOnClick && sendToBack(card.id)}
                 animate={{
-                    rotateZ: (cards.length - index - 1) * 4 + randomRotate,
+                    rotateZ: fanAngles[index] ?? 0,
                     scale: 1 + index * 0.06 - cards.length * 0.06,
-                    transformOrigin: "90% 90%",
+                    transformOrigin: cardOrigin,
                 }}
                 initial={false}
                 transition={{

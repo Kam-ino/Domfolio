@@ -74,6 +74,24 @@
         reward: "Multiclass Proficiency +2, Adaptability +1",
         images: []
     },
+    {
+        id: "mq5",
+        title: "E-commerce UI/UX",
+        subtitle: "Shopify Theme Developer",
+        type: ["Main","Forge"],
+        difficulty: "B",
+        timeline: "June 2026 – July 2026",
+        details: [
+            "Designed and built a custom Shopify theme end-to-end, shaping the storefront's entire look, feel, and shopping flow.",
+            "Crafted responsive Liquid sections and Online Store 2.0 JSON templates, so the merchant can rearrange the whole bazaar from the theme editor — no code required.",
+            "Reworked the product, collection, and cart journeys mobile-first: clearer hierarchy, stronger calls-to-action, and accessible components.",
+            "Kept the theme lean and swift — optimized media, minimal JavaScript — to protect page speed and checkout conversion.",
+            "Delivered a merchant-friendly settings schema (colors, typography, section toggles) so the shop's look stays editable long after handoff.",
+        ],
+        reward: "UI/UX Design +3, E-commerce Shop +2",
+        images: ["ShopifyTheme.webp"]
+
+    },
 
     // ====================================================================
     // SIDE QUESTS (Other Roles & Experience)

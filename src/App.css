@@ -181,3 +181,56 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* ============================================================
+   Global premium-UX foundation
+   ============================================================ */
+
+/* Text selection in the site's gold-on-ink livery */
+::selection {
+  background: var(--c-gold, #e6b94f);
+  color: var(--c-ink, #2b1c0f);
+}
+
+/* One consistent, visible keyboard focus ring everywhere. Components with
+   their own :focus-visible treatment (modal buttons etc.) still win via their
+   more specific rules. */
+:focus-visible {
+  outline: 3px solid var(--c-gold, #e6b94f);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Hidden until focused: lets keyboard users jump straight to the content */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 2000;
+  padding: 10px 18px;
+  background: var(--c-wood-dark, #4b2c16);
+  color: var(--c-gold-bright, #f1d79a);
+  font-family: var(--font-display, "IM Fell English SC", serif);
+  font-size: 1rem;
+  border: 2px solid var(--c-gold, #e6b94f);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md, 0 10px 24px rgba(0, 0, 0, 0.45));
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  text-decoration: none;
+}
+
+/* Kill decorative CSS animation/transition time for users who ask for less
+   motion. (motion/react animations are handled by MotionConfig in App.js.) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

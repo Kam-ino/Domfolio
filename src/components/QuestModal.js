@@ -1,6 +1,7 @@
 // src/components/QuestModal.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
 import Masonry from "./Masonry";
 import { scrollToSection } from "../lib/sectionNav";
 import "./QuestBoard.css";
@@ -41,23 +42,82 @@ export default function QuestModal({ quest, onClose }) {
     };
   }, [quest]);
 
-  if (!quest) return null;
+  // Closing the modal (Escape/overlay/seal) can skip onItemLeave, which would
+  // leave a stale enlarge-preview behind for the next open — clear it.
+  useEffect(() => {
+    if (!quest) setHoverImg(null);
+  }, [quest]);
+
+  // Escape closes the scroll, like any well-mannered dialog.
+  useEffect(() => {
+    if (!quest) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [quest, onClose]);
+
+  // Move keyboard focus into the dialog on open, and give it back on close.
+  const sealRef = useRef(null);
+  const lastFocused = useRef(null);
+  useEffect(() => {
+    if (quest) {
+      lastFocused.current = document.activeElement;
+      const t = setTimeout(() => sealRef.current?.focus(), 80);
+      return () => clearTimeout(t);
+    }
+    if (lastFocused.current) {
+      lastFocused.current.focus?.();
+      lastFocused.current = null;
+    }
+  }, [quest]);
 
   const masonryItems =
-    quest.images?.map((img, i) => {
+    quest?.images?.map((img, i) => {
       const src = `/images/${img}`;
       return { id: `${quest.id}-${i}`, img: src, url: src, height: 600 };
     }) ?? [];
 
   // Portaled to <body> so the fixed overlay is positioned against the real
   // viewport, not the transformed Section ancestor (which would let the board
-  // behind it show through / move when scrolling).
+  // behind it show through / move when scrolling). AnimatePresence keeps the
+  // scroll mounted through its exit animation after `quest` goes null.
   return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-parchment" onClick={(e) => e.stopPropagation()}>
+    <AnimatePresence>
+      {quest && (
+        <motion.div
+          className="modal-overlay"
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.2, ease: "easeIn" } }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
+          <motion.div
+            className="modal-parchment"
+            role="dialog"
+            aria-modal="true"
+            aria-label={quest.title}
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, y: -34, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{
+              opacity: 0,
+              y: 18,
+              scale: 0.97,
+              transition: { duration: 0.18, ease: "easeIn" },
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 26 }}
+          >
 
         {/* Wax Seal = Close Button (stays outside the scroll area) */}
-        <button className="modal-wax-button" onClick={onClose} aria-label="Close">
+        <button
+          className="modal-wax-button"
+          onClick={onClose}
+          aria-label="Close"
+          ref={sealRef}
+        >
           <img
             src="/images/wax-seal.webp"
             alt=""
@@ -146,18 +206,20 @@ export default function QuestModal({ quest, onClose }) {
             </button>
           </div>
         </div>
-      </div>
+          </motion.div>
 
-      {/* Centered enlarge preview on hover (desktop). pointer-events:none keeps
-          the tile hovered (no flicker). Portaled to <body> so it centers on the
-          real viewport. */}
-      {!isMobile &&
-        hoverImg &&
-        createPortal(
-          <img src={hoverImg} alt="" className="quest-image-preview" />,
-          document.body
-        )}
-    </div>,
+          {/* Centered enlarge preview on hover (desktop). pointer-events:none
+              keeps the tile hovered (no flicker). Portaled to <body> so it
+              centers on the real viewport. */}
+          {!isMobile &&
+            hoverImg &&
+            createPortal(
+              <img src={hoverImg} alt="" className="quest-image-preview" />,
+              document.body
+            )}
+        </motion.div>
+      )}
+    </AnimatePresence>,
     document.body
   );
 }

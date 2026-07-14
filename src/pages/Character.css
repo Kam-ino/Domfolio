@@ -244,6 +244,62 @@
   flex-direction: column;
   justify-content: safe center;
   gap: 0.7em;
+  /* Themed scrollbar (Firefox) */
+  scrollbar-width: thin;
+  scrollbar-color: #a5732f rgba(122, 90, 51, 0.18);
+  /* Soft-fade the scrolled edges. --fade-top/-bottom are toggled (0 <-> 26px)
+     from JS so only the side with hidden content fades — the first/last line is
+     never masked at the scroll extremes. Defaults of 0 mean no fade (desktop). */
+  --fade-top: 0px;
+  --fade-bottom: 0px;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade-top),
+    #000 calc(100% - var(--fade-bottom)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade-top),
+    #000 calc(100% - var(--fade-bottom)),
+    transparent 100%
+  );
+}
+
+/* Themed scrollbar (WebKit/Chrome/Edge): a gilt wood thumb on a sunken
+   parchment track, with the default arrow buttons removed. */
+.skill-card-body::-webkit-scrollbar {
+  width: 10px;
+}
+.skill-card-body::-webkit-scrollbar-track {
+  background: rgba(122, 90, 51, 0.14);
+  border-radius: 8px;
+  margin: 6px 0;
+}
+.skill-card-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c69a49 0%, #8a6636 55%, #6e4f2c 100%);
+  border: 2px solid #f2e3bd; /* parchment inset so the thumb reads as gilded */
+  border-radius: 8px;
+}
+.skill-card-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #e0b45a 0%, #9c7440 55%, #7a5a33 100%);
+}
+.skill-card-body::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Phones: the card is height-capped in JS, so let its body scroll for overflow
+   (works because the stack drag is now horizontal-only → vertical touch pans). */
+@media (max-width: 600px) {
+  .skill-card-body {
+    overflow-y: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .skill-section-heading {
@@ -439,4 +495,34 @@
   .saving{
     margin-top: 150px;
   }
+}
+
+/* ---- Stack hint plaques ----
+   The helper lines above the two card stacks, styled as small carved-wood
+   plaques with drag chevrons so the "these cards are draggable" affordance
+   reads at a glance instead of as stray body text. */
+.skills > p,
+.portraits > p {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  margin: 0 0 18px;
+  padding: 7px 16px;
+  background: linear-gradient(180deg, #5e451f, #4b2c16);
+  color: #f1d79a;
+  border: 1px solid #a5732f;
+  border-radius: 999px;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 0 8px rgba(0, 0, 0, 0.25);
+}
+.skills > p::before,
+.portraits > p::before {
+  content: "⟨";
+  color: #e6b94f;
+}
+.skills > p::after,
+.portraits > p::after {
+  content: "⟩";
+  color: #e6b94f;
 }

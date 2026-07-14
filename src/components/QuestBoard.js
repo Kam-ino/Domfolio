@@ -9,7 +9,7 @@ import "./QuestBoard.css";
 
 const BOARD_H = 800; // px (matches .scatter-board height)
 const EDGE_PAD = 28; // keep scrolls off the wooden frame
-const MAX_OVERLAP = 0.2; // allow scrolls to overlap up to ~20%
+const MAX_OVERLAP = 0.3; // HARD ceiling: no two scrolls may overlap more than 30%
 
 // Scroll width shrinks as more scrolls land on the board.
 function scrollWidth(n) {
@@ -95,9 +95,6 @@ export default function QuestBoard() {
     }
 
     const maxX = Math.max(0, width - cardW - edge * 2);
-    const maxY = Math.max(0, boardH - cardH - edge * 2);
-
-    const rng = mulberry32(hashStr(activeTab) ^ (n * 2654435761));
 
     const overlapFrac = (a, b) => {
       const ox = Math.max(0, Math.min(a.x + cardW, b.x + cardW) - Math.max(a.x, b.x));
@@ -105,32 +102,55 @@ export default function QuestBoard() {
       return (ox * oy) / (cardW * cardH);
     };
 
-    const placed = [];
-    for (let i = 0; i < n; i++) {
-      let best = null;
-      let bestScore = Infinity;
-      for (let t = 0; t < 280; t++) {
-        const cand = { x: edge + rng() * maxX, y: edge + rng() * maxY };
-        let mx = 0;
-        for (const p of placed) {
-          const ov = overlapFrac(cand, p);
-          if (ov > mx) mx = ov;
-          if (mx > maxOverlap) break;
+    // Scatter all n scrolls on a board of height h. Each candidate spot is
+    // scored by its TRUE worst overlap against every placed scroll. (The old
+    // version bailed at the first neighbour over the cap and recorded that
+    // partial value as the score, so a spot overlapping one scroll 21% and
+    // another 95% counted as "21%" — that's how near-total pile-ups got in.)
+    const TRIES = 500;
+    const placeAll = (h, seed) => {
+      const rng = mulberry32(seed);
+      const maxY = Math.max(0, h - cardH - edge * 2);
+      const placed = [];
+      let worst = 0;
+      for (let i = 0; i < n; i++) {
+        let best = null;
+        let bestScore = Infinity;
+        for (let t = 0; t < TRIES; t++) {
+          const cand = { x: edge + rng() * maxX, y: edge + rng() * maxY };
+          let mx = 0;
+          for (const p of placed) {
+            const ov = overlapFrac(cand, p);
+            if (ov > mx) mx = ov;
+            if (mx >= bestScore) break; // provably no better than the current best
+          }
+          if (mx < bestScore) {
+            bestScore = mx;
+            best = cand;
+          }
+          // First spot under the cap wins — keeps the scatter looking random
+          // instead of packing everything into a tidy minimum-overlap grid.
+          if (bestScore <= maxOverlap) break;
         }
-        if (mx <= maxOverlap) {
-          best = cand;
-          break;
-        }
-        if (mx < bestScore) {
-          bestScore = mx;
-          best = cand;
-        }
+        worst = Math.max(worst, bestScore);
+        best.rotation = (rng() - 0.5) * 18; // -9° .. +9°
+        placed.push(best);
       }
-      best.rotation = (rng() - 0.5) * 18; // -9° .. +9°
-      placed.push(best);
+      return { placed, worst };
+    };
+
+    // The cap is a guarantee, not a suggestion: if a tab is too crowded for
+    // maxOverlap at this height, grow the board ~20% and re-scatter until the
+    // ceiling holds (bounded so a pathological case can't loop forever).
+    const baseSeed = hashStr(activeTab) ^ (n * 2654435761);
+    let h = boardH;
+    let result = placeAll(h, baseSeed);
+    for (let attempt = 1; result.worst > maxOverlap && attempt <= 6; attempt++) {
+      h = Math.round(h * 1.2);
+      result = placeAll(h, baseSeed ^ (attempt * 0x9e3779b9));
     }
 
-    return { cardW, positions: placed, boardH };
+    return { cardW, positions: result.placed, boardH: h };
   }, [filtered, activeTab, boardW]);
 
   return (

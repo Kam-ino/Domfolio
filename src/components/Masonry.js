@@ -202,7 +202,10 @@ const Masonry = ({
           onMouseEnter={(e) => handleMouseEnter(e, item)}
           onMouseLeave={(e) => handleMouseLeave(e, item)}
         >
-          <div className="item-img" style={{ backgroundImage: `url(${item.img})` }}>
+          {/* Quoted url(): filenames with spaces (e.g. "Shopify Theme.webp")
+              are invalid in a bare url() and the browser drops the whole
+              declaration — the tile lays out but paints nothing. */}
+          <div className="item-img" style={{ backgroundImage: `url("${item.img}")` }}>
             {colorShiftOnHover && <div className="color-overlay" />}
           </div>
         </div>

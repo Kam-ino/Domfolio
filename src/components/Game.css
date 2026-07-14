@@ -160,9 +160,23 @@
   margin-top: 8px;
 }
 
+/* Health drains smoothly and shifts green → amber → red as it falls
+   (tone classes set from hpTone() in Game.js) */
 .hp-fill {
   height: 100%;
+  background: #43a047;
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease;
+}
+.hp-fill.hp-mid {
+  background: #f5a623;
+}
+.hp-fill.hp-low {
   background: #e63946;
+  animation: hpDanger 1.1s ease-in-out infinite;
+}
+@keyframes hpDanger {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.5); }
 }
 
 /* ABILITY GRID */
@@ -429,4 +443,150 @@
   100% {
     filter: none;
   }
+}
+
+/* ============================================================
+   Battle juice: floating numbers, death, turn glow, entrances
+   ============================================================ */
+
+/* The combatant sections anchor the floating combat numbers */
+.player-section,
+.enemy-section {
+  position: relative;
+}
+
+/* Floating damage / heal numbers (spawned per hit in Game.js; removed
+   onAnimationEnd). --drift offsets repeats so they don't stack. */
+.fx-float {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  z-index: 5;
+  pointer-events: none;
+  font-family: "IM Fell English SC", serif;
+  font-size: 30px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85);
+  animation: fxFloat 950ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.fx-hit {
+  color: #ff6b6b;
+}
+.fx-heal {
+  color: #69db7c;
+}
+@keyframes fxFloat {
+  0% {
+    opacity: 0;
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(14px) scale(0.7);
+  }
+  14% {
+    opacity: 1;
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(0) scale(1.18);
+  }
+  28% {
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(-6px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(-52px) scale(1);
+  }
+}
+
+/* Whoever's turn it is glows faintly gold (static filter, so it never fights
+   the lunge/flash animations for the `animation` property), and their name
+   plate pulses. */
+.is-turn .player-visual,
+.is-turn .enemy-visual {
+  filter: drop-shadow(0 0 10px rgba(230, 185, 79, 0.4));
+}
+.is-turn .name-label {
+  animation: turnGlow 1.6s ease-in-out infinite;
+}
+@keyframes turnGlow {
+  0%, 100% { text-shadow: 0 0 8px rgba(230, 185, 79, 0.45); }
+  50% { text-shadow: 0 0 16px rgba(230, 185, 79, 0.95); }
+}
+
+/* Defeat: the sprite keels over and desaturates. Kept AFTER the lunge/flash
+   rules so it wins the `animation` property when classes combine. Opacity is
+   deliberately untouched — fadeToEnemy's opacity transition still carries the
+   corpse out before the next foe fades in. */
+.player-visual.is-dead,
+.enemy-visual.is-dead {
+  animation: spriteDefeat 700ms ease-in forwards;
+}
+@keyframes spriteDefeat {
+  0% { transform: none; filter: none; }
+  35% { transform: translateY(-8px) rotate(-3deg); }
+  100% {
+    transform: translateY(14px) rotate(8deg) scale(0.96);
+    filter: grayscale(1) brightness(0.55);
+  }
+}
+
+/* Each new chronicle line slides into the log */
+.log-line {
+  animation: logLineIn 0.3s ease backwards;
+}
+@keyframes logLineIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Class select: heroes rise in one by one (delay set inline per button);
+   `backwards` fill so the finished animation never blocks the hover lift */
+.class-buttons button {
+  animation: classRise 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.class-buttons button:hover,
+.class-buttons button:focus-visible {
+  transform: translateY(-6px);
+  border-color: #e6b94f;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.5), 0 0 18px rgba(230, 185, 79, 0.25);
+}
+@keyframes classRise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Win / lose curtain */
+.go-overlay {
+  animation: goFade 0.45s ease backwards;
+}
+@keyframes goFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.go-title {
+  animation: goTitle 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+}
+@keyframes goTitle {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(20px);
+    letter-spacing: 14px;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    letter-spacing: 2px;
+  }
+}
+/* Victory gold breathes; defeat stays somber */
+.go-title--win {
+  animation: goTitle 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards,
+    goldPulse 2.4s ease-in-out 1.2s infinite;
+}
+@keyframes goldPulse {
+  0%, 100% { text-shadow: 0 0 18px rgba(255, 215, 0, 0.55); }
+  50% { text-shadow: 0 0 36px rgba(255, 215, 0, 0.95); }
+}
+.go-btn {
+  animation: goTitle 0.5s ease 0.45s backwards;
+  transition: transform 0.2s ease;
+}
+.go-btn:hover {
+  transform: translateY(-2px) scale(1.05);
 }
