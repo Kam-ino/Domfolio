@@ -6,18 +6,18 @@ const RESUME_URL =
   "https://drive.google.com/file/d/16SPsT7gw2MgRJkKQ3aOUJpnngh_EEcCw/view?usp=sharing";
 
 const SUMMARY =
-  "Computer Engineering undergraduate specializing in web application development, AI automation, and e-commerce solutions. Experienced in building React and Node.js applications, developing custom Shopify components, improving checkout and customer-support workflows, and using AI-assisted development tools to streamline debugging, refactoring, and implementation. Skilled in JavaScript, Python, SQL, cloud fundamentals, prompt engineering, and UI/UX collaboration — seeking a developer role where I can build efficient, user-focused applications and automation that improve business operations and customer experience.";
+  "Computer Engineering undergraduate specializing in web application development, AI automation, and e-commerce solutions. Experienced in building React and Node.js applications, developing custom Shopify components, improving checkout and customer-support workflows, and using AI-assisted development tools to streamline debugging, refactoring, and implementation. Skilled in JavaScript, Python, SQL, cloud fundamentals, prompt engineering, and UI/UX collaboration.";
 
 const EXPERIENCE = [
   {
     role: "Freelance Full-Stack Developer",
     date: "Oct 2025 – Present",
     bullets: [
-      "Built an AI automation system (Helpwave AI agent) handling refunds, returns, order exchanges, and presale questions — cut customer returns by 25% and converted 200+ presale customers in one month.",
+      "Built an AI automation system (Helpwave AI agent) handling refunds, returns, order exchanges, and presale questions - cut customer returns by 25% and converted 200+ presale customers in one month.",
       "Developed custom Shopify apps to replace paid ones, reducing the company's expenses by 5%.",
       "Reworked checkout pages across all client stores, increasing CVR by 15%.",
-      "Created AdFactory — a hybrid web-crawler + generative-AI system producing 20–30 marketing scripts and static ads per run.",
-      "Created LocAds — localizes static ads into 7 European languages with 1:1 translation that preserves the original styles, fonts, and formats.",
+      "Created AdFactory - a hybrid web-crawler + generative-AI system producing 20–30 marketing scripts and static ads per run.",
+      "Created LocAds - localizes static ads into 7 European languages with 1:1 translation that preserves the original styles, fonts, and formats.",
     ],
   },
   {
@@ -70,17 +70,17 @@ const EDUCATION = {
   degree: "B.S. Computer Engineering",
   school: "Mapúa University",
   notes: [
-    "Thesis — “Water Quality Analysis: Microscopic Image Processing & AI-Driven E. coli Detection using YOLOv9” (unpublished research).",
-    "R&D for Great Sierra Development Corp. — “Overhead Obstacle Detection Alarm for 18-Wheeler Trucks using LIDAR & ATmega328P” (unpublished research).",
+    "Thesis - “Water Quality Analysis: Microscopic Image Processing & AI-Driven E. coli Detection using YOLOv9” (unpublished research).",
+    "R&D for Great Sierra Development Corp. - “Overhead Obstacle Detection Alarm for 18-Wheeler Trucks using LIDAR & ATmega328P” (unpublished research).",
     "Represented the school at the ASEAN AI Hackathon 2026.",
   ],
 };
 
 const CERTIFICATES = [
-  "AWS Educate — Introduction to Cloud 101",
-  "AWS Educate — Machine Learning Foundations",
-  "AWS Educate — Introduction to Generative AI",
-  "AWS Academy — Cloud Foundations",
+  "AWS Educate - Introduction to Cloud 101",
+  "AWS Educate - Machine Learning Foundations",
+  "AWS Educate - Introduction to Generative AI",
+  "AWS Academy - Cloud Foundations",
   "Introduction to Generative AI & Prompt Engineering",
   "Applied Machine Learning in Python",
   "Applied Plotting, Charting & Data Representation in Python",
