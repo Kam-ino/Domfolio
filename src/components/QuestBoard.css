@@ -62,10 +62,18 @@
   transform: scale(1.04) rotate(0deg) !important;
 }
 
-/* Lift the scroll in place on hover (positioned by top/left, so no translate) */
-.scatter-item:hover {
+/* Lift the scroll in place on hover (positioned by top/left, so no translate).
+   :focus-within gives keyboard users the same straighten-and-lift the mouse
+   gets, so a tabbed-to scroll is readable before it's opened. */
+.scatter-item:hover,
+.scatter-item:focus-within {
   transform: scale(1.14) rotate(0deg) !important;
   z-index: 50;
+}
+
+.quest-card:focus-visible {
+  outline: 3px solid #e6b94f;
+  outline-offset: 3px;
 }
 
 .qb-header {
@@ -305,7 +313,8 @@
   padding: 28px;
   position: relative;
   box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-  animation: dropIn .28s ease;
+  /* Open/close is animated by motion/react in QuestModal.js (spring drop-in,
+     fade-out exit) — no CSS animation here or the transforms would fight. */
   margin-top: 60px;
 }
 
@@ -318,10 +327,6 @@
 .modal-scroll::-webkit-scrollbar-thumb {
   background: rgba(122, 90, 51, 0.45);
   border-radius: 6px;
-}
-@keyframes dropIn {
-  from { transform: translateY(-24px) scale(0.98); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 .modal-close { position:absolute; top:12px; right:12px; border:none; background:#7a5a33; color:#fff8dc; padding:6px 10px; border-radius:6px; cursor:pointer; }
 .modal-wax { position:absolute; left:18px; top:18px; opacity:0.95; }

@@ -224,6 +224,30 @@
   50% { transform: translateY(-10px); }
 }
 
+/* A gilt light-sweep across the portrait on hover. Done with a moving
+   background-position (not a travelling element), so nothing needs
+   overflow:hidden and the corner ornaments stay unclipped. */
+.hero-photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 15px;
+  pointer-events: none;
+  background: linear-gradient(
+      105deg,
+      transparent 41%,
+      rgba(255, 244, 214, 0.3) 50%,
+      transparent 59%
+    )
+    no-repeat;
+  background-size: 300% 100%;
+  background-position: 140% 0;
+}
+.hero-photo-frame:hover::after {
+  background-position: -40% 0;
+  transition: background-position 0.9s ease;
+}
+
 .hero-photo-img {
   display: block;
   width: 100%;

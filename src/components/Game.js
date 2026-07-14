@@ -87,6 +87,46 @@ export default function Game() {
   // ✅ Flask item (all classes)
   const [flasksLeft, setFlasksLeft] = useState(3);
 
+  // ---- Battle FX ------------------------------------------------------------
+  // A visual-only layer: floating damage/heal numbers and short-lived sprite
+  // classes (lunge/flash). It never touches combat logic, HP math, or timers —
+  // the fragile turn machinery above stays exactly as it is.
+  const [fx, setFx] = useState([]); // {id, target:"player"|"enemy", kind:"hit"|"heal", text, drift}
+  const fxIdRef = useRef(0);
+  const spawnFx = (target, kind, text) => {
+    const id = ++fxIdRef.current;
+    const drift = Math.round(Math.random() * 36 - 18); // px, so repeats don't stack
+    setFx((list) => [...list, { id, target, kind, text, drift }]);
+  };
+  const removeFx = (id) => setFx((list) => list.filter((f) => f.id !== id));
+
+  // Transient animation classes; cleared onAnimationEnd so the same class can
+  // re-trigger next turn ("" -> class always restarts the keyframes).
+  const [playerSprite, setPlayerSprite] = useState(""); // "sprite-attack" | "sprite-hit" | ""
+  const [enemySprite, setEnemySprite] = useState("");
+
+  // Damage/heal the player WITH the matching effects. Used by ability
+  // self-damage and heals; the enemy's own attack keeps its bespoke path in
+  // applyEnemyDamageToPlayer (it logs differently).
+  const hurtPlayer = (amount) => {
+    if (amount <= 0) return;
+    setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - amount) } : prev));
+    spawnFx("player", "hit", `-${Math.round(amount)}`);
+    setPlayerSprite("sprite-hit");
+  };
+  const healPlayer = (amount) => {
+    const shown = Math.round(amount);
+    if (shown <= 0) return;
+    setPlayer((prev) => (prev ? { ...prev, hp: Math.min(prev.maxHp, prev.hp + amount) } : prev));
+    spawnFx("player", "heal", `+${shown}`);
+  };
+
+  // Green above half, amber to a quarter, red (pulsing) below that.
+  const hpTone = (unit) => {
+    const p = unit.hp / unit.maxHp;
+    return p <= 0.25 ? "hp-low" : p <= 0.5 ? "hp-mid" : "";
+  };
+
   // Win/Lose
   const [gameState, setGameState] = useState("playing"); // "playing" | "win" | "lose"
   const gameStateRef = useRef("playing");
@@ -177,6 +217,11 @@ export default function Game() {
     // ✅ reset flasks each run
     setFlasksLeft(3);
 
+    // fresh FX slate
+    setFx([]);
+    setPlayerSprite("");
+    setEnemySprite("");
+
     setLog([
       `Fellow ${cls}, you have embarked on an adventure to slay the dragon.`,
       `As you descend into the cave, you encounter a dark and eerie atmosphere.`,
@@ -194,6 +239,11 @@ export default function Game() {
     if (!e) return;
 
     setLog((l) => [...l, `${e.name} attacked you for ${damage} damage!`]);
+
+    // FX: enemy lunges in, the blow lands on the hero
+    setEnemySprite("sprite-attack");
+    setPlayerSprite("sprite-hit");
+    spawnFx("player", "hit", `-${damage}`);
 
     setPlayer((prev) => {
       if (!prev) return prev;
@@ -245,6 +295,11 @@ export default function Game() {
     const name = e.name;
     const lethal = e.hp - amount <= 0;
 
+    // FX: hero lunges, the enemy takes the hit
+    setPlayerSprite("sprite-attack");
+    setEnemySprite("sprite-hit");
+    spawnFx("enemy", "hit", `-${Math.round(amount)}`);
+
     // If lethal, cancel any queued enemy turn BEFORE it can fire
     if (lethal) {
       clearEnemyTimers();
@@ -274,11 +329,9 @@ export default function Game() {
   const advanceToNextEnemy = () => {
     clearEnemyTimers();
 
-    setPlayer((prev) => {
-      if (!prev) return prev;
-      const heal = prev.maxHp * 0.25;
-      return { ...prev, hp: Math.min(prev.maxHp, prev.hp + heal) };
-    });
+    // 25% rest between fights (maxHp never changes after start, so reading the
+    // closure's player here is safe)
+    if (player) healPlayer(player.maxHp * 0.25);
 
     const nextIndex = enemyIndex + 1;
     setEnemyIndex(nextIndex);
@@ -355,10 +408,7 @@ export default function Game() {
       const baseHeal = value;
       const healAmount = value >= 11 ? Math.ceil(baseHeal * 1.2) : baseHeal;
 
-      setPlayer((prev) => {
-        if (!prev) return prev;
-        return { ...prev, hp: Math.min(prev.maxHp, prev.hp + healAmount) };
-      });
+      healPlayer(healAmount);
 
       if (value >= 11) {
         setLog((l) => [...l, `Flask heals you for ${healAmount}! (1.2x bonus)`]);
@@ -448,7 +498,7 @@ export default function Game() {
           break;
         }
         case "Fortify": {
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.min(prev.maxHp, prev.hp + 10) } : prev));
+          healPlayer(10);
           setLog((l) => [...l, `Fortify succeeds! You gained 10 HP.`]);
           break;
         }
@@ -489,7 +539,7 @@ export default function Game() {
           break;
         }
         case "Teleport": {
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.min(prev.maxHp, prev.hp + 5) } : prev));
+          healPlayer(5);
           setLog((l) => [...l, `Teleport succeeds! You healed 5 HP and dodged the enemy’s turn.`]);
           shouldStartEnemyTurn = false;
           break;
@@ -503,7 +553,7 @@ export default function Game() {
         // Rogue
         case "Sneak Attack": {
           const selfDmg = Math.max(0, 12 - value);
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - selfDmg) } : prev));
+          hurtPlayer(selfDmg);
           setLog((l) => [...l, `Sneak Attack fails! You take ${selfDmg} damage.`]);
           break;
         }
@@ -512,7 +562,7 @@ export default function Game() {
           break;
         }
         case "Escape": {
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - value) } : prev));
+          hurtPlayer(value);
           setLog((l) => [...l, `Escape fails! You take ${value} damage.`]);
           break;
         }
@@ -528,7 +578,7 @@ export default function Game() {
 
         // Warrior
         case "Shield Bash": {
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - 3) } : prev));
+          hurtPlayer(3);
           setLog((l) => [...l, `Shield Bash fails! You take 3 damage.`]);
           break;
         }
@@ -541,14 +591,14 @@ export default function Game() {
           break;
         }
         case "Executioner’s Strike": {
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - 8) } : prev));
+          hurtPlayer(8);
           setLog((l) => [...l, `Executioner’s Strike fails! You take 8 recoil damage.`]);
           break;
         }
 
         // Wizard
         case "Fireball": {
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - 5) } : prev));
+          hurtPlayer(5);
           setLog((l) => [...l, `Fireball fails! You take 5 burn damage.`]);
           break;
         }
@@ -558,13 +608,13 @@ export default function Game() {
         }
         case "Lightning Bolt": {
           const selfDmg = Math.max(0, 8 - value);
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - selfDmg) } : prev));
+          hurtPlayer(selfDmg);
           setLog((l) => [...l, `Lightning Bolt fails! You take ${selfDmg} damage.`]);
           break;
         }
         case "Teleport": {
           const selfDmg = Math.max(0, 10 - value);
-          setPlayer((prev) => (prev ? { ...prev, hp: Math.max(0, prev.hp - selfDmg) } : prev));
+          hurtPlayer(selfDmg);
           setLog((l) => [...l, `Teleport fails! You take ${selfDmg} damage.`]);
           break;
         }
@@ -600,6 +650,9 @@ export default function Game() {
     setCooldownUntil(0);
     setGameState("playing");
     setFlasksLeft(3);
+    setFx([]);
+    setPlayerSprite("");
+    setEnemySprite("");
   };
 
   if (!playerClass) {
@@ -608,8 +661,13 @@ export default function Game() {
         <div className="class-select-screen">
           <h2>Select Your Class</h2>
           <div className="class-buttons">
-            {Object.keys(classes).map((cls) => (
-              <button key={cls} onClick={() => startGame(cls)}>
+            {Object.keys(classes).map((cls, i) => (
+              <button
+                key={cls}
+                onClick={() => startGame(cls)}
+                /* staggered rise-in, one hero at a time */
+                style={{ animationDelay: `${i * 110}ms` }}
+              >
                 <img src={classes[cls].image} alt="" className="class-icon" loading="lazy" decoding="async" />
                 <span style={{ fontFamily: "IM Fell English SC", fontSize: "25px" }}>{cls}</span>
               </button>
@@ -625,6 +683,7 @@ export default function Game() {
       {/* WIN/LOSE OVERLAY */}
       {gameState !== "playing" && (
         <div
+          className="go-overlay"
           style={{
             position: "fixed",
             inset: 0,
@@ -639,6 +698,7 @@ export default function Game() {
           }}
         >
           <div
+            className={`go-title ${gameState === "win" ? "go-title--win" : "go-title--lose"}`}
             style={{
               fontFamily: "IM Fell English SC",
               fontSize: 64,
@@ -654,6 +714,7 @@ export default function Game() {
           </div>
 
           <button
+            className="go-btn"
             onClick={resetGame}
             style={{
               padding: "12px 18px",
@@ -739,10 +800,35 @@ export default function Game() {
           <div className="fight">
             {/* PLAYER */}
             {player && (
-              <div className="player-section">
-                <img className="player-visual" src={player.image} alt="" />
+              <div
+                className={`player-section ${
+                  currentAttacker === "player" && gameState === "playing" ? "is-turn" : ""
+                }`}
+              >
+                {fx
+                  .filter((f) => f.target === "player")
+                  .map((f) => (
+                    <span
+                      key={f.id}
+                      className={`fx-float fx-${f.kind}`}
+                      style={{ "--drift": `${f.drift}px` }}
+                      onAnimationEnd={() => removeFx(f.id)}
+                      aria-hidden="true"
+                    >
+                      {f.text}
+                    </span>
+                  ))}
+                <img
+                  className={`player-visual ${playerSprite} ${player.hp <= 0 ? "is-dead" : ""}`}
+                  src={player.image}
+                  alt=""
+                  onAnimationEnd={() => setPlayerSprite("")}
+                />
                 <div className="hp-bar">
-                  <div className="hp-fill" style={{ width: `${(player.hp / player.maxHp) * 100}%` }} />
+                  <div
+                    className={`hp-fill ${hpTone(player)}`}
+                    style={{ width: `${(player.hp / player.maxHp) * 100}%` }}
+                  />
                 </div>
                 <h3 className="name-label" style={{ color: "#DDDDDD" }}>
                   {playerClass}
@@ -750,12 +836,40 @@ export default function Game() {
               </div>
             )}
 
-            {/* ENEMY */}
-            {enemy && !enemy.isDead && enemy.hp > 0 && (
-              <div className="enemy-section">
-                <img className={`enemy-visual ${enemyFade}`} src={enemy.image} alt="" />
+            {/* ENEMY — stays mounted when slain so the defeat animation plays
+                (the ability grid's MOVE ON logic has its own liveness checks) */}
+            {enemy && (
+              <div
+                className={`enemy-section ${
+                  currentAttacker === "enemy" && gameState === "playing" ? "is-turn" : ""
+                }`}
+              >
+                {fx
+                  .filter((f) => f.target === "enemy")
+                  .map((f) => (
+                    <span
+                      key={f.id}
+                      className={`fx-float fx-${f.kind}`}
+                      style={{ "--drift": `${f.drift}px` }}
+                      onAnimationEnd={() => removeFx(f.id)}
+                      aria-hidden="true"
+                    >
+                      {f.text}
+                    </span>
+                  ))}
+                <img
+                  className={`enemy-visual ${enemyFade} ${enemySprite} ${
+                    enemy.isDead ? "is-dead" : ""
+                  }`}
+                  src={enemy.image}
+                  alt=""
+                  onAnimationEnd={() => setEnemySprite("")}
+                />
                 <div className="hp-bar">
-                  <div className="hp-fill" style={{ width: `${(enemy.hp / enemy.maxHp) * 100}%` }} />
+                  <div
+                    className={`hp-fill ${hpTone(enemy)}`}
+                    style={{ width: `${(enemy.hp / enemy.maxHp) * 100}%` }}
+                  />
                 </div>
                 <h3 className="name-label" style={{ color: "#DDDDDD" }}>
                   {enemy.name}

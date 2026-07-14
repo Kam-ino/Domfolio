@@ -38,9 +38,38 @@ const TESTIMONIALS = [
     rune: "⚔️",
   },
   {
-    
-  }
+    quote:
+      "Yeah you are very good. i'm checking ur progression. i think i mistaken on you all this time",
+    author: "F**** K****",
+    role: "Founder · Dream Team",
+    project: "Custom Shopify Themes",
+    rune: "🛒",
+  },
+  {
+    quote:
+      "Solid! Thanks bro, I haven't done frontend in a while HAHAHAHAH",
+    author: "J***** Y***",
+    role: "Co-Captain · AWSCC-MU",
+    project: "AWSCC-MU Website",
+    rune: "☁️ ",
+  },
 ];
+
+// Fisher–Yates: unbiased, unlike the sort(() => random - 0.5) trick.
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Shuffled ONCE per page load (module scope), so each visit leads with a
+// different patron's tale. Deliberately not shuffled inside the component:
+// the Section wrapper de-mounts/remounts this section while scrolling, and a
+// per-mount shuffle would visibly reorder the cards mid-visit.
+const SHUFFLED = shuffle(TESTIMONIALS);
 
 const card = {
   hidden: { opacity: 0, y: 30 },
@@ -54,7 +83,7 @@ const card = {
 export default function Testimonials() {
   return (
     <ul className="testimonials">
-      {TESTIMONIALS.map((t, i) => (
+      {SHUFFLED.map((t, i) => (
         <motion.li
           className="testimonial"
           key={i}

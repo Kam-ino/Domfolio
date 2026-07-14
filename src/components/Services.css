@@ -12,6 +12,17 @@
   gap: clamp(1rem, 2.5vw, 1.6rem);
 }
 
+/* With an odd number of services, the dangling last card centers on its own
+   row (at the same width as its siblings) instead of hugging the left column.
+   Scoped to the 2-column layout — below 720px the grid is single-column. */
+@media (min-width: 721px) {
+  .service-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - clamp(1rem, 2.5vw, 1.6rem) / 2);
+  }
+}
+
 .service-card {
   display: flex;
   flex-direction: column;

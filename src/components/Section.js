@@ -15,6 +15,35 @@ import "./Section.css";
  *
  * Pass `keepMounted` to opt a section out (e.g. one that holds important state).
  */
+
+// Header choreography: eyebrow → title → subtitle rise in sequence, then the
+// divider lines draw outward from the centre sigil. All variants-driven, so
+// one whileInView on the <header> orchestrates the lot (and MotionConfig's
+// reducedMotion="user" silences it for users who prefer less motion).
+const EASE = [0.22, 1, 0.36, 1];
+const headerStagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+const riseIn = {
+  hidden: { opacity: 0, y: 26 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+};
+const ruleDrawL = {
+  hidden: { opacity: 0, scaleX: 0 },
+  show: { opacity: 1, scaleX: 1, transition: { duration: 0.7, ease: EASE } },
+};
+const ruleDrawR = ruleDrawL;
+const iconPop = {
+  hidden: { opacity: 0, scale: 0.3, rotate: -35 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: { type: "spring", stiffness: 320, damping: 18 },
+  },
+};
+
 export default function Section({
   id,
   eyebrow,
@@ -75,16 +104,36 @@ export default function Section({
         <div className="section-inner">
           <motion.header
             className="section-header"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={headerStagger}
+            initial="hidden"
+            whileInView="show"
             viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            {eyebrow && <span className="section-eyebrow">{eyebrow}</span>}
-            <h2 className="section-title">{title}</h2>
-            {subtitle && <p className="section-subtitle">{subtitle}</p>}
+            {eyebrow && (
+              <motion.span className="section-eyebrow" variants={riseIn}>
+                {eyebrow}
+              </motion.span>
+            )}
+            <motion.h2 className="section-title" variants={riseIn}>
+              {title}
+            </motion.h2>
+            {subtitle && (
+              <motion.p className="section-subtitle" variants={riseIn}>
+                {subtitle}
+              </motion.p>
+            )}
             <div className="section-rule" aria-hidden="true">
-              <span className="section-rule-icon">⚔️</span>
+              <motion.span
+                className="section-rule-line section-rule-line--l"
+                variants={ruleDrawL}
+              />
+              <motion.span className="section-rule-icon" variants={iconPop}>
+                ⚔️
+              </motion.span>
+              <motion.span
+                className="section-rule-line section-rule-line--r"
+                variants={ruleDrawR}
+              />
             </div>
           </motion.header>
 

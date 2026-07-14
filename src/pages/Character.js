@@ -55,6 +55,17 @@ function useFitSkillCard(cardRef, bodyRef, width) {
       card.style.minHeight = "0"; // measure true content height (CSS floors at 500)
 
       const w = card.offsetWidth || width || 400;
+
+      // Phones: scale the card down so a dense one can't fill the screen and
+      // block scrolling. Cap the height (~58% of the viewport, max 440px) and
+      // let the body scroll for any overflow; keep the base font size.
+      if (window.matchMedia("(max-width: 600px)").matches) {
+        const cap = Math.min(Math.round(window.innerHeight * 0.58), 440);
+        const natural = card.offsetHeight;
+        card.style.height = `${Math.min(natural, cap)}px`;
+        return;
+      }
+
       const floor = Math.max(500, Math.round(w * 2)); // min 500px, min 1:2 aspect
       const natural = card.offsetHeight;
 
@@ -105,6 +116,39 @@ function SkillCard({ card, width }) {
   const cardRef = useRef(null);
   const bodyRef = useRef(null);
   useFitSkillCard(cardRef, bodyRef, width);
+
+  // Fade only the edge(s) that have scrolled-away content (drives the mask in
+  // Character.css). Recomputed on scroll/resize and a moment after mount so it
+  // settles after the fit hook has sized the card.
+  useEffect(() => {
+    const body = bodyRef.current;
+    if (!body) return;
+    const FADE = 26;
+    const update = () => {
+      const { scrollTop, scrollHeight, clientHeight } = body;
+      const scrollable = scrollHeight - clientHeight > 2;
+      body.style.setProperty(
+        "--fade-top",
+        scrollable && scrollTop > 2 ? `${FADE}px` : "0px"
+      );
+      body.style.setProperty(
+        "--fade-bottom",
+        scrollable && scrollTop < scrollHeight - clientHeight - 2 ? `${FADE}px` : "0px"
+      );
+    };
+    update();
+    body.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    const raf = requestAnimationFrame(update);
+    const timer = setTimeout(update, 320);
+    return () => {
+      body.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
     <div className="skill-card" ref={cardRef}>
       <h4 className="skill-card-title">{card.title}</h4>
@@ -281,6 +325,13 @@ function CharacterDesktop() {
     // on narrow, a trimmer 600 on desktop (was a too-tall 650).
     const skillCardH = narrow ? Math.round(skillCardW * 1.25) : 600;
 
+    // Bounty posters shrink a touch on narrow screens so their wider fan (the
+    // opaque poster hides back cards, so it needs more spread) still fits the
+    // column centered instead of sprawling off the edge.
+    const posterW = narrow
+        ? Math.round(fitCardWidth(550, portraitsW) * 0.82)
+        : fitCardWidth(550, portraitsW);
+
     const stats = [
         { file: 'Stat 1.webp', label: 'STR' },
         { file: 'Stat 2.webp', label: 'DEX' },
@@ -416,6 +467,10 @@ function CharacterDesktop() {
                     sensitivity={180}
                     sendToBackOnClick={false}
                     adaptiveHeight={true}
+                    /* Tighter fan + bottom-center pivot on narrow screens so the
+                       stack stays centered instead of sprawling off the right. */
+                    fanDegrees={narrow ? 3.5 : 4}
+                    cardOrigin={narrow ? "50% 100%" : "90% 90%"}
                     /* width is uniform; each card's height adapts to its content
                        (min 500px, min 1:2 aspect) — see SkillCard. */
                     cardDimensions={{ width: skillCardW, height: skillCardH }}
@@ -433,9 +488,11 @@ function CharacterDesktop() {
                     randomRotation={true}
                     sensitivity={180}
                     sendToBackOnClick={false}
+                    fanDegrees={narrow ? 7.5 : 4}
+                    cardOrigin={narrow ? "50% 100%" : "90% 90%"}
                     cardDimensions={{
-                        width: fitCardWidth(550, portraitsW),
-                        height: Math.round(fitCardWidth(550, portraitsW) * 1.2),
+                        width: posterW,
+                        height: Math.round(posterW * 1.2),
                     }}
                     cardsData={pics}
                 />
