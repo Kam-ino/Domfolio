@@ -4,7 +4,7 @@
 body {
   margin: 0;
   font-family: "Spectral", serif;
-  background: url("/public/parchment.jpg") center/cover fixed no-repeat;
+  background: url("/public/parchment.webp") center/cover fixed no-repeat;
   color: #2b1708;
 }
 

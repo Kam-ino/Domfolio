@@ -167,12 +167,13 @@
         subtitle: "Triple AI/ML Integration",
         type: ["Side","Forge"],
         difficulty: "S",
-        timeline: "April 2026 – Present",
+        timeline: "April 2026 – July 2026",
         details: [
             "PLACED TOP 2 OUT OF 40. Moving on to Semi-Finals",
             "Created a Startup level Application with a team of aspiring AI and ML Engineers for ASEAN AI Hackathon 2026",
             "Pitched an AI-driven Disaster Alert System based on Flood Threshold Data, Typhoon Trajectory Prediction, and Sentiment Analysis of News & Social Media Posts",
-            "Custom alert messages powered by Google Gemini and localized to Thai, Vietnamese, and Filipino through Google Cloud Platform"
+            "Custom alert messages powered by Google Gemini and localized to Thai, Vietnamese, and Filipino through Google Cloud Platform",
+            "Ended the journey in the Semi-finals"
         ],
         reward: "AI Integration +6, Cloud Computing +2, Full Stack Development +5, Charisma(Marketing) +3",
         images: [ "SEABeaconTop40.webp","SEABeaconDemo.webp","SEABeaconMeeting.webp", "SEABeaconLogo.webp", "certificate_Dominic_Santiago_Guevarra.webp", "SEABeaconTeam.webp" ]
@@ -347,6 +348,21 @@
         ],
         reward: "Full-Stack Development +4, AI Imaging +2, Computer Vision +2, UX Design +2, Email Sorcery +2",
         images: ["EmailMaker.webp"]
+    },
+    {
+        id: "fp4",
+        title: "Palentra, Maker of Kings",
+        subtitle: "Brand Identity Creator",
+        type: "Forge",
+        difficulty: "S",
+        timeline: "July 2026 – Present",
+        details: [
+            "Joined another Hackathon after Semi-finals of ASEAN AI Hackathon",
+            "First exposure to Codex by OpenAI before building for OpenAI Build Week Community Buildathon - Manila",
+            
+        ],
+        reward: "Full Stack Development +1, Codex-assisted Coding +3, Claude Design Frontend +2",
+        images: [ "Palentra (1).webp","Palentra (2).webp","Palentra (3).webp","Palentra (4).webp","Palentra (5).webp","Palentra (6).webp","Palentra (7).webp","Palentra (8).webp","Palentra (9).webp" ]
     },
     ];
 
