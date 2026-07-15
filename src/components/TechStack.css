@@ -86,6 +86,13 @@
   color: #ede0c4;
 }
 
+/* SVG-image brand icons (brands devicon lacks) sized to match the font icons */
+.tech-icon--img {
+  width: 2.7rem;
+  height: 2.7rem;
+  object-fit: contain;
+}
+
 .tech-name {
   font-family: "Spectral", serif;
   font-size: 0.92rem;
@@ -105,6 +112,10 @@
   }
   .tech-icon {
     font-size: 2.1rem;
+  }
+  .tech-icon--img {
+    width: 2.1rem;
+    height: 2.1rem;
   }
   .tech-name {
     font-size: 0.8rem;

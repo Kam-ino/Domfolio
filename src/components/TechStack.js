@@ -44,6 +44,10 @@ const STACK = [
     items: [
       { name: "AWS", icon: "devicon-amazonwebservices-plain-wordmark" },
       { name: "Google Cloud", icon: "devicon-googlecloud-plain colored" },
+      // Devicon has no marks for these — self-hosted Simple Icons SVGs with
+      // the fill baked in (see public/images/claude.svg / openai.svg).
+      { name: "Claude Code", img: "/images/claude.svg" },
+      { name: "OpenAI Codex", img: "/images/openai.svg" },
     ],
   },
   {
@@ -77,7 +81,18 @@ export default function TechStack() {
                 transition={{ duration: 0.4, delay: i * 0.03 }}
                 whileHover={{ y: -5, scale: 1.06 }}
               >
-                <i className={`tech-icon ${it.icon}`} aria-hidden="true" />
+                {it.img ? (
+                  <img
+                    className="tech-icon tech-icon--img"
+                    src={it.img}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <i className={`tech-icon ${it.icon}`} aria-hidden="true" />
+                )}
                 <span className="tech-name">{it.name}</span>
               </motion.div>
             ))}
