@@ -355,7 +355,7 @@
         subtitle: "Brand Identity Creator",
         type: "Forge",
         difficulty: "S",
-        timeline: "July 2026 – Present",
+        timeline: "July 13 2026 – 15 July 2026",
         details: [
             "Joined another Hackathon after Semi-finals of ASEAN AI Hackathon",
             "First exposure to Codex by OpenAI before building for OpenAI Build Week Community Buildathon - Manila",
