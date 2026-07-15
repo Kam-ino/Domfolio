@@ -1,5 +1,5 @@
 // src/components/QuestModal.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import Masonry from "./Masonry";
@@ -73,11 +73,21 @@ export default function QuestModal({ quest, onClose }) {
     }
   }, [quest]);
 
-  const masonryItems =
-    quest?.images?.map((img, i) => {
+  // Gallery order re-rolls every time a quest is OPENED (Fisher–Yates), but is
+  // memoized against `quest` so hover-state re-renders don't re-scatter the
+  // masonry mid-view. Ids stay tied to each image, so Masonry keys are stable.
+  const masonryItems = useMemo(() => {
+    if (!quest?.images) return [];
+    const items = quest.images.map((img, i) => {
       const src = `/images/${img}`;
       return { id: `${quest.id}-${i}`, img: src, url: src, height: 600 };
-    }) ?? [];
+    });
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    return items;
+  }, [quest]);
 
   // Portaled to <body> so the fixed overlay is positioned against the real
   // viewport, not the transformed Section ancestor (which would let the board

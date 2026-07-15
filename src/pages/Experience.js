@@ -1,11 +1,6 @@
 import React from "react";
 import "./Experience.css";
 
-/**
- * Replace image paths (parchment.jpg, seal.png) with actual files in /public or import them.
- * Update the `data` object with your real info, project images, links, and dates.
- */
-
 const data = {
   name: "Dominic Santiago Guevarra",
   title: "Frontend Developer, Lvl 3",
