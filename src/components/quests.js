@@ -1,5 +1,5 @@
     // Each quest may optionally declare real links that surface as buttons in
-    // the modal (QuestModal.js). Add either/both to any entry — they only
+    // the modal (QuestModal.js). Add either/both to any entry - they only
     // render when present, so proprietary client work can safely omit them:
     //   liveUrl: "https://your-live-demo.com",   // → "Visit the Realm"
     //   repoUrl: "https://github.com/Kam-ino/...", // → "Read the Source"
@@ -83,13 +83,13 @@
         timeline: "June 2026 – July 2026",
         details: [
             "Designed and built a custom Shopify theme end-to-end, shaping the storefront's entire look, feel, and shopping flow.",
-            "Crafted responsive Liquid sections and Online Store 2.0 JSON templates, so the merchant can rearrange the whole bazaar from the theme editor — no code required.",
+            "Crafted responsive Liquid sections and Online Store 2.0 JSON templates, so the merchant can rearrange the whole bazaar from the theme editor. No code required.",
             "Reworked the product, collection, and cart journeys mobile-first: clearer hierarchy, stronger calls-to-action, and accessible components.",
-            "Kept the theme lean and swift — optimized media, minimal JavaScript — to protect page speed and checkout conversion.",
+            "Kept the theme lean and swift. Optimized media, and minimal JavaScript to protect page speed and checkout conversion.",
             "Delivered a merchant-friendly settings schema (colors, typography, section toggles) so the shop's look stays editable long after handoff.",
         ],
         reward: "UI/UX Design +3, E-commerce Shop +2",
-        images: ["ShopifyTheme.webp"]
+        images: ["ShopifyTheme.webp","ShopifyTheme2.webp","ShopifyTheme3.webp","ShopifyTheme4.webp","ShopifyTheme5.webp","ShopifyTheme6.webp","ShopifyTheme7.webp"]
 
     },
 
@@ -340,7 +340,7 @@
         details: [
             "Built a full React + TypeScript web app that turns brand reference images into ready-to-send, Klaviyo-compatible email flows.",
             "Used Google Cloud Vision to detect a reference layout's colors and sections, then auto-generated a library of styled, reusable email modules (hero, product, comparison, testimonial, USP banners, footer, and more).",
-            "Designed a drag-and-drop canvas with inline editing — inspired by level-creation games like Super Mario Maker, Dungeon Maker, and Fallout Shelter — for composing emails module by module.",
+            "Designed a drag-and-drop canvas with inline editing inspired by level-creation games like Super Mario Maker, Dungeon Maker, and Fallout Shelter for composing emails module by module.",
             "Integrated Google's Nano Banana (Gemini) image model to swap in AI-generated imagery, and supported Klaviyo dynamic tags like {{ first_name }}.",
             "Exported clean, table-based, inline-styled HTML that drops straight into Klaviyo, with a flow panel managing multi-email sequences (e.g. a 6-step welcome series with send timing).",
             "Added a brand kit that instantly regenerates the entire series for any brand, discount code, and accent color.",
@@ -362,7 +362,7 @@
             
         ],
         reward: "Full Stack Development +1, Codex-assisted Coding +3, Claude Design Frontend +2",
-        images: [ "Palentra (1).webp","Palentra (2).webp","Palentra (3).webp","Palentra (4).webp","Palentra (5).webp","Palentra (6).webp","Palentra (7).webp","Palentra (8).webp","Palentra (9).webp" ]
+        images: [ "Palentra.webp","Palentra (1).webp","Palentra (2).webp","Palentra (3).webp","Palentra (4).webp","Palentra (5).webp","Palentra (6).webp","Palentra (7).webp","Palentra (8).webp","Palentra (9).webp" ]
     },
     ];
 
