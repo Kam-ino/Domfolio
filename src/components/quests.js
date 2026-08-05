@@ -178,6 +178,23 @@
         reward: "AI Integration +6, Cloud Computing +2, Full Stack Development +5, Charisma(Marketing) +3",
         images: [ "SEABeaconTop40.webp","SEABeaconDemo.webp","SEABeaconMeeting.webp", "SEABeaconLogo.webp", "certificate_Dominic_Santiago_Guevarra.webp", "SEABeaconTeam.webp" ]
     },
+    {
+        id: "sq7",
+        title: "Unprompted",
+        subtitle: "Open AI Buildathon",
+        type: ["Side","Forge"],
+        difficulty: "B",
+        timeline: "July 18, 2026",
+        details: [
+            "Built an AI-powered reverse-prompt game where players reconstruct the hidden prompts behind generated images.",
+            "Implemented real-time multiplayer matchmaking, synchronized 60-second duels, and a seamless solo fallback using Socket.IO.",
+            "Integrated OpenAI-powered judging with explainable scores for subject, setting, mood, style, and visual details.",
+            "Created Prompt Lab, a guided learning mode that generates images from player prompts and provides targeted coaching.",
+            "Deployed a full-stack Turborepo architecture using Next.js, Fastify, PostgreSQL, Prisma, Cloudflare R2, Docker, and Caddy.",
+        ],
+        reward: "AI Integration +6, Cloudflare +2, Full Stack Development +1, OpenAI Codex +3",
+        images: [ "unprompted (1).webp","unprompted (2).webp","unprompted (3).webp","unprompted (4).webp","unprompted (5).webp","unprompted (6).webp", ]
+    },
 
     // ====================================================================
     // GUILD CONTRACTS (Education & Certifications)
@@ -359,7 +376,6 @@
         details: [
             "Joined another Hackathon after Semi-finals of ASEAN AI Hackathon",
             "First exposure to Codex by OpenAI before building for OpenAI Build Week Community Buildathon - Manila",
-            
         ],
         reward: "Full Stack Development +1, Codex-assisted Coding +3, Claude Design Frontend +2",
         images: [ "Palentra.webp","Palentra (1).webp","Palentra (2).webp","Palentra (3).webp","Palentra (4).webp","Palentra (5).webp","Palentra (6).webp","Palentra (7).webp","Palentra (8).webp","Palentra (9).webp" ]
