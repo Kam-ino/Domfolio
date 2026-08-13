@@ -25,7 +25,7 @@
   margin: 0 0 50px 0;
   /* Resolved at build time by css-loader against the project root, so the
      leading /public is correct here (this is NOT a runtime HTTP path). */
-  background: url("/public/wood-texture.webp");
+  background: url("https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/wood-texture.webp");
   background-size: cover;
   border: 12px solid #5a3b22;
   border-radius: 16px;

@@ -42,7 +42,7 @@ export default function QuestCard({ quest, onOpen, cardW = 300 }) {
       {hasImage && (
         <img
           className="quest-card-img"
-          src={`/images/${quest.images[0]}`}
+          src={`https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/${quest.images[0]}`}
           alt=""
           loading="lazy"
         />

@@ -55,13 +55,13 @@ const data = {
     {
       title: "NeighborhoodWatch App",
       subtitle: "React Native • FastAPI • ML",
-      img: "/images/placeholder1.png",
+      img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/placeholder1.png",
       desc: "App that rates urgency using sentiment analysis.",
     },
     {
       title: "Financial Advisor Discord Bot",
       subtitle: "Python • Web scraping • Sentiment analysis",
-      img: "/images/placeholder2.png",
+      img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/placeholder2.png",
       desc: "Aggregates market data and analyzes news sentiment.",
     },
   ],
@@ -199,7 +199,7 @@ export default function Portfolio() {
                         src={p.img}
                         alt={p.title}
                         onError={(e) => {
-                          e.currentTarget.src = "/images/placeholder-square.png";
+                          e.currentTarget.src = "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/placeholder-square.png";
                         }}
                       />
                     </div>

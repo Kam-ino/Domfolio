@@ -37,10 +37,11 @@
             "Performed prompt engineering to generate realistic AI-powered video advertisements.",
             "Currently automating the end-to-end process of Ad Video Generation.",
             "Building an Advertisement Translation App for multilingual campaign support.",
-            "Developing a Shopify Bundle App to enhance e-commerce performance and user experience."
+            "Developing a Shopify Bundle App to enhance e-commerce performance and user experience.",
+            "Apps Built: Invoice Checker, Recast, AdFactory, EmailMaker, Forklane"
         ],
         reward: "Intelligence +4, Dexterity +3, Automation Mastery +2, API Integration +1, Shopify Engineering +1",
-        images: [ "Wautomation.webp","Wmodel.webp","Winvoice.webp", "LocAdsWIP.webp", "AdFactory1.webp", "AdFactory2.webp", "AdFactory3.webp", "LocAdsProcessing.webp", "EmailMaker.webp" ]
+        images: [ "Forklane.webp","Wautomation.webp","Wmodel.webp","Winvoice.webp", "LocAdsWIP.webp", "AdFactory1.webp", "AdFactory2.webp", "AdFactory3.webp", "LocAdsProcessing.webp", "EmailMaker.webp", "Recast.webp",  ]
     },
 
     {
@@ -80,7 +81,7 @@
         subtitle: "Shopify Theme Developer",
         type: ["Main","Forge"],
         difficulty: "B",
-        timeline: "June 2026 – July 2026",
+        timeline: "June 2026 – August 2026",
         details: [
             "Designed and built a custom Shopify theme end-to-end, shaping the storefront's entire look, feel, and shopping flow.",
             "Crafted responsive Liquid sections and Online Store 2.0 JSON templates, so the merchant can rearrange the whole bazaar from the theme editor. No code required.",
@@ -306,6 +307,21 @@
             "Network.webp",
             ]
     },
+
+    {
+        id: "gq8",
+        title: "HackerRank Role Certifications",
+        subtitle: "",
+        type: ["Guild","Main"],
+        difficulty: "A",
+        timeline: "August 2026",
+        details: [
+            "Software Engineer Role",
+            "Frontend Developer (React) Role",
+        ],
+        reward: "",
+        images: ["HackerrankSWEcert.webp","HackerrankFDRcert.webp"]
+    },
     
 
     // ====================================================================
@@ -353,7 +369,7 @@
         subtitle: "Full-Stack Developer (EmailMaker)",
         type: "Forge",
         difficulty: "B",
-        timeline: "June 2026 - Present",
+        timeline: "June 2026 - August 2026",
         details: [
             "Built a full React + TypeScript web app that turns brand reference images into ready-to-send, Klaviyo-compatible email flows.",
             "Used Google Cloud Vision to detect a reference layout's colors and sections, then auto-generated a library of styled, reusable email modules (hero, product, comparison, testimonial, USP banners, footer, and more).",
@@ -379,6 +395,41 @@
         ],
         reward: "Full Stack Development +1, Codex-assisted Coding +3, Claude Design Frontend +2",
         images: [ "Palentra.webp","Palentra (1).webp","Palentra (2).webp","Palentra (3).webp","Palentra (4).webp","Palentra (5).webp","Palentra (6).webp","Palentra (7).webp","Palentra (8).webp","Palentra (9).webp" ]
+    },
+    {
+        id: "fp5",
+        title: "Forklane",
+        subtitle: "Shopify Split Testing Software",
+        type: "Forge",
+        difficulty: "A",
+        timeline: "July 2026 – Present",
+        details: [
+            "Built a full-stack experimentation platform for running controlled A/B tests across Shopify cart and checkout experiences.",
+            "Developed deterministic weighted assignment that keeps each shopper in the same control or treatment variant throughout their journey.",
+            "Integrated Shopify OAuth, Checkout UI and Web Pixel extensions, a storefront loader, and public configuration and event-ingestion APIs.",
+            "Created configurable treatment components including testimonials, sale countdowns, guarantees, branded headers, image columns, and trust grids.",
+            "Implemented Supabase-backed tracking for exposures, checkout starts, completions, and verified Shopify order revenue with event deduplication.",
+            "Designed an analytics dashboard for monitoring conversion rate, relative lift, confidence, revenue, experiment trends, and tracking-pipeline health."
+        ],
+        reward: "Full Stack Development +4, Shopify Backend Development +5, Claude Design Frontend +5",
+        images: [ "Forklane Branding.webp","Forklane.webp"]
+    },
+    {
+        id: "fp6",
+        title: "Recast",
+        subtitle: "In-Browser Image Format Converter",
+        type: "Forge",
+        difficulty: "C",
+        timeline: "April 2026",
+        details: [
+            "Built a fully client-side React app that batch-converts images between PNG, JPEG, and WebP, encoding entirely in the browser with the HTML Canvas API. No server, no upload.",
+            "Added HEIC/HEIF decoding via heic2any so iPhone photos convert cleanly, with quality control for lossy formats and a background-fill option when flattening transparency.",
+            "Implemented ZIP support with JSZip: uploaded archives are unpacked into their images automatically, and every converted result can be downloaded as a single ZIP with collision-safe filenames.",
+            "Redesigned the interface into a premium dark identity with drag-and-drop upload, before-to-after previews, live size-savings, and a full token-based design system.",
+            "Kept the whole pipeline private by design, since files never leave the browser, requiring no account and no backend."
+        ],
+        reward: "Frontend Development +3, Browser Image Processing +3, UX Design +2, Claude Design Frontend +2",
+        images: [ "Recast.webp"]
     },
     ];
 

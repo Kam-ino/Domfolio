@@ -45,9 +45,9 @@ const STACK = [
       { name: "AWS", icon: "devicon-amazonwebservices-plain-wordmark" },
       { name: "Google Cloud", icon: "devicon-googlecloud-plain colored" },
       // Devicon has no marks for these — self-hosted Simple Icons SVGs with
-      // the fill baked in (see public/images/claude.svg / openai.svg).
-      { name: "Claude Code", img: "/images/claude.svg" },
-      { name: "OpenAI Codex", img: "/images/openai.svg" },
+      // the fill baked in (claude.svg / openai.svg in the Supabase images bucket).
+      { name: "Claude Code", img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/claude.svg" },
+      { name: "OpenAI Codex", img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/openai.svg" },
     ],
   },
   {
