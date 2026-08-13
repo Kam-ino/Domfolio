@@ -5,7 +5,7 @@ import "./Hero.css";
 
 // Resolved against PUBLIC_URL so the <img> src always matches the LCP preload
 // in public/index.html (which uses %PUBLIC_URL%), even on a sub-path deploy.
-const HERO_PHOTO = process.env.PUBLIC_URL + "/images/Hero.webp";
+const HERO_PHOTO = "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Hero.webp";
 
 // Pre-computed ember field (fixed values so they don't re-randomise on every
 // render). Each ember drifts up and fades on its own loop. Hidden on small

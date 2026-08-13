@@ -26,13 +26,13 @@ export default function DiceModal({ diceSides, onRollComplete, ability }) {
   };
 
 
-  // Drop your art at public/images/dice-bg.webp to show it behind the roll.
+  // Upload dice-bg.webp to the Supabase "images" bucket to show art behind the roll.
   // Runtime URL (not a CSS url()) so a missing file just falls back to the
   // dark backdrop instead of failing the build.
   return (
     <div
       className="dice-modal-overlay"
-      style={{ backgroundImage: "url('/images/dice-bg.webp')" }}
+      style={{ backgroundImage: "url('https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/dice-bg.webp')" }}
     >
       <div className="dice-modal-container">
         <Suspense fallback={null}>

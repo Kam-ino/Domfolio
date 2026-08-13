@@ -79,7 +79,7 @@ export default function QuestModal({ quest, onClose }) {
   const masonryItems = useMemo(() => {
     if (!quest?.images) return [];
     const items = quest.images.map((img, i) => {
-      const src = `/images/${img}`;
+      const src = `https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/${img}`;
       return { id: `${quest.id}-${i}`, img: src, url: src, height: 600 };
     });
     for (let i = items.length - 1; i > 0; i--) {
@@ -129,7 +129,7 @@ export default function QuestModal({ quest, onClose }) {
           ref={sealRef}
         >
           <img
-            src="/images/wax-seal.webp"
+            src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/wax-seal.webp"
             alt=""
             aria-hidden="true"
             className="wax-img"

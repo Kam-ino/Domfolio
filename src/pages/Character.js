@@ -346,7 +346,7 @@ function CharacterDesktop() {
         id: 1,
         content: (
             <div className="portrait">
-                <img src="./images/Poster (1).webp" alt="Me 1" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (1).webp" alt="Me 1" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -354,7 +354,7 @@ function CharacterDesktop() {
         id: 2,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (2).webp" alt="Me 2" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (2).webp" alt="Me 2" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -362,7 +362,7 @@ function CharacterDesktop() {
         id: 3,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (3).webp" alt="Me 3" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (3).webp" alt="Me 3" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -370,7 +370,7 @@ function CharacterDesktop() {
         id: 4,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (4).webp" alt="Me 4" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (4).webp" alt="Me 4" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -378,7 +378,7 @@ function CharacterDesktop() {
         id: 5,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (5).webp" alt="Me 5" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (5).webp" alt="Me 5" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -386,7 +386,7 @@ function CharacterDesktop() {
         id: 6,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (6).webp" alt="Me 5" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (6).webp" alt="Me 5" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -394,7 +394,7 @@ function CharacterDesktop() {
         id: 7,
         content: (
             <div className="portrait">
-                <img src="/images/Poster (7).webp" alt="Me 5" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (7).webp" alt="Me 5" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -430,7 +430,7 @@ function CharacterDesktop() {
                 {stats.map((stat, index) => (
                     <div key={index} className="stat-bubble">
                     <img
-                        src={`/images/${stat.file}`} // Adjust path if needed
+                        src={`https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/${stat.file}`} // Adjust path if needed
                         alt={stat.label}
                         className="stat-img"
                         loading="lazy"
