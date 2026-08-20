@@ -186,6 +186,13 @@ a:hover {
    Global premium-UX foundation
    ============================================================ */
 
+/* Keep headlines from stranding a single word on their last line */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
 /* Text selection in the site's gold-on-ink livery */
 ::selection {
   background: var(--c-gold, #e6b94f);

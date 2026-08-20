@@ -55,13 +55,13 @@ const data = {
     {
       title: "NeighborhoodWatch App",
       subtitle: "React Native • FastAPI • ML",
-      img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/placeholder1.png",
+      img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Network.webp",
       desc: "App that rates urgency using sentiment analysis.",
     },
     {
       title: "Financial Advisor Discord Bot",
       subtitle: "Python • Web scraping • Sentiment analysis",
-      img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/placeholder2.png",
+      img: "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/KMNBot.webp",
       desc: "Aggregates market data and analyzes news sentiment.",
     },
   ],
@@ -108,8 +108,13 @@ export default function Portfolio() {
           {/* Left column: stats & small panels */}
           <aside className="left-column">
             <div className="portrait-slot">
-              {/* Replace with your portrait image */}
-              <div className="portrait-placeholder">Portrait</div>
+              <img
+                className="portrait-photo"
+                src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Hero.webp"
+                alt="Portrait of Dominic Guevarra"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
             <div className="stats-column">
@@ -199,7 +204,7 @@ export default function Portfolio() {
                         src={p.img}
                         alt={p.title}
                         onError={(e) => {
-                          e.currentTarget.src = "https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/placeholder-square.png";
+                          e.currentTarget.style.display = "none";
                         }}
                       />
                     </div>

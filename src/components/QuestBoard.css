@@ -236,7 +236,8 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* fallback for older browsers */
+  height: 100dvh;
   backdrop-filter: blur(4px);
   background: rgba(0, 0, 0, 0.55);
   display: flex;

@@ -386,7 +386,7 @@ function CharacterDesktop() {
         id: 6,
         content: (
             <div className="portrait">
-                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (6).webp" alt="Me 5" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (6).webp" alt="Me 6" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -394,7 +394,7 @@ function CharacterDesktop() {
         id: 7,
         content: (
             <div className="portrait">
-                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (7).webp" alt="Me 5" loading="lazy" decoding="async"/>
+                <img src="https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/Poster (7).webp" alt="Me 7" loading="lazy" decoding="async"/>
             </div>
         ),
         },
@@ -430,7 +430,7 @@ function CharacterDesktop() {
                 {stats.map((stat, index) => (
                     <div key={index} className="stat-bubble">
                     <img
-                        src={`https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/${stat.file}`} // Adjust path if needed
+                        src={`https://mmylzwtzvdhwtwhfvlam.supabase.co/storage/v1/object/public/images/${stat.file}`}
                         alt={stat.label}
                         className="stat-img"
                         loading="lazy"

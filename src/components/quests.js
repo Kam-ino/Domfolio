@@ -431,6 +431,57 @@
         reward: "Frontend Development +3, Browser Image Processing +3, UX Design +2, Claude Design Frontend +2",
         images: [ "Recast.webp"]
     },
+    {
+        id: "fp7",
+        title: "ToolHub",
+        subtitle: "Internal Operator Tool Hub",
+        type: "Forge",
+        difficulty: "C",
+        timeline: "July 2026",
+        details: [
+            "Built a single hub for internal operator tools, launching with a ROAS Calculator ported from a battle-worn Excel workbook into a proper web app.",
+            "Developed a React 19 + Vite TypeScript frontend over a FastAPI backend, with a Supabase-powered tool registry as the source of truth.",
+            "Wired a private Google Sheet as the live source for product presets, so operators pick a product and every field prefills straight from the sheet.",
+            "Implemented fully keyless Google auth: service-account impersonation via ADC locally and Workload Identity Federation on Vercel - no key files anywhere.",
+            "Added multi-currency support with a cached FX API, and an explicit 'Set as active offer' flow so calculations never silently overwrite records.",
+        ],
+        reward: "Full-Stack Development +2, GCP Mastery +2, Spreadsheet Taming +2, Cloud Security +1",
+        images: ["ToolHub.webp"]
+    },
+    {
+        id: "fp8",
+        title: "Teardown",
+        subtitle: "AI Creative-Intelligence Workspace",
+        type: "Forge",
+        difficulty: "A",
+        timeline: "July 2026 - Present",
+        details: [
+            "Built a private creative-intelligence workspace that accepts an image or video ad and runs a 14-part winning-ad deconstruction through Gemini on Vertex AI.",
+            "Engineered the full pipeline: FastAPI ingestion → GCS asset store → Cloud Tasks → Gemini 2.5 Pro → deterministic workbook parser → Google Sheets projection, with every job tracked in Supabase.",
+            "Validated all media by file signature and hardened URL ingestion with redirect-by-redirect public-host checks to limit SSRF and memory risk.",
+            "Shipped a complete simulation mode - fixture responses, local persistence, idempotent CSV projection - so the whole workflow runs without any live cloud credentials.",
+            "Held the line on quality gates: 90% backend test coverage with ruff + mypy, and 80% frontend coverage.",
+        ],
+        reward: "AI Integration +4, Cloud Architecture +3, Pipeline Engineering +3, Test Discipline +2",
+        images: ["Teardown.webp"]
+    },
+    {
+        id: "fp9",
+        title: "CelluCall",
+        subtitle: "Shopify Call-List Sync Engine",
+        type: "Forge",
+        difficulty: "B",
+        timeline: "August 2026 - Present",
+        details: [
+            "Built a sync engine that pulls abandoned checkouts and recently delivered orders from multiple Shopify stores into Supabase, then mirrors them into a call-center lead sheet in Google Sheets.",
+            "Handled multi-store sync across UK, USA, and Canada with per-store credentials, namespaced record ids, and per-store failure isolation so one store's outage never sinks the rest.",
+            "Root-caused a nasty Shopify Admin GraphQL landmine: unquoted date filters silently drop the upper bound, doubling counts - fixed with quoted ISO-UTC windows and verified with 4-way parallel syncs.",
+            "Respected a strict sheet contract: the app writes only its own columns and never touches the manager's call-tracking columns, with dedup by order number and raw appends so phone numbers survive intact.",
+            "Deployed with a React + Vite dashboard, keyless Google auth, and configurable delivery-window knobs for the client.",
+        ],
+        reward: "Shopify API Mastery +4, Data Sync Engineering +3, Debugging Tenacity +3, Client Contracts +2",
+        images: ["CelluCall.webp"]
+    },
     ];
 
     export default quests;
